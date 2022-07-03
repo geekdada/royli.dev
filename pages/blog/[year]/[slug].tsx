@@ -1,0 +1,152 @@
+import dayjs from 'dayjs'
+import { GetStaticProps, NextPage } from 'next'
+import dynamic from 'next/dynamic'
+import Link from 'next/link'
+import type { ExtendedRecordMap } from 'notion-types'
+import { ParsedUrlQuery } from 'querystring'
+import { FiMessageCircle } from 'react-icons/fi'
+import clx from 'classnames'
+
+import Copyright from '../../../components/Copyright'
+import { NotionPage } from '../../../components/NotionPage'
+import PageHead from '../../../components/PageHead'
+import TableOfContent from '../../../components/TableOfContent'
+import { siteURL } from '../../../lib/config'
+import { getCachedPageByPageId, getCachedBlogPosts } from '../../../lib/notion'
+import { sec } from '../../../lib/utils/time'
+import { Post } from '../../../lib/types'
+
+interface Props {
+  post: Post | null
+  postRecordMap: ExtendedRecordMap | null
+}
+
+const Comments = dynamic(() => import('../../../components/Comments'), {
+  ssr: false,
+})
+
+const Post: NextPage<Props> = ({ post, postRecordMap }) => {
+  if (!post || !postRecordMap) {
+    return null
+  }
+
+  const canonical = new URL(post.readURL, siteURL)
+  const hasCoverImage = Boolean(post.coverImage)
+
+  return (
+    <>
+      <PageHead
+        title={`${post.title} - Roy Li's Blog`}
+        description={post.excerpt}
+        image={post.coverImage}
+        url={canonical.toString()}
+      />
+
+      <div className="container mx-auto px-6 max-w-3xl lg:max-w-5xl xl:max-w-7xl grid grid-cols-10 gap-8">
+        <div className="col-span-10 lg:col-span-7">
+          <div className="rounded border-gray-400/30 md:border bg-white dark:bg-dark-700 overflow-hidden">
+            {post.coverImage && (
+              <div className="post-cover-image">
+                <div
+                  style={{
+                    backgroundImage: `url(${post.coverImage})`,
+                  }}
+                ></div>
+              </div>
+            )}
+
+            <div
+              className={clx(
+                'px-5 lg:px-7',
+                hasCoverImage ? 'pt-5 lg:pt-6' : 'pt-3 lg:pt-4'
+              )}
+            >
+              <h1 className="mb-2 flex justify-between space-x-2 text-3xl">
+                <span className="font-bold">{post.title}</span>
+              </h1>
+
+              <div className="secondary-text flex flex-wrap items-center gap-2">
+                <span>{dayjs(post.publishDate).format('DD/MM/YYYY')}</span>
+                <span>·</span>
+                <span>Roy</span>
+                <span>·</span>
+                <Link href="#comments-section" passHref>
+                  <a className="hover-links">
+                    <FiMessageCircle size={18} className="mr-1 inline" />
+                    <span>comments</span>
+                  </a>
+                </Link>
+              </div>
+
+              <div className="my-6">
+                <NotionPage recordMap={postRecordMap} />
+              </div>
+
+              <Copyright canonical={`${siteURL}${post.readURL}`} />
+            </div>
+          </div>
+
+          <div
+            id="comments-section"
+            className="mt-4 rounded border border-gray-400/30 p-4 bg-white dark:bg-dark-700 overflow-hidden"
+          >
+            <Comments />
+          </div>
+        </div>
+
+        <div className="sticky top-20 col-span-3 hidden h-0 lg:block">
+          <div className="max-h-screen-md rounded border border-gray-400/30 p-4 relative bg-white  dark:bg-dark-700 overflow-hidden">
+            <TableOfContent post={post} postRecordMap={postRecordMap} />
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+export const getStaticPaths = async () => {
+  const posts = await getCachedBlogPosts({ pageSize: 9999 })
+
+  return {
+    paths: posts.results.map((p) => {
+      const publishYear = dayjs(p.publishDate as string).format('YYYY')
+      return {
+        params: { slug: p.slug, year: publishYear },
+      }
+    }),
+    fallback: 'blocking',
+  }
+}
+
+export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
+  interface Props extends ParsedUrlQuery {
+    slug: string
+    year: string
+  }
+
+  const { slug } = params as Props
+  const posts = await getCachedBlogPosts({ pageSize: 9999 })
+  const post = posts.results.find((p) => p.slug === slug)
+
+  if (!post) {
+    return {
+      props: {
+        post: null,
+        postRecordMap: null,
+      },
+      revalidate: sec('10m'),
+    }
+  }
+
+  const postPage = await getCachedPageByPageId(post.id)
+
+  return {
+    props: {
+      post,
+      postRecordMap: postPage,
+    },
+    revalidate: sec('1h'),
+  }
+}
+
+export default Post

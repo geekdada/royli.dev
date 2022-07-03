@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.hover-links {
+  @apply border-b border-b-dark-200/30 no-underline transition-all duration-150 hover:border-b-dark-200/60 dark:border-b-light-900/50 dark:hover:border-b-light-900/80;
+}
+
+.nav-links {
+  @apply cursor-pointer rounded border-none p-2 transition-all duration-150 hover:bg-light-200 hover:opacity-80 dark:hover:bg-dark-700;
+}
+
+.heading-text {
+  @apply text-dark-900 dark:text-light-900;
+}
+.primary-text {
+  @apply text-dark-900/80 dark:text-light-900/80;
+}
+
+.secondary-text {
+  @apply text-dark-900/60 dark:text-light-900/60;
+}
+
+.notion-page-renderer .notion {
+  --notion-font: 'Poppins', ui-sans-serif, system-ui, apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Segoe UI', Helvetica, 'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol';
+
+  @apply w-full max-w-full;
+  margin: 0;
+  padding: 0;
+  font-size: 1.1rem;
+  line-height: 1.75;
+}
+
+.notion-page-renderer .notion > :nth-child(3) {
+  margin-top: 0;
+}
+
+.notion-page-renderer .notion-collection-page-properties {
+  @apply hidden;
+}
+
+.notion-page-renderer .notion-code {
+  @apply p-4 lg:p-6;
+}
+
+.post-cover-image {
+  @apply relative;
+
+  padding-bottom: 36%;
+  min-height: 120px;
+}
+
+.post-cover-image > div {
+  @apply absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+button {
+  @apply focus:outline-none focus-visible:outline-none !important;
+}
+
+* {
+  @apply box-border;
+}
+
+*::selection {
+  @apply bg-sky-300/20 dark:bg-sky-400/30;
+}
+
+body {
+  background-color: #FDFDFD;
+  background-image:  radial-gradient(#CBCEFA 0.85px, transparent 0.85px), radial-gradient(#CBCEFA 0.85px, #FDFDFD 0.85px);
+  background-size: 34px 34px;
+  background-position: 0 0,17px 17px;
+}
+
+.dark body {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #111 600px),
+  fixed 0 0 / 30px 30px radial-gradient(#313131 1px, transparent 0),
+  fixed 15px 15px / 30px 30px radial-gradient(#313131 1px, transparent 0);
+}
