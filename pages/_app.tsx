@@ -50,8 +50,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Script
           async
           defer
-          data-website-id="aa476cbe-b29c-4e7b-abe0-41f4503e9246"
-          src="https://sashimi.dacdn.top/umami.js"
+          data-website-id="aa476cbe-b29c-4e7b-abe0-41f4503e926"
+          src="https://sashimi.dacdn.top/sashimi.js"
         ></Script>
       )}
 
