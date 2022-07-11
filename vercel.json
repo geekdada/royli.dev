@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
-    "page/api/feed.ts":  {
+    "pages/api/feed.ts":  {
       "includeFiles": "templates/*.hbs"
     }
   }

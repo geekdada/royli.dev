@@ -12,6 +12,8 @@ import Script from 'next/script'
 import '../styles/globals.css'
 import Layout from '../components/Layout'
 
+const isSashimiEnabled = process.env.NEXT_PUBLIC_SASHIMI_ENABLED === 'true'
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
@@ -44,12 +46,14 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
       </Head>
 
-      <Script
-        async
-        defer
-        data-website-id="aa476cbe-b29c-4e7b-abe0-41f4503e9246"
-        src="https://sashimi.dacdn.top/umami.js"
-      ></Script>
+      {isSashimiEnabled && (
+        <Script
+          async
+          defer
+          data-website-id="aa476cbe-b29c-4e7b-abe0-41f4503e9246"
+          src="https://sashimi.dacdn.top/umami.js"
+        ></Script>
+      )}
 
       <ThemeProvider attribute="class">
         <Layout>
