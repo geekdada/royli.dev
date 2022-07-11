@@ -53,7 +53,12 @@ const Tweet = ({ id }: { id: string }) => {
     return null
   }
 
-  return <TweetEmbed tweetId={id} options={{ theme }} />
+  return (
+    <TweetEmbed
+      tweetId={id}
+      options={{ theme: theme === 'dark' ? 'dark' : 'light' }}
+    />
+  )
 }
 
 interface NotionPageProps {
