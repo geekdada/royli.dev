@@ -1,16 +1,18 @@
 import type { GetStaticProps, NextPage } from 'next'
-import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
 
+import { getCachedBlogPosts } from '../lib/notion'
+import { PaginatedResponse, Post } from '../lib/types'
 import { sec } from '../lib/utils/time'
 
-const Home: NextPage = () => {
+interface Props {
+  posts: PaginatedResponse<Post>
+}
+
+const Home: NextPage<Props> = ({ posts }) => {
   return (
     <>
-      <Head>
-        <title>Roy Li</title>
-      </Head>
-
       <div className="flex justify-center flex-col flex-1">
         <div className="mx-auto max-w-3xl px-6">
           <Image
@@ -34,7 +36,7 @@ const Home: NextPage = () => {
                 href="https://github.com/geekdada"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mx-1 p-1 px-2 rounded font-bold transition-all duration-150 bg-dark-600 text-white hover:bg-dark-600/60"
+                className="mx-1 py-1 px-2 rounded font-bold transition-all duration-150 bg-dark-600 text-white hover:bg-dark-600/60"
               >
                 GitHub
               </a>{' '}
@@ -43,11 +45,20 @@ const Home: NextPage = () => {
                 href="https://www.linkedin.com/in/roy-li-gz/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mx-1 p-1 px-2 rounded font-bold transition-all duration-150 bg-blue-600 text-white hover:bg-blue-600/60"
+                className="mx-1 py-1 px-2 rounded font-bold transition-all duration-150 bg-blue-600 text-white hover:bg-blue-600/60"
               >
                 LinkedIn
               </a>
               .
+            </p>
+          </div>
+
+          <div className="mt-10 text-lg">
+            <p>
+              <span>Read the latest post:&nbsp;</span>
+              <Link href={posts.results[0].readURL}>
+                <a className="hover-links mx-2">{posts.results[0].title}</a>
+              </Link>
             </p>
           </div>
         </div>
@@ -56,9 +67,11 @@ const Home: NextPage = () => {
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const posts = await getCachedBlogPosts()
+
   return {
-    props: {},
+    props: { posts },
     revalidate: sec('10m'),
   }
 }

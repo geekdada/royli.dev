@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import type { ExtendedRecordMap } from 'notion-types'
 import { ParsedUrlQuery } from 'querystring'
-import { FiMessageCircle } from 'react-icons/fi'
+import { FiArrowLeft, FiMessageCircle } from 'react-icons/fi'
 import clx from 'classnames'
 
 import Copyright from '../../../components/Copyright'
@@ -42,61 +42,74 @@ const Post: NextPage<Props> = ({ post, postRecordMap }) => {
         url={canonical.toString()}
       />
 
-      <div className="container mx-auto px-6 max-w-3xl lg:max-w-5xl xl:max-w-7xl grid grid-cols-10 gap-8">
-        <div className="col-span-10 lg:col-span-7">
-          <div className="rounded border-gray-400/30 md:border bg-white dark:bg-dark-700 overflow-hidden">
-            {post.coverImage && (
-              <div className="post-cover-image">
-                <div
-                  style={{
-                    backgroundImage: `url(${post.coverImage})`,
-                  }}
-                ></div>
+      <div className="container mx-auto md:px-6 max-w-3xl lg:max-w-5xl xl:max-w-7xl">
+        {post.coverImage && (
+          <div className="mb-8">
+            <div className="md:rounded-lg md:drop-shadow-md overflow-hidden post-cover-image">
+              <div
+                style={{
+                  backgroundImage: `url(${post.coverImage})`,
+                }}
+              ></div>
+            </div>
+          </div>
+        )}
+
+        <div className="grid grid-cols-10 gap-8">
+          <div className="col-span-10 lg:col-span-7 space-y-4">
+            <div className="post-section">
+              <div
+                className={clx(
+                  'px-5 lg:px-7',
+                  hasCoverImage ? 'pt-5 lg:pt-6' : 'pt-3 lg:pt-4'
+                )}
+              >
+                <h1 className="mb-2 flex justify-between space-x-2 text-3xl">
+                  <span className="font-bold">{post.title}</span>
+                </h1>
+
+                <div className="secondary-text flex flex-wrap items-center gap-2">
+                  <span>{dayjs(post.publishDate).format('DD/MM/YYYY')}</span>
+                  <span>·</span>
+                  <span>Roy</span>
+                  <span>·</span>
+                  <Link href="#comments-section" passHref>
+                    <a className="hover-links">
+                      <FiMessageCircle size={18} className="mr-1 inline" />
+                      <span>comments</span>
+                    </a>
+                  </Link>
+                </div>
+
+                <div className="my-6">
+                  <NotionPage recordMap={postRecordMap} />
+                </div>
+
+                <Copyright
+                  canonical={`${siteURL}${post.readURL}`}
+                  title={`${post.title} - Roy Li's Blog`}
+                />
               </div>
-            )}
+            </div>
 
-            <div
-              className={clx(
-                'px-5 lg:px-7',
-                hasCoverImage ? 'pt-5 lg:pt-6' : 'pt-3 lg:pt-4'
-              )}
-            >
-              <h1 className="mb-2 flex justify-between space-x-2 text-3xl">
-                <span className="font-bold">{post.title}</span>
-              </h1>
+            <div className="post-section">
+              <Link href="/blog" passHref>
+                <div className="group flex cursor-pointer items-center justify-between p-4 hover:bg-light-200 hover:opacity-80 dark:hover:bg-dark-900 font-mono">
+                  <span>cd /blog</span>
+                  <FiArrowLeft className="h-4 w-4 transition-all duration-150 group-hover:-translate-x-1" />
+                </div>
+              </Link>
+            </div>
 
-              <div className="secondary-text flex flex-wrap items-center gap-2">
-                <span>{dayjs(post.publishDate).format('DD/MM/YYYY')}</span>
-                <span>·</span>
-                <span>Roy</span>
-                <span>·</span>
-                <Link href="#comments-section" passHref>
-                  <a className="hover-links">
-                    <FiMessageCircle size={18} className="mr-1 inline" />
-                    <span>comments</span>
-                  </a>
-                </Link>
-              </div>
-
-              <div className="my-6">
-                <NotionPage recordMap={postRecordMap} />
-              </div>
-
-              <Copyright canonical={`${siteURL}${post.readURL}`} />
+            <div id="comments-section" className="post-section p-4">
+              <Comments />
             </div>
           </div>
 
-          <div
-            id="comments-section"
-            className="mt-4 rounded border border-gray-400/30 p-4 bg-white dark:bg-dark-700 overflow-hidden"
-          >
-            <Comments />
-          </div>
-        </div>
-
-        <div className="sticky top-20 col-span-3 hidden h-0 lg:block">
-          <div className="max-h-screen-md rounded border border-gray-400/30 p-4 relative bg-white  dark:bg-dark-700 overflow-hidden">
-            <TableOfContent post={post} postRecordMap={postRecordMap} />
+          <div className="sticky top-20 col-span-3 hidden h-0 lg:block">
+            <div className="max-h-screen-md rounded border border-gray-400/30 p-4 relative bg-white  dark:bg-dark-700 overflow-hidden">
+              <TableOfContent post={post} postRecordMap={postRecordMap} />
+            </div>
           </div>
         </div>
       </div>

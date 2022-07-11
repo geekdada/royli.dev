@@ -13,12 +13,21 @@
 .heading-text {
   @apply text-dark-900 dark:text-light-900;
 }
+
 .primary-text {
   @apply text-dark-900/80 dark:text-light-900/80;
 }
 
 .secondary-text {
   @apply text-dark-900/60 dark:text-light-900/60;
+}
+
+.tertiary-text {
+  @apply text-dark-900/40 dark:text-light-900/40;
+}
+
+.post-section {
+  @apply overflow-hidden md:rounded border-t border-b md:border border-gray-400/30 bg-white dark:bg-dark-700;
 }
 
 .notion-page-renderer .notion {
@@ -39,14 +48,23 @@
   @apply hidden;
 }
 
-.notion-page-renderer .notion-code {
-  @apply p-4 lg:p-6;
+.code-block {
+  @apply relative w-full my-2;
+}
+
+.code-block pre,
+.code-block code {
+  @apply font-mono;
+}
+
+.code-block > .notion-code {
+  @apply static p-4 lg:p-6 my-0;
 }
 
 .post-cover-image {
   @apply relative;
 
-  padding-bottom: 36%;
+  padding-bottom: 45%;
   min-height: 120px;
 }
 

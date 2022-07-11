@@ -7,7 +7,6 @@ import { ParsedUrlQuery } from 'querystring'
 import { FiMessageCircle } from 'react-icons/fi'
 import clx from 'classnames'
 
-import Copyright from '../../components/Copyright'
 import { NotionPage } from '../../components/NotionPage'
 import PageHead from '../../components/PageHead'
 import { resourceProxyServer, siteURL } from '../../lib/config'
@@ -41,18 +40,20 @@ const Page: NextPage<Props> = ({ post, postRecordMap }) => {
         url={canonical.toString()}
       />
 
-      <div className="container mx-auto px-6 max-w-3xl lg:max-w-5xl xl:max-w-7xl">
-        <div className="rounded border-gray-400/30 md:border bg-white dark:bg-dark-700 overflow-hidden">
-          {post.coverImage && (
-            <div className="post-cover-image">
+      <div className="container mx-auto md:px-6 max-w-3xl lg:max-w-5xl xl:max-w-7xl space-y-4">
+        {post.coverImage && (
+          <div className="mb-8">
+            <div className="md:rounded-lg md:drop-shadow-md overflow-hidden post-cover-image">
               <div
                 style={{
-                  backgroundImage: `url(${resourceProxyServer}/p/${post.coverImage})`,
+                  backgroundImage: `url(${post.coverImage})`,
                 }}
               ></div>
             </div>
-          )}
+          </div>
+        )}
 
+        <div className="post-section bg-white dark:bg-dark-700">
           <div
             className={clx(
               'px-5 lg:px-7',
@@ -79,14 +80,12 @@ const Page: NextPage<Props> = ({ post, postRecordMap }) => {
             <div className="my-6">
               <NotionPage recordMap={postRecordMap} />
             </div>
-
-            <Copyright canonical={`${siteURL}${post.readURL}`} />
           </div>
         </div>
 
         <div
           id="comments-section"
-          className="mt-4 rounded border border-gray-400/30 p-4 bg-white dark:bg-dark-700 overflow-hidden"
+          className="post-section p-4 bg-white dark:bg-dark-700"
         >
           <Comments />
         </div>

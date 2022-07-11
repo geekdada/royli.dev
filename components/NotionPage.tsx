@@ -10,17 +10,9 @@ import type { ExtendedRecordMap } from 'notion-types'
 import { resourceProxyServer } from '../lib/config'
 import { isNotionAsset } from '../lib/utils/notion'
 
-const Code = dynamic(
-  // @ts-ignore
-  () =>
-    import('react-notion-x/build/third-party/code').then(async (m) => {
-      await import('../lib/utils/prism-libs.js')
-      return m.Code
-    }),
-  {
-    ssr: false,
-  }
-)
+const Code = dynamic(() => import('./CodeBlock'), {
+  ssr: false,
+})
 const Collection = dynamic(
   // @ts-ignore
   () =>
@@ -60,7 +52,7 @@ const Tweet = ({ id }: { id: string }) => {
   if (typeof window === 'undefined') {
     return null
   }
-  console.log(id)
+
   return <TweetEmbed tweetId={id} options={{ theme }} />
 }
 
