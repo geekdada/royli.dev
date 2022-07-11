@@ -7,6 +7,7 @@ import 'prismjs/themes/prism-tomorrow.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { ThemeProvider } from 'next-themes'
+import Script from 'next/script'
 
 import '../styles/globals.css'
 import Layout from '../components/Layout'
@@ -42,6 +43,14 @@ function MyApp({ Component, pageProps }: AppProps) {
           href="/feed.xml"
         />
       </Head>
+
+      <Script
+        async
+        defer
+        data-website-id="aa476cbe-b29c-4e7b-abe0-41f4503e9246"
+        src="https://sashimi.dacdn.top/umami.js"
+      ></Script>
+
       <ThemeProvider attribute="class">
         <Layout>
           <Component {...pageProps} />
