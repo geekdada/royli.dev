@@ -1,13 +1,12 @@
 import boom from '@hapi/boom'
 import dayjs from 'dayjs'
-import { readFile } from 'node:fs/promises'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Feed } from 'feed'
 import { createRouter } from 'next-connect'
 import pMapSeries from 'p-map-series'
 import Handlebars from 'handlebars'
-import { join } from 'node:path'
 
+import feedItemTemplateString from '../../templates/feed-item'
 import { getCachedBlogPosts } from '../../lib/notion'
 import { PaginatedResponse, Post } from '../../lib/types'
 
@@ -55,11 +54,7 @@ const generateRSS = async (posts: PaginatedResponse<Post>): Promise<string> => {
 
 router.get(async (req, res) => {
   if (!feedItemTemplate) {
-    feedItemTemplate = Handlebars.compile(
-      await readFile(join(__dirname, '../../../../templates/feed-item.hbs'), {
-        encoding: 'utf8',
-      })
-    )
+    feedItemTemplate = Handlebars.compile(feedItemTemplateString)
   }
 
   res.setHeader('Cache-Control', 'public, max-age=600, stale-while-revalidate')
