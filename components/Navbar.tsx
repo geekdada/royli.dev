@@ -75,7 +75,7 @@ const Navbar: React.FC = () => {
         <ThemeSwitch />
 
         <a
-          href="/feed.xml"
+          href="/blog/feed.xml"
           target="_blank"
           rel="noopener noreferrer"
           className="nav-links"

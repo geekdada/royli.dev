@@ -18,7 +18,7 @@ let feedItemTemplate: HandlebarsTemplateDelegate
 const generateRSS = async (posts: PaginatedResponse<Post>): Promise<string> => {
   const feed = new Feed({
     id: domain,
-    link: `${domain}/feed.xml`,
+    link: `${domain}/blog/feed.xml`,
     title: "Roy Li's Blog",
     description: '',
     copyright: `©️ ${year}, Roy Li`,

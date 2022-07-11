@@ -42,7 +42,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           rel="alternative"
           type="application/rss+xml"
           title="RSS feed for royli.dev"
-          href="/feed.xml"
+          href="/blog/feed.xml"
         />
       </Head>
 
@@ -50,7 +50,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Script
           async
           defer
-          data-website-id="aa476cbe-b29c-4e7b-abe0-41f4503e926"
+          data-website-id="aa476cbe-b29c-4e7b-abe0-41f4503e9246"
           src="https://sashimi.dacdn.top/sashimi.js"
         ></Script>
       )}
