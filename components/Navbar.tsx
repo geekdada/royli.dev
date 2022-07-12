@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Menu, Transition } from '@headlessui/react'
 import React, { Fragment } from 'react'
 import { FiMenu, FiRss } from 'react-icons/fi'
+import Image from 'next/image'
 
 import ThemeSwitch from './ThemeSwitch'
 
@@ -32,15 +33,30 @@ const MenuItemLink = (props: { href: string; children: React.ReactNode }) => {
 const Navbar: React.FC = () => {
   return (
     <header className="primary-text z-10 flex items-center px-4 py-3 justify-between sticky top-0 backdrop-blur-lg bg-white/30 dark:bg-dark-900/50">
-      <Link href="/">
-        <a className="text-2xl font-bold nav-links">Roy Li</a>
-      </Link>
+      <div
+        style={{
+          width: '42px',
+          height: '42px',
+        }}
+      >
+        <Link href="/">
+          <a>
+            <Image
+              className="transition-all duration-150 cursor-pointer dark:invert hover:opacity-80"
+              src="/images/logo.png"
+              alt="home"
+              width={42}
+              height={42}
+            />
+          </a>
+        </Link>
+      </div>
 
       <div className="flex items-center space-x-4">
         <nav className="hidden items-center space-x-2 sm:flex">
           {navigations.map((n, i) => (
             <Link href={n.link} key={i} passHref>
-              <a className="nav-links">{n.name}</a>
+              <a className="nav-links font-title">{n.name}</a>
             </Link>
           ))}
         </nav>

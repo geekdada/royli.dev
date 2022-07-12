@@ -21,7 +21,7 @@ const TableOfContent = ({ postRecordMap }: Props) => {
 
   return (
     <>
-      <div className="primary-text text-lg leading-8 font-bold">
+      <div className="primary-text text-lg leading-8 font-bold font-title">
         Table of Contents
       </div>
 

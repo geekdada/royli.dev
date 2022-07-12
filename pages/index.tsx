@@ -24,7 +24,9 @@ const Home: NextPage<Props> = ({ posts }) => {
             priority
           />
 
-          <h1 className="heading-text my-8 text-4xl font-bold">Roy Li</h1>
+          <h1 className="heading-text my-8 text-4xl font-bold font-title">
+            Roy Li
+          </h1>
 
           <div className="space-y-4 text-lg">
             <p className="leading-7">

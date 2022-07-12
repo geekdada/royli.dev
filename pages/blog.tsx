@@ -19,7 +19,9 @@ const Blog: NextPage<Props> = ({ posts }) => {
       </Head>
 
       <div className="mx-auto max-w-3xl container px-6">
-        <h1 className="heading-text mb-8 text-4xl font-bold">Blog</h1>
+        <h1 className="heading-text mb-8 text-4xl font-bold font-title">
+          Blog
+        </h1>
 
         <div className="space-y-5">
           {posts.results.map((post) => (

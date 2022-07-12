@@ -36,14 +36,10 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: [
-          'Poppins',
-          '"PingFang SC"',
-          '"Hiragino Sans GB"',
-          ...defaultTheme.fontFamily.sans,
-        ],
+        sans: [...defaultTheme.fontFamily.sans],
         serif: [...defaultTheme.fontFamily.serif],
         mono: ['"Fira Code"', ...defaultTheme.fontFamily.mono],
+        title: ['Poppins', ...defaultTheme.fontFamily.sans],
       },
     },
   },

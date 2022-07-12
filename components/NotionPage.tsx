@@ -88,11 +88,12 @@ export const NotionPage = ({ recordMap }: NotionPageProps) => {
       <NotionRenderer
         recordMap={recordMap}
         fullPage={false}
+        hideBlockId
         darkMode={theme === 'dark'}
-        previewImages={true}
+        previewImages
         showTableOfContents={false}
         showCollectionViewDropdown={false}
-        disableHeader={true}
+        disableHeader
         mapImageUrl={mapImageUrl}
         mapPageUrl={mapPageUrl}
         components={{

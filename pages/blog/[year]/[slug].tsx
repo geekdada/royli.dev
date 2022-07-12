@@ -64,8 +64,8 @@ const Post: NextPage<Props> = ({ post, postRecordMap }) => {
                   hasCoverImage ? 'pt-5 lg:pt-6' : 'pt-3 lg:pt-4'
                 )}
               >
-                <h1 className="mb-2 flex justify-between space-x-2 text-3xl">
-                  <span className="font-bold">{post.title}</span>
+                <h1 className="mb-2 flex justify-between space-x-2 text-3xl font-bold font-title">
+                  {post.title}
                 </h1>
 
                 <div className="secondary-text flex flex-wrap items-center gap-2">
