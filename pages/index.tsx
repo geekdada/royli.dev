@@ -38,16 +38,25 @@ const Home: NextPage<Props> = ({ posts }) => {
                 href="https://github.com/geekdada"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mx-1 py-1 px-2 rounded font-bold transition-all duration-150 bg-dark-600 text-white hover:bg-dark-600/60"
+                className="mx-1 py-1 px-2 rounded font-bold transition-all duration-150 bg-dark-600 text-white hover:bg-dark-600/80"
               >
                 GitHub
+              </a>
+              {', '}
+              <a
+                href="https://twitter.com/geekdada"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mx-1 py-1 px-2 rounded font-bold transition-all duration-150 bg-blue-400 text-white hover:bg-blue-400/80"
+              >
+                Twitter
               </a>{' '}
               and{' '}
               <a
                 href="https://www.linkedin.com/in/roy-li-gz/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mx-1 py-1 px-2 rounded font-bold transition-all duration-150 bg-blue-600 text-white hover:bg-blue-600/60"
+                className="mx-1 py-1 px-2 rounded font-bold transition-all duration-150 bg-blue-600 text-white hover:bg-blue-600/80"
               >
                 LinkedIn
               </a>

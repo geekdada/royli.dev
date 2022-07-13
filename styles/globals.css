@@ -62,6 +62,10 @@
   @apply hidden;
 }
 
+.notion-page-renderer .notion-external-image > * {
+  @apply w-full h-full;
+}
+
 .code-block {
   @apply relative w-full my-2;
 }

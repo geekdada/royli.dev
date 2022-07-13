@@ -1,14 +1,24 @@
 import Giscus from '@giscus/react'
 import { useTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
 
 const Comments = () => {
   const { theme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return null
+  }
 
   return (
     <Giscus
       id="comments"
       repo="geekdada/blog-discussions"
-      repoId="R_kgDOGmDiOw="
+      repoId="R_kgDOGmDiOw"
       category="Announcements"
       categoryId="DIC_kwDOGmDiO84CAdRf"
       mapping="pathname"

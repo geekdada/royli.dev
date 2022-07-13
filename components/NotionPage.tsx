@@ -1,5 +1,5 @@
 import { useTheme } from 'next-themes'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import * as React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -67,6 +67,8 @@ interface NotionPageProps {
 
 export const NotionPage = ({ recordMap }: NotionPageProps) => {
   const { theme } = useTheme()
+  const [notionRendererDarkTheme, setNotionRendererDarkTheme] =
+    useState<boolean>()
 
   const mapImageUrl = useCallback((url: string) => {
     if (resourceProxyServer && isNotionAsset(url)) {
@@ -79,6 +81,10 @@ export const NotionPage = ({ recordMap }: NotionPageProps) => {
     return `/api/redirect/${pageId}`
   }, [])
 
+  useEffect(() => {
+    setNotionRendererDarkTheme(theme === 'dark')
+  }, [theme])
+
   if (!recordMap) {
     return null
   }
@@ -89,7 +95,7 @@ export const NotionPage = ({ recordMap }: NotionPageProps) => {
         recordMap={recordMap}
         fullPage={false}
         hideBlockId
-        darkMode={theme === 'dark'}
+        darkMode={notionRendererDarkTheme}
         previewImages
         showTableOfContents={false}
         showCollectionViewDropdown={false}
