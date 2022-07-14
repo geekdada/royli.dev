@@ -51,7 +51,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           async
           defer
           data-website-id="aa476cbe-b29c-4e7b-abe0-41f4503e9246"
-          src="https://sashimi.dacdn.top/sashimi.js"
+          src="https://sashimi.royli.dev/sashimi.js"
         ></Script>
       )}
 
