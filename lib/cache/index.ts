@@ -21,7 +21,7 @@ export const createCacheLayer = <
 ) => {
   const cache = createCache(namespace)
 
-  return async (...args: FetcherParams): Promise<FetcherResponse> => {
+  async function request(...args: FetcherParams): Promise<FetcherResponse> {
     const key = JSON.stringify(args)
     const cached = await cache.get(key)
 
@@ -35,4 +35,14 @@ export const createCacheLayer = <
 
     return result
   }
+
+  request.clear = async () => {
+    await cache.clear()
+  }
+
+  request.delete = async (keyOrKeys: string | string[]) => {
+    await cache.delete(keyOrKeys)
+  }
+
+  return request
 }

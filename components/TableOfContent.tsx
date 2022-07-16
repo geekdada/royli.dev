@@ -45,9 +45,9 @@ const TableOfContent = ({ postRecordMap }: Props) => {
                 paddingLeft: item.indentLevel + 'rem',
               }}
             >
-              <Link href={`#${id}`}>
-                <a className="hover-links">{item.text}</a>
-              </Link>
+              <a href={`#${id}`} className="hover-links">
+                {item.text}
+              </a>
             </li>
           )
         })}

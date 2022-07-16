@@ -14,7 +14,7 @@ import { NotionPage } from '../../../components/NotionPage'
 import PageHead from '../../../components/PageHead'
 import TableOfContent from '../../../components/TableOfContent'
 import { siteURL } from '../../../lib/config'
-import { getCachedPageByPageId, getCachedBlogPosts } from '../../../lib/notion'
+import { getPageByPageId, getCachedBlogPosts } from '../../../lib/notion'
 import { sec } from '../../../lib/utils/time'
 import { Post } from '../../../lib/types'
 
@@ -160,7 +160,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     }
   }
 
-  const postPage = await getCachedPageByPageId(post.id)
+  const postPage = await getPageByPageId(post.id)
 
   return {
     props: {

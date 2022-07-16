@@ -15,3 +15,5 @@ export const redisURL = getEnv('REDIS_URL', '')
 export const notionKey = getEnv('NOTION_KEY', '')
 
 export const resourceProxyServer = getSiteConfig('resourceProxyServer')
+
+export const siteAdminUserId = getSiteConfig('siteAdminUserId')

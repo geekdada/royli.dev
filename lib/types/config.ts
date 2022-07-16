@@ -5,4 +5,5 @@ export interface SiteConfig {
   pagesDatabaseId: string
   tagsDatabaseId: string
   resourceProxyServer?: string
+  siteAdminUserId: string
 }

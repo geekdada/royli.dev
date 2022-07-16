@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 
 import PostItem from '../components/PostItem'
-import { getCachedBlogPosts } from '../lib/notion'
+import { getBlogPosts } from '../lib/notion'
 import { PaginatedResponse, Post } from '../lib/types'
 import { sec } from '../lib/utils/time'
 
@@ -40,11 +40,11 @@ const Blog: NextPage<Props> = ({ posts }) => {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const posts = await getCachedBlogPosts()
+  const posts = await getBlogPosts()
 
   return {
     props: { posts },
-    revalidate: sec('10m'),
+    revalidate: sec('24h'),
   }
 }
 

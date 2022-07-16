@@ -76,7 +76,7 @@ export const getBlogPosts = async (
 export const getCachedBlogPosts = createCacheLayer(
   CACHE_KEYS.BLOG_POSTS,
   getBlogPosts,
-  ms('10m')
+  ms('24h')
 )
 
 export const getPageByPageId = async (
@@ -94,7 +94,7 @@ export const getPageByPageId = async (
 export const getCachedPageByPageId = createCacheLayer(
   CACHE_KEYS.BLOG_POST_BY_PAGE_ID,
   getPageByPageId,
-  ms('10m')
+  ms('24h')
 )
 
 export const getPages = async (
@@ -154,5 +154,5 @@ export const getPages = async (
 export const getCachedPages = createCacheLayer(
   CACHE_KEYS.PAGES,
   getPages,
-  ms('10m')
+  ms('24h')
 )
