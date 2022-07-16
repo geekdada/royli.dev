@@ -20,7 +20,8 @@ router.post(authMiddleware, async (req, res) => {
       await Promise.all([
         res.revalidate('/'),
         res.revalidate('/blog'),
-        getCachedBlogPosts.clear(),
+        getCachedBlogPosts.delete('[{"pageSize":10}]'), // RSS cache
+        getCachedBlogPosts.delete('[]'), // Without pagination
       ])
       break
     case 'uri':
