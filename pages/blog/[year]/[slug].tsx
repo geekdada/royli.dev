@@ -1,6 +1,8 @@
 import dayjs from 'dayjs'
 import { GetStaticProps, NextPage } from 'next'
 import dynamic from 'next/dynamic'
+import DefaultErrorPage from 'next/error'
+import Head from 'next/head'
 import Link from 'next/link'
 import type { ExtendedRecordMap } from 'notion-types'
 import { ParsedUrlQuery } from 'querystring'
@@ -27,7 +29,14 @@ const Comments = dynamic(() => import('../../../components/Comments'), {
 
 const Post: NextPage<Props> = ({ post, postRecordMap }) => {
   if (!post || !postRecordMap) {
-    return null
+    return (
+      <>
+        <Head>
+          <meta name="robots" content="noindex" />
+        </Head>
+        <DefaultErrorPage statusCode={404} />
+      </>
+    )
   }
 
   const canonical = new URL(post.readURL, siteURL)

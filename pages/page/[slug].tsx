@@ -1,16 +1,18 @@
 import dayjs from 'dayjs'
 import { GetStaticProps, NextPage } from 'next'
 import dynamic from 'next/dynamic'
+import Head from 'next/head'
 import Link from 'next/link'
 import type { ExtendedRecordMap } from 'notion-types'
 import { ParsedUrlQuery } from 'querystring'
 import { FiMessageCircle } from 'react-icons/fi'
 import clx from 'classnames'
+import DefaultErrorPage from 'next/error'
 
 import { NotionPage } from '../../components/NotionPage'
 import PageHead from '../../components/PageHead'
-import { resourceProxyServer, siteURL } from '../../lib/config'
-import { getPages, getPageByPageId } from '../../lib/notion'
+import { siteURL } from '../../lib/config'
+import { getCachedPages, getPageByPageId } from '../../lib/notion'
 import { sec } from '../../lib/utils/time'
 import { Page } from '../../lib/types'
 
@@ -25,7 +27,14 @@ const Comments = dynamic(() => import('../../components/Comments'), {
 
 const Page: NextPage<Props> = ({ post, postRecordMap }) => {
   if (!post || !postRecordMap) {
-    return null
+    return (
+      <>
+        <Head>
+          <meta name="robots" content="noindex" />
+        </Head>
+        <DefaultErrorPage statusCode={404} />
+      </>
+    )
   }
 
   const canonical = new URL(post.readURL, siteURL)
@@ -95,7 +104,7 @@ const Page: NextPage<Props> = ({ post, postRecordMap }) => {
 }
 
 export const getStaticPaths = async () => {
-  const posts = await getPages({ pageSize: 9999 })
+  const posts = await getCachedPages({ pageSize: 9999 })
 
   return {
     paths: posts.results.map((p) => {
@@ -113,7 +122,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   }
 
   const { slug } = params as Props
-  const posts = await getPages({ pageSize: 9999 })
+  const posts = await getCachedPages({ pageSize: 9999 })
   const post = posts.results.find((p) => p.slug === slug)
 
   if (!post) {
