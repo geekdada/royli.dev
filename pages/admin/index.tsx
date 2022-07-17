@@ -1,6 +1,11 @@
+import { withPageAuthRequired, UserProfile } from '@auth0/nextjs-auth0'
 import { Formik, Form, Field } from 'formik'
+import { GetServerSideProps, NextPage } from 'next'
+import DefaultErrorPage from 'next/error'
 import * as Yup from 'yup'
 import ky from 'ky'
+
+import { siteAdminUserId } from '../../lib/config'
 
 const RevalidateBlogPostSchema = Yup.object().shape({
   URI: Yup.string()
@@ -14,7 +19,22 @@ const RevalidatePageSchema = Yup.object().shape({
     .required('A valid URI is required'),
 })
 
-const AdminHome = () => {
+interface Props {
+  user: UserProfile
+}
+
+const AdminHome: NextPage<Props> = ({ user }) => {
+  if (user.sub !== siteAdminUserId) {
+    return (
+      <>
+        <DefaultErrorPage
+          statusCode={403}
+          title="You are not allowed to see this page"
+        />
+      </>
+    )
+  }
+
   return (
     <>
       <div className="container mx-auto max-w-3xl lg:max-w-5xl xl:max-w-7xl">
@@ -129,5 +149,8 @@ const AdminHome = () => {
     </>
   )
 }
+
+export const getServerSideProps: GetServerSideProps<Props> =
+  withPageAuthRequired()
 
 export default AdminHome

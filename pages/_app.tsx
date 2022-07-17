@@ -5,7 +5,6 @@ import 'react-notion-x/src/styles.css'
 import 'prismjs/themes/prism-tomorrow.css'
 
 import type { AppProps } from 'next/app'
-import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { ThemeProvider } from 'next-themes'
 import { useRouter } from 'next/router'
@@ -15,18 +14,21 @@ import { UserProvider } from '@auth0/nextjs-auth0'
 
 import '../styles/globals.css'
 import Layout from '../components/Layout'
+import NoIndexHead from '../components/NoIndexHead'
 
 const isSashimiEnabled = process.env.NEXT_PUBLIC_SASHIMI_ENABLED === 'true'
-const DynamicLoginGuard = dynamic(() => import('../components/LoginGuard'))
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter()
   const LoginGuard = useMemo(() => {
-    if (router.pathname.startsWith('/admin')) {
-      return DynamicLoginGuard
+    if (
+      router.pathname.startsWith('/admin') ||
+      router.pathname.startsWith('/login')
+    ) {
+      return NoIndexHead
     }
 
-    return function NoLogin({ children }: { children: ReactNode }) {
+    return function WithIndex({ children }: { children: ReactNode }) {
       return <>{children}</>
     }
   }, [router.pathname])
