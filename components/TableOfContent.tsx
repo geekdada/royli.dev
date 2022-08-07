@@ -1,7 +1,5 @@
 import type { ExtendedRecordMap, PageBlock } from 'notion-types'
 import { getPageTableOfContents, uuidToId } from 'notion-utils'
-import Link from 'next/link'
-import clx from 'classnames'
 import { useMemo } from 'react'
 
 import { Post, Page } from '../lib/types'
@@ -20,39 +18,41 @@ const TableOfContent = ({ postRecordMap }: Props) => {
   }, [postRecordMap])
 
   return (
-    <>
+    <nav>
       <div className="primary-text text-lg leading-8 font-bold font-title">
         Table of Contents
       </div>
 
-      {toc.length === 0 && (
+      {toc.length === 0 ? (
         <div className="mt-3">
           <code className="leading-8 bg-dark-50 text-white px-3 py-1 rounded">
             NULL
           </code>
         </div>
+      ) : (
+        <ul className="list-inside list-none mt-3 -mx-1">
+          {toc.map((item) => {
+            const id = uuidToId(item.id)
+
+            return (
+              <li
+                key={id}
+                className="leading-5"
+                style={{
+                  paddingLeft: item.indentLevel * 0.8 + 'rem',
+                }}
+              >
+                <a href={`#${id}`}>
+                  <div className="flex py-2 px-2.5 lg:rounded-lg lg:border-none lg:py-2 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+                    {item.text}
+                  </div>
+                </a>
+              </li>
+            )
+          })}
+        </ul>
       )}
-
-      <ul className="list-inside list-none mt-3">
-        {toc.map((item) => {
-          const id = uuidToId(item.id)
-
-          return (
-            <li
-              key={id}
-              className="leading-8 truncate"
-              style={{
-                paddingLeft: item.indentLevel + 'rem',
-              }}
-            >
-              <a href={`#${id}`} className="hover-links">
-                {item.text}
-              </a>
-            </li>
-          )
-        })}
-      </ul>
-    </>
+    </nav>
   )
 }
 

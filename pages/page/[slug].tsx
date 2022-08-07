@@ -63,7 +63,7 @@ const Page: NextPage<Props> = ({ post, postRecordMap }) => {
         )}
 
         <div className="post-section bg-white dark:bg-dark-700">
-          <div
+          <article
             className={clx(
               'px-5 lg:px-7',
               hasCoverImage ? 'pt-5 lg:pt-6' : 'pt-3 lg:pt-4'
@@ -89,7 +89,7 @@ const Page: NextPage<Props> = ({ post, postRecordMap }) => {
             <div className="my-6">
               <NotionPage recordMap={postRecordMap} />
             </div>
-          </div>
+          </article>
         </div>
 
         <div

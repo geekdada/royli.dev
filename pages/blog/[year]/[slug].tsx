@@ -67,7 +67,7 @@ const Post: NextPage<Props> = ({ post, postRecordMap }) => {
         <div className="grid grid-cols-10 gap-8">
           <div className="col-span-10 lg:col-span-7 space-y-4">
             <div className="post-section">
-              <div
+              <article
                 className={clx(
                   'px-5 lg:px-7',
                   hasCoverImage ? 'pt-5 lg:pt-6' : 'pt-3 lg:pt-4'
@@ -98,7 +98,7 @@ const Post: NextPage<Props> = ({ post, postRecordMap }) => {
                   canonical={`${siteURL}${post.readURL}`}
                   title={`${post.title} - Roy Li's Blog`}
                 />
-              </div>
+              </article>
             </div>
 
             <div className="post-section">
@@ -116,7 +116,7 @@ const Post: NextPage<Props> = ({ post, postRecordMap }) => {
           </div>
 
           <div className="sticky top-20 col-span-3 hidden h-0 lg:block">
-            <div className="max-h-screen-md rounded border border-gray-400/30 p-4 relative bg-white  dark:bg-dark-700 overflow-hidden">
+            <div className="max-h-screen-md rounded border border-gray-400/30 p-4 relative bg-white dark:bg-dark-700 overflow-hidden">
               <TableOfContent post={post} postRecordMap={postRecordMap} />
             </div>
           </div>
