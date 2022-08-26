@@ -16,6 +16,10 @@ const navigations = [
     link: '/page/network-neighborhood',
   },
   {
+    name: '付费咨询',
+    link: 'https://amazt.netlify.app/people/geekdada/',
+  },
+  {
     name: 'GitHub',
     link: 'https://github.com/geekdada',
   },
