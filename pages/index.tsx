@@ -50,6 +50,14 @@ const Home: NextPage<Props> = ({ posts }) => {
                 className="mx-1 py-1 px-2 rounded font-bold transition-all duration-150 bg-blue-400 text-white hover:bg-blue-400/80"
               >
                 Twitter
+              </a>
+              {', '}
+              <a
+                href="https://tooted.space/@geekdada"
+                rel="me"
+                className="mx-1 py-1 px-2 rounded font-bold transition-all duration-150 bg-indigo-500 text-white hover:bg-indigo-400/80"
+              >
+                Mastodon
               </a>{' '}
               and{' '}
               <a
