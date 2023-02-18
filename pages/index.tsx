@@ -75,8 +75,11 @@ const Home: NextPage<Props> = ({ posts }) => {
           <div className="mt-10 text-lg">
             <p>
               <span>Read the latest post:&nbsp;</span>
-              <Link href={posts.results[0].readURL}>
-                <a className="hover-links mx-2">{posts.results[0].title}</a>
+              <Link
+                href={posts.results[0].readURL}
+                className="hover-links mx-2"
+              >
+                {posts.results[0].title}
               </Link>
             </p>
           </div>

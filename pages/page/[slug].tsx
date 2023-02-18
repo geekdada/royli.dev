@@ -78,11 +78,9 @@ const Page: NextPage<Props> = ({ post, postRecordMap }) => {
               <span>·</span>
               <span>Roy</span>
               <span>·</span>
-              <Link href="#comments-section" passHref>
-                <a className="hover-links">
-                  <FiMessageCircle size={18} className="mr-1 inline" />
-                  <span>comments</span>
-                </a>
+              <Link href="#comments-section" className="hover-links">
+                <FiMessageCircle size={18} className="mr-1 inline" />
+                <span>comments</span>
               </Link>
             </div>
 

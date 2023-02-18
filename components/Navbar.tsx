@@ -28,8 +28,8 @@ const navigations = [
 const MenuItemLink = (props: { href: string; children: React.ReactNode }) => {
   const { href, children, ...rest } = props
   return (
-    <Link href={href}>
-      <a {...rest}>{children}</a>
+    <Link href={href} {...rest}>
+      {children}
     </Link>
   )
 }
@@ -44,23 +44,21 @@ const Navbar: React.FC = () => {
         }}
       >
         <Link href="/">
-          <a>
-            <Image
-              className="transition-all duration-150 cursor-pointer dark:invert hover:opacity-80"
-              src="/images/logo.png"
-              alt="home"
-              width={42}
-              height={42}
-            />
-          </a>
+          <Image
+            className="transition-all duration-150 cursor-pointer dark:invert hover:opacity-80"
+            src="/images/logo.png"
+            alt="home"
+            width={42}
+            height={42}
+          />
         </Link>
       </div>
 
       <div className="flex items-center space-x-4">
         <nav className="hidden items-center space-x-2 sm:flex">
           {navigations.map((n, i) => (
-            <Link href={n.link} key={i} passHref>
-              <a className="nav-links font-title">{n.name}</a>
+            <Link href={n.link} key={i} className="nav-links font-title">
+              {n.name}
             </Link>
           ))}
         </nav>

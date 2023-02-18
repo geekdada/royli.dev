@@ -27,9 +27,7 @@ const Blog: NextPage<Props> = ({ posts }) => {
           {posts.results.map((post) => (
             <div key={post.id}>
               <Link href={post.readURL}>
-                <a>
-                  <PostItem post={post} />
-                </a>
+                <PostItem post={post} />
               </Link>
             </div>
           ))}
