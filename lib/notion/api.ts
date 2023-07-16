@@ -82,11 +82,7 @@ export const getCachedBlogPosts = createCacheLayer(
 export const getPageByPageId = async (
   pageId: string
 ): Promise<ExtendedRecordMap> => {
-  const page = await notionPrivateAPI.getPage(pageId, {
-    gotOptions: {
-      http2: true,
-    },
-  })
+  const page = await notionPrivateAPI.getPage(pageId, {})
 
   return page
 }

@@ -4,8 +4,8 @@ import * as React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
-import { NotionRenderer } from 'react-notion-x'
-import type { ExtendedRecordMap } from 'notion-types'
+import { NotionRenderer, defaultMapImageUrl } from 'react-notion-x'
+import type { ExtendedRecordMap, Block } from 'notion-types'
 
 import { resourceProxyServer } from '../lib/config'
 import { isNotionAsset } from '../lib/utils/notion'
@@ -70,11 +70,12 @@ export const NotionPage = ({ recordMap }: NotionPageProps) => {
   const [notionRendererDarkTheme, setNotionRendererDarkTheme] =
     useState<boolean>()
 
-  const mapImageUrl = useCallback((url: string) => {
+  const mapImageUrl = useCallback((url: string, block: Block) => {
     if (resourceProxyServer && isNotionAsset(url)) {
       return `${resourceProxyServer}/p/${url}`
     }
-    return url
+
+    return defaultMapImageUrl(url, block) || url
   }, [])
 
   const mapPageUrl = useCallback((pageId: string) => {

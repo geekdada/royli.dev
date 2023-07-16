@@ -4,11 +4,11 @@ export * from './getters'
 
 function getSiteConfig<
   Key extends keyof typeof finalSiteConfig,
-  Value extends typeof finalSiteConfig[Key]
+  Value extends (typeof finalSiteConfig)[Key]
 >(key: Key, defaultValue?: Value): Value
 function getSiteConfig<
   Key extends keyof typeof finalSiteConfig,
-  Value extends typeof finalSiteConfig[Key]
+  Value extends (typeof finalSiteConfig)[Key]
 >(key: Key, defaultValue: Value): NonNullable<Value> {
   const value = finalSiteConfig[key]
 
