@@ -13,6 +13,7 @@ import Copyright from '../../../components/Copyright'
 import { NotionPage } from '../../../components/NotionPage'
 import PageHead from '../../../components/PageHead'
 import TableOfContent from '../../../components/TableOfContent'
+import Time from '../../../components/Time'
 import { siteURL } from '../../../lib/config'
 import { getPageByPageId, getCachedBlogPosts } from '../../../lib/notion'
 import { sec } from '../../../lib/utils/time'
@@ -78,7 +79,9 @@ const Post: NextPage<Props> = ({ post, postRecordMap }) => {
                 </h1>
 
                 <div className="secondary-text flex flex-wrap items-center gap-2">
-                  <span>{dayjs(post.publishDate).format('DD/MM/YYYY')}</span>
+                  <span>
+                    <Time datetime={post.publishDate} />
+                  </span>
                   <span>·</span>
                   <span>Roy</span>
                   <span>·</span>

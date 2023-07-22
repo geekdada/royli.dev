@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 
 import { Post } from '../lib/types'
+import Time from './Time'
 
 dayjs.extend(localizedFormat)
 
@@ -24,7 +25,9 @@ const PostItem = ({ post }: { post: Post }) => {
           {post.excerpt ? <p className="primary-text">{post.excerpt}</p> : null}
 
           <div className="secondary-text flex flex-wrap items-center space-x-2 text-sm">
-            <div>{dayjs(post.publishDate).format('DD/MM/YYYY')}</div>
+            <div>
+              <Time datetime={post.publishDate} />
+            </div>
           </div>
         </div>
       </div>
