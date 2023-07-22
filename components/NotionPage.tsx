@@ -8,7 +8,7 @@ import { NotionRenderer, defaultMapImageUrl } from 'react-notion-x'
 import type { ExtendedRecordMap, Block } from 'notion-types'
 
 import { resourceProxyServer } from '../lib/config'
-import { isNotionAsset } from '../lib/utils/notion'
+import { isNotionAsset, isSelfHostedAsset } from '../lib/utils/notion'
 
 const Code = dynamic(() => import('./CodeBlock'), {
   ssr: false,
@@ -72,10 +72,13 @@ export const NotionPage = ({ recordMap }: NotionPageProps) => {
 
   const mapImageUrl = useCallback((url: string, block: Block) => {
     if (resourceProxyServer && isNotionAsset(url)) {
+      return defaultMapImageUrl(url, block) || url
+    }
+    if (resourceProxyServer && isSelfHostedAsset(url)) {
       return `${resourceProxyServer}/p/${url}`
     }
 
-    return defaultMapImageUrl(url, block) || url
+    return url
   }, [])
 
   const mapPageUrl = useCallback((pageId: string) => {
