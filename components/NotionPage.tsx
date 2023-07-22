@@ -72,10 +72,12 @@ export const NotionPage = ({ recordMap }: NotionPageProps) => {
 
   const mapImageUrl = useCallback((url: string, block: Block) => {
     if (resourceProxyServer && isNotionAsset(url)) {
-      return defaultMapImageUrl(url, block) || url
+      return `${resourceProxyServer}/v2/p?target=${encodeURIComponent(
+        defaultMapImageUrl(url, block) || url
+      )}`
     }
     if (resourceProxyServer && isSelfHostedAsset(url)) {
-      return `${resourceProxyServer}/p/${url}`
+      return `${resourceProxyServer}/v2/p?target=${encodeURIComponent(url)}`
     }
 
     return url
