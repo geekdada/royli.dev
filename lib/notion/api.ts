@@ -150,5 +150,5 @@ export const getPages = async (
 export const getCachedPages = createCacheLayer(
   CACHE_KEYS.PAGES,
   getPages,
-  ms('24h')
+  ms('7d')
 )
