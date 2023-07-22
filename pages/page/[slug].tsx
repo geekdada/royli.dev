@@ -140,7 +140,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       post,
       postRecordMap: postPage,
     },
-    revalidate: sec('24h'),
+    revalidate: sec('7d'),
   }
 }
 
