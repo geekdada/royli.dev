@@ -4,7 +4,7 @@ import { createRouter } from 'next-connect'
 import boom from '@hapi/boom'
 import { getPageProperty } from 'notion-utils'
 
-import { getCachedPageByPageId } from '../../../lib/notion'
+import { getPageByPageId } from '../../../lib/notion'
 
 const router = createRouter<NextApiRequest, NextApiResponse>()
 
@@ -15,7 +15,7 @@ router.get(async (req, res) => {
     throw boom.notFound()
   }
 
-  const post = await getCachedPageByPageId(pageId as string)
+  const post = await getPageByPageId(pageId as string)
   const blockId = Object.keys(post.block)[0]
   const block = post.block[blockId]
   const slug = getPageProperty<string>('Slug', block.value, post)
