@@ -8,6 +8,7 @@ import { ParsedUrlQuery } from 'querystring'
 import { FiMessageCircle } from 'react-icons/fi'
 import clx from 'classnames'
 import DefaultErrorPage from 'next/error'
+import Balancer from 'react-wrap-balancer'
 
 import { NotionPage } from '../../components/NotionPage'
 import PageHead from '../../components/PageHead'
@@ -52,7 +53,7 @@ const Page: NextPage<Props> = ({ post, postRecordMap }) => {
 
       <div className="container mx-auto md:px-6 max-w-3xl lg:max-w-5xl xl:max-w-7xl space-y-4">
         {post.coverImage && (
-          <div className="mb-8">
+          <div className="md:mb-8">
             <div className="md:rounded-lg md:drop-shadow-md overflow-hidden post-cover-image">
               <div
                 style={{
@@ -71,7 +72,7 @@ const Page: NextPage<Props> = ({ post, postRecordMap }) => {
             )}
           >
             <h1 className="mb-2 flex justify-between space-x-2 text-3xl font-bold font-title">
-              {post.title}
+              <Balancer>{post.title}</Balancer>
             </h1>
 
             <div className="secondary-text flex flex-wrap items-center gap-2">

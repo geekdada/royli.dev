@@ -1,6 +1,7 @@
 import type { GetStaticProps, NextPage } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import Balancer from 'react-wrap-balancer'
 
 import { getBlogPosts } from '../lib/notion'
 import { PaginatedResponse, Post } from '../lib/types'
@@ -30,9 +31,17 @@ const Home: NextPage<Props> = ({ posts }) => {
 
           <div className="space-y-4 text-lg">
             <p className="leading-7">
-              {`I'm a software engineer based in Berlin.`}
+              <Balancer>
+                I am a software engineer based in Berlin, currently working at{' '}
+                <img
+                  className="inline-block w-14"
+                  src="/images/klarna.svg"
+                  alt="Klarna"
+                />
+                , previously at Alibaba.
+              </Balancer>
             </p>
-            <p className="leading-7">
+            <p className="leading-9">
               You can find me on{' '}
               <a
                 href="https://github.com/geekdada"
@@ -72,7 +81,7 @@ const Home: NextPage<Props> = ({ posts }) => {
             </p>
           </div>
 
-          <div className="mt-10 text-lg">
+          <div className="mt-10 text-lg leading-8">
             <p>
               <span>Read the latest post:&nbsp;</span>
               <Link
@@ -80,6 +89,12 @@ const Home: NextPage<Props> = ({ posts }) => {
                 className="hover-links mx-2"
               >
                 {posts.results[0].title}
+              </Link>
+            </p>
+            <p>
+              <span>Or see&nbsp;</span>
+              <Link href="/blog" className="hover-links">
+                all blog posts
               </Link>
             </p>
           </div>

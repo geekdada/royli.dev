@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
+import Balancer from 'react-wrap-balancer'
 
 import { Post } from '../lib/types'
 import Time from './Time'
@@ -20,7 +21,9 @@ const PostItem = ({ post }: { post: Post }) => {
       )}
 
       <div className="px-6 py-6">
-        <h2 className="heading-text font-bold text-xl mb-3">{post.title}</h2>
+        <h2 className="heading-text font-bold text-xl mb-3">
+          <Balancer>{post.title}</Balancer>
+        </h2>
         <div className="border-t space-y-4 pt-3">
           {post.excerpt ? <p className="primary-text">{post.excerpt}</p> : null}
 
