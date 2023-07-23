@@ -4,11 +4,15 @@ import * as React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
-import { NotionRenderer, defaultMapImageUrl } from 'react-notion-x'
+import { NotionRenderer } from 'react-notion-x'
 import type { ExtendedRecordMap, Block } from 'notion-types'
 
 import { resourceProxyServer } from '../lib/config'
-import { isNotionAsset, isSelfHostedAsset } from '../lib/utils/notion'
+import {
+  convertNotionAssetUrl,
+  isNotionAsset,
+  isSelfHostedAsset,
+} from '../lib/utils/notion'
 
 const Code = dynamic(() => import('./CodeBlock'), {
   ssr: false,
@@ -73,7 +77,7 @@ export const NotionPage = ({ recordMap }: NotionPageProps) => {
   const mapImageUrl = useCallback((url: string, block: Block) => {
     if (resourceProxyServer && isNotionAsset(url)) {
       return `${resourceProxyServer}/v2/p?target=${encodeURIComponent(
-        defaultMapImageUrl(url, block) || url
+        convertNotionAssetUrl(url, block.parent_table, block.id)
       )}`
     }
     if (resourceProxyServer && isSelfHostedAsset(url)) {
@@ -111,6 +115,8 @@ export const NotionPage = ({ recordMap }: NotionPageProps) => {
         components={{
           nextImage: Image,
           nextLink: Link,
+          Property: () => null,
+          Header: () => null,
           Code,
           Collection,
           Equation,
@@ -118,8 +124,6 @@ export const NotionPage = ({ recordMap }: NotionPageProps) => {
           Modal,
           Tweet,
         }}
-        // NOTE: custom images will only take effect if previewImages is true and
-        // if the image has a valid preview image defined in recordMap.preview_images[src]
       />
     </div>
   )

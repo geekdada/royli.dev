@@ -2,9 +2,11 @@ import { QueryDatabaseResponse } from '@notionhq/client/build/src/api-endpoints'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
+import { resourceProxyServer } from '../config'
 
 import { Unpacked } from '../types'
 import logger from '../utils/logger'
+import { convertNotionAssetUrl, isNotionImageUrl } from '../utils/notion'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -107,10 +109,32 @@ export const getPostCoverImage = (
     return null
   }
 
+  let notionImageUrl = null
+
   switch (cover.type) {
     case 'external':
-      return cover.external.url
+      notionImageUrl = convertNotionAssetUrl(
+        cover.external.url,
+        'block',
+        collectionItem.id
+      )
+
+      break
     case 'file':
-      return cover.file.url
+      notionImageUrl = convertNotionAssetUrl(
+        cover.file.url,
+        'block',
+        collectionItem.id
+      )
+
+      break
   }
+
+  if (resourceProxyServer && isNotionImageUrl(notionImageUrl)) {
+    notionImageUrl = `${resourceProxyServer}/v2/p?target=${encodeURIComponent(
+      notionImageUrl
+    )}`
+  }
+
+  return notionImageUrl
 }
