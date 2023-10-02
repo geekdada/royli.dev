@@ -7,12 +7,12 @@ import { getCachedBlogPosts } from '../../../lib/notion'
 import { authMiddleware } from '../../../lib/server-middlewares/auth'
 
 const router = createRouter<NextApiRequest, NextApiResponse>()
+const schema = Yup.object().shape({
+  type: Yup.string().required(),
+  uri: Yup.string(),
+})
 
 router.post(authMiddleware, async (req, res) => {
-  const schema = Yup.object().shape({
-    type: Yup.string().required(),
-    uri: Yup.string(),
-  })
   const payload = await schema.validate(req.body)
 
   switch (payload.type) {
