@@ -22,7 +22,12 @@ const PostItem = ({ post }: { post: Post }) => {
 
       <div className="px-6 py-6">
         <h2 className="heading-text font-bold text-xl mb-3">
-          <Balancer>{post.title}</Balancer>
+          <Balancer>
+            {post.coverIcon ? (
+              <span className="mr-2">{post.coverIcon}</span>
+            ) : null}
+            {post.title}
+          </Balancer>
         </h2>
         <div className="border-t space-y-4 pt-3">
           {post.excerpt ? <p className="primary-text">{post.excerpt}</p> : null}

@@ -8,6 +8,7 @@ export interface Post {
   isFeatured: boolean
   readURL: string
   coverImage: string | null
+  coverIcon: string | null
 }
 
 export interface Page {
@@ -19,4 +20,5 @@ export interface Page {
   createdDate: string
   readURL: string
   coverImage: string | null
+  coverIcon: string | null
 }

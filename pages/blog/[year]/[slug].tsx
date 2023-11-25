@@ -8,6 +8,7 @@ import type { ExtendedRecordMap } from 'notion-types'
 import { ParsedUrlQuery } from 'querystring'
 import { FiArrowLeft, FiMessageCircle } from 'react-icons/fi'
 import clx from 'classnames'
+import Balancer from 'react-wrap-balancer'
 
 import Copyright from '../../../components/Copyright'
 import { NotionPage } from '../../../components/NotionPage'
@@ -74,8 +75,13 @@ const Post: NextPage<Props> = ({ post, postRecordMap }) => {
                   hasCoverImage ? 'pt-5 lg:pt-6' : 'pt-3 lg:pt-4'
                 )}
               >
-                <h1 className="mb-2 flex justify-between space-x-2 text-3xl font-bold font-title">
-                  {post.title}
+                <h1 className="mb-2 flex justify space-x-2 text-3xl font-bold font-title">
+                  <Balancer>
+                    {post.coverIcon ? (
+                      <span className="mr-2">{post.coverIcon}</span>
+                    ) : null}
+                    {post.title}
+                  </Balancer>
                 </h1>
 
                 <div className="secondary-text flex flex-wrap items-center gap-2">

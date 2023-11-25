@@ -1,8 +1,9 @@
-import '@fontsource/poppins/400.css'
-import '@fontsource/poppins/700.css'
-
 import 'react-notion-x/src/styles.css'
 import 'prismjs/themes/prism-tomorrow.css'
+// eslint-disable-next-line import/no-unresolved
+import { GeistSans } from 'geist/font/sans'
+// eslint-disable-next-line import/no-unresolved
+import { GeistMono } from 'geist/font/mono'
 
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
@@ -75,11 +76,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 
       <UserProvider>
         <ThemeProvider attribute="class">
-          <Layout>
-            <LoginGuard>
-              <Component {...pageProps} />
-            </LoginGuard>
-          </Layout>
+          <main className={`${GeistSans.variable} ${GeistMono.variable}`}>
+            <Layout>
+              <LoginGuard>
+                <Component {...pageProps} />
+              </LoginGuard>
+            </Layout>
+          </main>
         </ThemeProvider>
       </UserProvider>
     </>

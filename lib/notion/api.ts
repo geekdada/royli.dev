@@ -52,6 +52,7 @@ export const getBlogPosts = async (
     const isComplete = requiredProperties.every((key) => Boolean(rawPost[key]))
     const publishYear = dayjs(rawPost.publishDate as string).format('YYYY')
     const coverImage = getPostCoverImage(item)
+    const coverIcon = item.icon?.type === 'emoji' ? item.icon.emoji : null
 
     if (isComplete) {
       blogList.push({
@@ -62,6 +63,7 @@ export const getBlogPosts = async (
         lastEditDate: rawPost.lastEditDate as string,
         readURL: `/blog/${publishYear}/${rawPost.slug}`,
         coverImage,
+        coverIcon,
       })
     }
   })
@@ -124,6 +126,7 @@ export const getPages = async (
     const requiredProperties: Array<keyof typeof rawPost> = ['slug', 'title']
     const isComplete = requiredProperties.every((key) => Boolean(rawPost[key]))
     const coverImage = getPostCoverImage(item)
+    const coverIcon = item.icon?.type === 'emoji' ? item.icon.emoji : null
 
     if (isComplete) {
       pageList.push({
@@ -134,6 +137,7 @@ export const getPages = async (
         lastEditDate: rawPost.lastEditDate as string,
         readURL: `/page/${rawPost.slug}`,
         coverImage,
+        coverIcon,
       })
     }
   })
