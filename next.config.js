@@ -8,6 +8,7 @@ const nextConfig = {
   images: {
     domains: ['resource-proxy.royli.dev'],
   },
+  transpilePackages: ['geist'],
   async redirects() {
     return [
       {
@@ -29,6 +30,9 @@ const nextConfig = {
         destination: '/api/feed',
       },
     ]
+  },
+  experimental: {
+    esmExternals: 'loose',
   },
 }
 

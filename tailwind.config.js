@@ -38,8 +38,8 @@ module.exports = {
       fontFamily: {
         sans: [...defaultTheme.fontFamily.sans],
         serif: [...defaultTheme.fontFamily.serif],
-        mono: ['"Fira Code"', ...defaultTheme.fontFamily.mono],
-        title: ['Poppins', ...defaultTheme.fontFamily.sans],
+        mono: ['var(--font-geist-mono)', ...defaultTheme.fontFamily.mono],
+        title: ['var(--font-geist-sans)', ...defaultTheme.fontFamily.sans],
       },
     },
   },
