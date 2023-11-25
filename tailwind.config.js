@@ -39,7 +39,7 @@ module.exports = {
         sans: [...defaultTheme.fontFamily.sans],
         serif: [...defaultTheme.fontFamily.serif],
         mono: ['var(--font-geist-mono)', ...defaultTheme.fontFamily.mono],
-        title: ['var(--font-geist-sans)', ...defaultTheme.fontFamily.sans],
+        title: ['Poppins', ...defaultTheme.fontFamily.sans],
       },
     },
   },
