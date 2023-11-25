@@ -27,8 +27,10 @@ export const convertNotionAssetUrl = (
   const u = new URL(url)
 
   if (
-    u.pathname.startsWith('/secure.notion-static.com') &&
-    u.hostname.endsWith('.amazonaws.com')
+    (u.pathname.startsWith('/secure.notion-static.com') &&
+      u.hostname.endsWith('.amazonaws.com')) ||
+    (u.hostname.startsWith('prod-files-secure') &&
+      u.hostname.endsWith('.amazonaws.com'))
   ) {
     const keys = Array.from(u.searchParams.keys())
 
