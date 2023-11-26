@@ -39,7 +39,7 @@ const AdminHome: NextPage<Props> = ({ user }) => {
     <div className="container mx-auto px-6 max-w-3xl lg:max-w-5xl xl:max-w-7xl">
       <h1 className="heading-text mb-8 text-4xl font-bold font-title">Admin</h1>
 
-      <div className="bg-white dark:bg-dark-700 drop-shadow-md rounded overflow-hidden p-8 space-y-9">
+      <div className="bg-white dark:bg-dark-700 shadow-md rounded overflow-hidden p-8 space-y-9">
         <div className="space-y-4">
           <h2 className="text-xl font-bold">Revalidate blog post list</h2>
           <button

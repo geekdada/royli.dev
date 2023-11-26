@@ -9,7 +9,7 @@ dayjs.extend(localizedFormat)
 
 const PostItem = ({ post }: { post: Post }) => {
   return (
-    <div className="bg-white dark:bg-dark-700 drop-shadow-md rounded overflow-hidden">
+    <div className="bg-white dark:bg-dark-700 shadow-md rounded-xl overflow-hidden">
       {post.coverImage && (
         <div className="post-cover-image">
           <div

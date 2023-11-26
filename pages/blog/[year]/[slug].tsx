@@ -56,7 +56,7 @@ const Post: NextPage<Props> = ({ post, postRecordMap }) => {
       <div className="container mx-auto md:px-6 max-w-3xl lg:max-w-5xl xl:max-w-7xl">
         {post.coverImage && (
           <div className="mb-0 md:mb-8">
-            <div className="md:rounded-lg md:drop-shadow-md overflow-hidden post-cover-image">
+            <div className="md:rounded-lg md:shadow-md overflow-hidden post-cover-image">
               <div
                 style={{
                   backgroundImage: `url(${post.coverImage})`,
