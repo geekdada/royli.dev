@@ -75,7 +75,11 @@ const Post: NextPage<Props> = ({ post, postRecordMap }) => {
                   hasCoverImage ? 'pt-5 lg:pt-6' : 'pt-3 lg:pt-4'
                 )}
               >
-                <h1 className="mb-2 flex justify space-x-2 text-3xl font-bold font-title">
+                <h1
+                  className="relative mb-2 flex justify space-x-2 text-3xl font-bold font-title notion-h"
+                  data-id="blog-title"
+                >
+                  <span id="blog-title" className="notion-header-anchor" />
                   <Balancer>
                     {post.coverIcon ? (
                       <span className="mr-2">{post.coverIcon}</span>

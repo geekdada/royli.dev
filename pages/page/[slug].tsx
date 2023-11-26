@@ -8,7 +8,7 @@ import { ParsedUrlQuery } from 'querystring'
 import { FiMessageCircle } from 'react-icons/fi'
 import clx from 'classnames'
 import DefaultErrorPage from 'next/error'
-import Balancer from 'react-wrap-balancer'
+import { Balancer } from 'react-wrap-balancer'
 
 import { NotionPage } from '@/components/NotionPage'
 import PageHead from '@/components/PageHead'
