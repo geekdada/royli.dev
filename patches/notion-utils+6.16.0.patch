@@ -1,0 +1,514 @@
+diff --git a/node_modules/notion-utils/build/index.js b/node_modules/notion-utils/build/index.js
+index d73a6ae..17f9340 100644
+--- a/node_modules/notion-utils/build/index.js
++++ b/node_modules/notion-utils/build/index.js
+@@ -1,2 +1,506 @@
+-var q=Object.defineProperty,N=Object.defineProperties;var V=Object.getOwnPropertyDescriptors;var $=Object.getOwnPropertySymbols;var H=Object.prototype.hasOwnProperty,Q=Object.prototype.propertyIsEnumerable;var D=(e,t,o)=>t in e?q(e,t,{enumerable:!0,configurable:!0,writable:!0,value:o}):e[t]=o,g=(e,t)=>{for(var o in t||(t={}))H.call(t,o)&&D(e,o,t[o]);if($)for(var o of $(t))Q.call(t,o)&&D(e,o,t[o]);return e},U=(e,t)=>N(e,V(t));var R=(e,t,o)=>new Promise((n,s)=>{var r=c=>{try{m(o.next(c))}catch(l){s(l)}},a=c=>{try{m(o.throw(c))}catch(l){s(l)}},m=c=>c.done?n(c.value):Promise.resolve(c.value).then(r,a);m((o=o.apply(e,t)).next())});var h=e=>{var t;return e?Array.isArray(e)?(t=e==null?void 0:e.reduce((o,n)=>o+(n[0]!=="\u204D"&&n[0]!=="\u2023"?n[0]:""),""))!=null?t:"":e:""};function w(e,t){var s,r,a,m,c,l,i;let o=e.collection_id||((r=(s=e.format)==null?void 0:s.collection_pointer)==null?void 0:r.id);if(o)return o;let n=(a=e==null?void 0:e.view_ids)==null?void 0:a[0];if(n){let u=(c=(m=t.collection_view)==null?void 0:m[n])==null?void 0:c.value;if(u)return(i=(l=u.format)==null?void 0:l.collection_pointer)==null?void 0:i.id}return null}function v(e,t){var o,n;if((o=e.properties)!=null&&o.title)return h(e.properties.title);if(e.type==="collection_view_page"||e.type==="collection_view"){let s=w(e,t);if(s){let r=(n=t.collection[s])==null?void 0:n.value;if(r)return h(r.name)}}return""}function B(e,t){var o,n,s;if((o=e.format)!=null&&o.page_icon)return(n=e.format)==null?void 0:n.page_icon;if(e.type==="collection_view_page"||e.type==="collection_view"){let r=w(e,t);if(r){let a=(s=t.collection[r])==null?void 0:s.value;if(a)return a.icon}}return null}function pe(e){var o;let t=(o=e.block[Object.keys(e.block)[0]])==null?void 0:o.value;return t?v(t,e):null}function P(e,t,o){var n;try{if(!t.properties||!Object.keys(o.collection))return null;let s=(n=o.collection[t.parent_id])==null?void 0:n.value;if(s){let r=e.toLowerCase(),a=Object.keys(s.schema).find(l=>{var i,u;return((u=(i=s.schema[l])==null?void 0:i.name)==null?void 0:u.toLowerCase())===r});if(!a)return null;let{type:m}=s.schema[a],c=h(t.properties[a]);switch(m){case"created_time":return t.created_time;case"multi_select":return c.split(",");case"date":{let i=t.properties[a][0][1][0][1];if(i.type=="datetime")return new Date(`${i.start_date} ${i.start_time}`).getTime();if(i.type=="date")return new Date(i.start_date).getTime();if(i.type=="datetimerange"){let{start_date:u,start_time:y,end_date:f,end_time:T}=i,b=new Date(`${u} ${y}`).getTime(),d=new Date(`${f} ${T}`).getTime();return[b,d]}else{let u=new Date(i.start_date).getTime(),y=new Date(i.end_date).getTime();return[u,y]}}case"checkbox":return c=="Yes";case"last_edited_time":return t.last_edited_time;default:return c}}}catch(s){}return null}var Y=e=>{if(e&&Array.isArray(e)){if(e[0]==="d")return e[1];for(let t of e){let o=Y(t);if(o)return o}}return null};var O=(e,t,{inclusive:o=!1}={})=>{var s,r;let n=e;for(;n!=null;){if(o&&(n==null?void 0:n.type)==="page")return n;let a=n.parent_id,m=n.parent_table;if(!a)break;if(m==="collection")n=(s=t.collection[a])==null?void 0:s.value;else if(n=(r=t.block[a])==null?void 0:r.value,(n==null?void 0:n.type)==="page")return n}return null};var Z={header:0,sub_header:1,sub_sub_header:2},S=(e,t)=>{var s;let o=((s=e.content)!=null?s:[]).map(r=>{var m,c;let a=(m=t.block[r])==null?void 0:m.value;if(a){let{type:l}=a;if(l==="header"||l==="sub_header"||l==="sub_sub_header")return{id:r,type:l,text:h((c=a.properties)==null?void 0:c.title),indentLevel:Z[l]}}return null}).filter(Boolean),n=[{actual:-1,effective:-1}];for(let r of o){let{indentLevel:a}=r,m=a;do{let c=n[n.length-1],{actual:l,effective:i}=c;if(m>l)r.indentLevel=i+1,n.push({actual:m,effective:r.indentLevel});else if(m===l){r.indentLevel=i;break}else n.pop()}while(!0)}return o};var Te=(e,t)=>{let o=t||Object.keys(e.block)[0],n=new Set;function s(r){var u,y,f,T;if(n.has(r))return;n.add(r);let a=(u=e.block[r])==null?void 0:u.value;if(!a)return;let{content:m,type:c,properties:l,format:i}=a;if(l)for(let b of Object.keys(l)){let d=l[b];d.map(k=>{var _,I;let p=(I=(_=k==null?void 0:k[0])==null?void 0:_[1])==null?void 0:I[0];(p==null?void 0:p[0])==="p"&&p[1]&&s(p[1])});let x=(f=(y=d==null?void 0:d[0])==null?void 0:y[1])==null?void 0:f[0];(x==null?void 0:x[0])==="p"&&x[1]&&s(x[1])}if(i){let b=(T=i.transclusion_reference_pointer)==null?void 0:T.id;b&&s(b)}if(!(!m||!Array.isArray(m))&&!(r!==o&&(c==="page"||c==="collection_view_page")))for(let b of m)s(b)}return s(o),Array.from(n)};var L=(e="")=>`${e.substr(0,8)}-${e.substr(8,4)}-${e.substr(12,4)}-${e.substr(16,4)}-${e.substr(20)}`;var G=/\b([a-f0-9]{32})\b/,J=/\b([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})\b/,W=(e="",{uuid:t=!0}={})=>{if(!e)return null;e=e.split("?")[0];let o=e.match(G);if(o)return t?L(o[1]):o[1];let n=e.match(J);return n?t?n[1]:n[1].replace(/-/g,""):null};var M=e=>e.replace(/-/g,"");import K from"p-queue";function Ee(a,m,c){return R(this,arguments,function*(e,t,o,{concurrency:n=4,traverseCollections:s=!0,targetPageId:r=null}={}){let l={},i=new Set,u=new K({concurrency:n});function y(f){return R(this,null,function*(){r&&i.has(r)||(f=W(f),f&&!l[f]&&!i.has(f)&&(i.add(f),u.add(()=>R(this,null,function*(){var T,b;try{if(r&&i.has(r)&&f!==r)return;let d=yield o(f);if(!d)return;let x=(b=(T=d.block[f])==null?void 0:T.value)==null?void 0:b.space_id;if(x){if(!t)t=x;else if(t!==x)return}if(Object.keys(d.block).filter(k=>{var _;let p=(_=d.block[k])==null?void 0:_.value;return!(!p||p.type!=="page"&&p.type!=="collection_view_page"||t&&p.space_id&&p.space_id!==t)}).forEach(k=>y(k)),s)for(let k of Object.values(d.collection_query))for(let p of Object.values(k)){let{blockIds:_}=p;if(_)for(let I of _)y(I)}l[f]=d}catch(d){console.warn("page load error",{pageId:f,spaceId:t},d.statusCode,d.message),l[f]=null}i.delete(f)}))))})}return yield y(e),yield u.onIdle(),l})}var z=e=>(e||"").replace(/ /g,"-").replace(/[^a-zA-Z0-9-\u4e00-\u9FFF\u3041-\u3096\u30A1-\u30FC\u3000-\u303F]/g,"").replace(/--/g,"-").replace(/-$/,"").replace(/^-/,"").trim().toLowerCase();var We=(e,t,{uuid:o=!0}={})=>{var r;if(!e||!t)return null;let n=M(e),s=(r=t.block[e])==null?void 0:r.value;if(s){let a=P("slug",s,t)||P("Slug",s,t)||z(v(s,t));if(a)return o?`${a}-${n}`:a}return n};var je=(e,t)=>{var r;let o=e.block,n=[],s=t;do{let a=(r=o[s])==null?void 0:r.value;if(!a)break;let m=v(a,e),c=B(a,e);if(!(m||c))break;n.push({block:a,active:s===t,pageId:s,title:m,icon:c});let l=O(a,e),i=l==null?void 0:l.id;if(!i)break;s=i}while(!0);return n.reverse(),n};import A from"is-url-superb";var Ye=(e,{mapImageUrl:t})=>{let n=Object.keys(e.block).flatMap(s=>{var m,c,l,i,u,y,f,T,b,d,x;let r=(m=e.block[s])==null?void 0:m.value,a=[];if(r){if(r.type==="image"){let _=((c=e.signed_urls)==null?void 0:c[r.id])||((u=(i=(l=r.properties)==null?void 0:l.source)==null?void 0:i[0])==null?void 0:u[0]);_.includes("file.notion.so")&&(_=(T=(f=(y=r.properties)==null?void 0:y.source)==null?void 0:f[0])==null?void 0:T[0]),_&&a.push({block:r,url:_})}if((b=r.format)!=null&&b.page_cover){let p=r.format.page_cover;a.push({block:r,url:p})}if((d=r.format)!=null&&d.bookmark_cover){let p=r.format.bookmark_cover;a.push({block:r,url:p})}if((x=r.format)!=null&&x.bookmark_icon){let p=r.format.bookmark_icon;a.push({block:r,url:p})}let k=B(r,e);k&&A(k)&&a.push({block:r,url:k})}return a}).filter(Boolean).map(({block:s,url:r})=>t(r,s)).filter(Boolean);return Array.from(new Set(n))};import X from"mem";import ee from"normalize-url";var te=X(e=>{if(!e)return"";try{if(e.startsWith("https://www.notion.so/image/")){let t=new URL(e),o=decodeURIComponent(t.pathname.substr(7)),n=te(o);t.pathname=`/image/${encodeURIComponent(n)}`,e=t.toString()}return ee(e,{stripProtocol:!0,stripWWW:!0,stripHash:!0,stripTextFragment:!0,removeQueryParameters:!0})}catch(t){return""}});function Xe(e,t){return{block:g(g({},e.block),t.block),collection:g(g({},e.collection),t.collection),collection_view:g(g({},e.collection_view),t.collection_view),notion_user:g(g({},e.notion_user),t.notion_user),collection_query:g(g({},e.collection_query),t.collection_query),signed_urls:g(g({},e.signed_urls),t.signed_urls),preview_images:g(g({},e.preview_images),t.preview_images)}}var F=(e,{month:t="short"}={})=>{let o=new Date(e);return`${o.toLocaleString("en-US",{month:t})} ${o.getUTCDate()}, ${o.getUTCFullYear()}`};var rt=e=>{let t=`${e.start_time||""} ${e.start_date} ${e.time_zone||""}`;return F(t)};function oe(e,t,{wordsPerMinute:o=275,imageReadTimeInSeconds:n=12}={}){let s=C(e,t),r=s.numWords/o,m=(s.numImages>10?s.numImages/2*(n+3)+(s.numImages-10)*3:s.numImages/2*(2*n+(1-s.numImages)))/60,c=r+m;return U(g({},s),{totalWordsReadTimeInMinutes:r,totalImageReadTimeInMinutes:m,totalReadTimeInMinutes:c})}function ct(e,t,o){let n=oe(e,t,o);return ne(n.totalReadTimeInMinutes)}function C(e,t){var n,s,r,a;let o={numWords:0,numImages:0};if(!e)return o;for(let m of e.content||[]){let c=(n=t.block[m])==null?void 0:n.value,l=!1;if(!!c){switch(c.type){case"quote":case"alias":case"header":case"sub_header":case"sub_sub_header":{let i=v(c,t);o.numWords+=E(i);break}case"callout":case"toggle":case"to_do":case"bulleted_list":case"numbered_list":case"text":{let i=v(c,t);o.numWords+=E(i),l=!0;break}case"embed":case"tweet":case"maps":case"pdf":case"figma":case"typeform":case"codepen":case"excalidraw":case"gist":case"video":case"drive":case"audio":case"file":case"image":o.numImages+=1;break;case"bookmark":o.numImages+=.25;break;case"code":o.numImages+=2;break;case"table":case"collection_view":o.numImages+=2;break;case"column":case"column_list":case"transclusion_container":l=!0;break;case"table_of_contents":{let i=e;if(!i)continue;let u=S(i,t);for(let y of u)o.numWords+=E(y.text);break}case"transclusion_reference":{let i=(r=(s=c==null?void 0:c.format)==null?void 0:s.transclusion_reference_pointer)==null?void 0:r.id;if(!i)continue;let u=(a=t.block[i])==null?void 0:a.value;u&&j(o,C(u,t));break}default:break}l&&j(o,C(c,t))}}return o}function j(e,t){e.numWords+=t.numWords,e.numImages+=t.numImages}function E(e){return e?(e.match(/\w+/g)||[]).length:0}function ne(e){return e<.5?"less than a minute":e<1.5?"1 minute":`${Math.ceil(e)} minutes`}export{oe as estimatePageReadTime,ct as estimatePageReadTimeAsHumanizedString,F as formatDate,rt as formatNotionDateTime,Ee as getAllPagesInSpace,w as getBlockCollectionId,B as getBlockIcon,O as getBlockParentPage,v as getBlockTitle,We as getCanonicalPageId,Y as getDateValue,je as getPageBreadcrumbs,Te as getPageContentBlockIds,Ye as getPageImageUrls,P as getPageProperty,S as getPageTableOfContents,pe as getPageTitle,h as getTextContent,L as idToUuid,A as isUrl,Xe as mergeRecordMaps,z as normalizeTitle,te as normalizeUrl,W as parsePageId,M as uuidToId};
+-//# sourceMappingURL=index.js.map
+\ No newline at end of file
++var q = Object.defineProperty,
++  N = Object.defineProperties;
++var V = Object.getOwnPropertyDescriptors;
++var $ = Object.getOwnPropertySymbols;
++var H = Object.prototype.hasOwnProperty,
++  Q = Object.prototype.propertyIsEnumerable;
++var D = (e, t, o) => (t in e ? q(e, t, { enumerable: !0, configurable: !0, writable: !0, value: o }) : (e[t] = o)),
++  g = (e, t) => {
++    for (var o in t || (t = {})) H.call(t, o) && D(e, o, t[o]);
++    if ($) for (var o of $(t)) Q.call(t, o) && D(e, o, t[o]);
++    return e;
++  },
++  U = (e, t) => N(e, V(t));
++var R = (e, t, o) =>
++  new Promise((n, s) => {
++    var r = (c) => {
++        try {
++          m(o.next(c));
++        } catch (l) {
++          s(l);
++        }
++      },
++      a = (c) => {
++        try {
++          m(o.throw(c));
++        } catch (l) {
++          s(l);
++        }
++      },
++      m = (c) => (c.done ? n(c.value) : Promise.resolve(c.value).then(r, a));
++    m((o = o.apply(e, t)).next());
++  });
++var h = (e) => {
++  var t;
++  return e ? (Array.isArray(e) ? ((t = e == null ? void 0 : e.reduce((o, n) => o + (n[0] !== "\u204D" && n[0] !== "\u2023" ? n[0] : ""), "")) != null ? t : "") : e) : "";
++};
++function w(e, t) {
++  var s, r, a, m, c, l, i;
++  let o = e.collection_id || ((r = (s = e.format) == null ? void 0 : s.collection_pointer) == null ? void 0 : r.id);
++  if (o) return o;
++  let n = (a = e == null ? void 0 : e.view_ids) == null ? void 0 : a[0];
++  if (n) {
++    let u = (c = (m = t.collection_view) == null ? void 0 : m[n]) == null ? void 0 : c.value;
++    if (u) return (i = (l = u.format) == null ? void 0 : l.collection_pointer) == null ? void 0 : i.id;
++  }
++  return null;
++}
++function v(e, t) {
++  var o, n;
++  if ((o = e.properties) != null && o.title) return h(e.properties.title);
++  if (e.type === "collection_view_page" || e.type === "collection_view") {
++    let s = w(e, t);
++    if (s) {
++      let r = (n = t.collection[s]) == null ? void 0 : n.value;
++      if (r) return h(r.name);
++    }
++  }
++  return "";
++}
++function B(e, t) {
++  var o, n, s;
++  if ((o = e.format) != null && o.page_icon) return (n = e.format) == null ? void 0 : n.page_icon;
++  if (e.type === "collection_view_page" || e.type === "collection_view") {
++    let r = w(e, t);
++    if (r) {
++      let a = (s = t.collection[r]) == null ? void 0 : s.value;
++      if (a) return a.icon;
++    }
++  }
++  return null;
++}
++function pe(e) {
++  var o;
++  let t = (o = e.block[Object.keys(e.block)[0]]) == null ? void 0 : o.value;
++  return t ? v(t, e) : null;
++}
++function P(e, t, o) {
++  var n;
++  try {
++    if (!t.properties || !Object.keys(o.collection)) return null;
++    let s = (n = o.collection[t.parent_id]) == null ? void 0 : n.value;
++    if (s) {
++      let r = e.toLowerCase(),
++        a = Object.keys(s.schema).find((l) => {
++          var i, u;
++          return ((u = (i = s.schema[l]) == null ? void 0 : i.name) == null ? void 0 : u.toLowerCase()) === r;
++        });
++      if (!a) return null;
++      let { type: m } = s.schema[a],
++        c = h(t.properties[a]);
++      switch (m) {
++        case "created_time":
++          return t.created_time;
++        case "multi_select":
++          return c.split(",");
++        case "date": {
++          let i = t.properties[a][0][1][0][1];
++          if (i.type == "datetime") return new Date(`${i.start_date} ${i.start_time}`).getTime();
++          if (i.type == "date") return new Date(i.start_date).getTime();
++          if (i.type == "datetimerange") {
++            let { start_date: u, start_time: y, end_date: f, end_time: T } = i,
++              b = new Date(`${u} ${y}`).getTime(),
++              d = new Date(`${f} ${T}`).getTime();
++            return [b, d];
++          } else {
++            let u = new Date(i.start_date).getTime(),
++              y = new Date(i.end_date).getTime();
++            return [u, y];
++          }
++        }
++        case "checkbox":
++          return c == "Yes";
++        case "last_edited_time":
++          return t.last_edited_time;
++        default:
++          return c;
++      }
++    }
++  } catch (s) {}
++  return null;
++}
++var Y = (e) => {
++  if (e && Array.isArray(e)) {
++    if (e[0] === "d") return e[1];
++    for (let t of e) {
++      let o = Y(t);
++      if (o) return o;
++    }
++  }
++  return null;
++};
++var O = (e, t, { inclusive: o = !1 } = {}) => {
++  var s, r;
++  let n = e;
++  for (; n != null; ) {
++    if (o && (n == null ? void 0 : n.type) === "page") return n;
++    let a = n.parent_id,
++      m = n.parent_table;
++    if (!a) break;
++    if (m === "collection") n = (s = t.collection[a]) == null ? void 0 : s.value;
++    else if (((n = (r = t.block[a]) == null ? void 0 : r.value), (n == null ? void 0 : n.type) === "page")) return n;
++  }
++  return null;
++};
++var Z = { header: 0, sub_header: 1, sub_sub_header: 2 },
++  S = (e, t) => {
++    var s;
++    let o = ((s = e.content) != null ? s : [])
++        .map((r) => {
++          var m, c;
++          let a = (m = t.block[r]) == null ? void 0 : m.value;
++          if (a) {
++            let { type: l } = a;
++            if (l === "header" || l === "sub_header" || l === "sub_sub_header") return { id: r, type: l, text: h((c = a.properties) == null ? void 0 : c.title), indentLevel: Z[l] };
++          }
++          return null;
++        })
++        .filter(Boolean),
++      n = [{ actual: -1, effective: -1 }];
++    for (let r of o) {
++      let { indentLevel: a } = r,
++        m = a;
++      do {
++        let c = n[n.length - 1],
++          { actual: l, effective: i } = c;
++        if (m > l) (r.indentLevel = i + 1), n.push({ actual: m, effective: r.indentLevel });
++        else if (m === l) {
++          r.indentLevel = i;
++          break;
++        } else n.pop();
++      } while (!0);
++    }
++    return o;
++  };
++var Te = (e, t) => {
++  let o = t || Object.keys(e.block)[0],
++    n = new Set();
++  function s(r) {
++    var u, y, f, T;
++    if (n.has(r)) return;
++    n.add(r);
++    let a = (u = e.block[r]) == null ? void 0 : u.value;
++    if (!a) return;
++    let { content: m, type: c, properties: l, format: i } = a;
++    if (l)
++      for (let b of Object.keys(l)) {
++        let d = l[b];
++        d.map((k) => {
++          var _, I;
++          let p = (I = (_ = k == null ? void 0 : k[0]) == null ? void 0 : _[1]) == null ? void 0 : I[0];
++          (p == null ? void 0 : p[0]) === "p" && p[1] && s(p[1]);
++        });
++        let x = (f = (y = d == null ? void 0 : d[0]) == null ? void 0 : y[1]) == null ? void 0 : f[0];
++        (x == null ? void 0 : x[0]) === "p" && x[1] && s(x[1]);
++      }
++    if (i) {
++      let b = (T = i.transclusion_reference_pointer) == null ? void 0 : T.id;
++      b && s(b);
++    }
++    if (!(!m || !Array.isArray(m)) && !(r !== o && (c === "page" || c === "collection_view_page"))) for (let b of m) s(b);
++  }
++  return s(o), Array.from(n);
++};
++var L = (e = "") => `${e.substr(0, 8)}-${e.substr(8, 4)}-${e.substr(12, 4)}-${e.substr(16, 4)}-${e.substr(20)}`;
++var G = /\b([a-f0-9]{32})\b/,
++  J = /\b([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})\b/,
++  W = (e = "", { uuid: t = !0 } = {}) => {
++    if (!e) return null;
++    e = e.split("?")[0];
++    let o = e.match(G);
++    if (o) return t ? L(o[1]) : o[1];
++    let n = e.match(J);
++    return n ? (t ? n[1] : n[1].replace(/-/g, "")) : null;
++  };
++var M = (e) => e.replace(/-/g, "");
++import K from "p-queue";
++function Ee(a, m, c) {
++  return R(this, arguments, function* (e, t, o, { concurrency: n = 4, traverseCollections: s = !0, targetPageId: r = null } = {}) {
++    let l = {},
++      i = new Set(),
++      u = new K({ concurrency: n });
++    function y(f) {
++      return R(this, null, function* () {
++        (r && i.has(r)) ||
++        ((f = W(f)),
++        f &&
++        !l[f] &&
++        !i.has(f) &&
++        (i.add(f),
++          u.add(() =>
++            R(this, null, function* () {
++              var T, b;
++              try {
++                if (r && i.has(r) && f !== r) return;
++                let d = yield o(f);
++                if (!d) return;
++                let x = (b = (T = d.block[f]) == null ? void 0 : T.value) == null ? void 0 : b.space_id;
++                if (x) {
++                  if (!t) t = x;
++                  else if (t !== x) return;
++                }
++                if (
++                  (Object.keys(d.block)
++                    .filter((k) => {
++                      var _;
++                      let p = (_ = d.block[k]) == null ? void 0 : _.value;
++                      return !(!p || (p.type !== "page" && p.type !== "collection_view_page") || (t && p.space_id && p.space_id !== t));
++                    })
++                    .forEach((k) => y(k)),
++                    s)
++                )
++                  for (let k of Object.values(d.collection_query))
++                    for (let p of Object.values(k)) {
++                      let { blockIds: _ } = p;
++                      if (_) for (let I of _) y(I);
++                    }
++                l[f] = d;
++              } catch (d) {
++                console.warn("page load error", { pageId: f, spaceId: t }, d.statusCode, d.message), (l[f] = null);
++              }
++              i.delete(f);
++            })
++          )));
++      });
++    }
++    return yield y(e), yield u.onIdle(), l;
++  });
++}
++var z = (e) =>
++  (e || "")
++    .replace(/ /g, "-")
++    .replace(/[^a-zA-Z0-9-\u4e00-\u9FFF\u3041-\u3096\u30A1-\u30FC\u3000-\u303F]/g, "")
++    .replace(/--/g, "-")
++    .replace(/-$/, "")
++    .replace(/^-/, "")
++    .trim()
++    .toLowerCase();
++var We = (e, t, { uuid: o = !0 } = {}) => {
++  var r;
++  if (!e || !t) return null;
++  let n = M(e),
++    s = (r = t.block[e]) == null ? void 0 : r.value;
++  if (s) {
++    let a = P("slug", s, t) || P("Slug", s, t) || z(v(s, t));
++    if (a) return o ? `${a}-${n}` : a;
++  }
++  return n;
++};
++var je = (e, t) => {
++  var r;
++  let o = e.block,
++    n = [],
++    s = t;
++  do {
++    let a = (r = o[s]) == null ? void 0 : r.value;
++    if (!a) break;
++    let m = v(a, e),
++      c = B(a, e);
++    if (!(m || c)) break;
++    n.push({ block: a, active: s === t, pageId: s, title: m, icon: c });
++    let l = O(a, e),
++      i = l == null ? void 0 : l.id;
++    if (!i) break;
++    s = i;
++  } while (!0);
++  return n.reverse(), n;
++};
++import A from "is-url-superb";
++var Ye = (e, { mapImageUrl: t }) => {
++  let n = Object.keys(e.block)
++    .flatMap((s) => {
++      var m, c, l, i, u, y, f, T, b, d, x;
++      let r = (m = e.block[s]) == null ? void 0 : m.value,
++        a = [];
++      if (r) {
++        if (r.type === "image") {
++          let _ = ((c = e.signed_urls) == null ? void 0 : c[r.id]) || ((u = (i = (l = r.properties) == null ? void 0 : l.source) == null ? void 0 : i[0]) == null ? void 0 : u[0]);
++          _.includes("file.notion.so") && (_ = (T = (f = (y = r.properties) == null ? void 0 : y.source) == null ? void 0 : f[0]) == null ? void 0 : T[0]), _ && a.push({ block: r, url: _ });
++        }
++        if ((b = r.format) != null && b.page_cover) {
++          let p = r.format.page_cover;
++          a.push({ block: r, url: p });
++        }
++        if ((d = r.format) != null && d.bookmark_cover) {
++          let p = r.format.bookmark_cover;
++          a.push({ block: r, url: p });
++        }
++        if ((x = r.format) != null && x.bookmark_icon) {
++          let p = r.format.bookmark_icon;
++          a.push({ block: r, url: p });
++        }
++        let k = B(r, e);
++        k && A(k) && a.push({ block: r, url: k });
++      }
++      return a;
++    })
++    .filter(Boolean)
++    .map(({ block: s, url: r }) => t(r, s))
++    .filter(Boolean);
++  return Array.from(new Set(n));
++};
++import X from "mem";
++import ee from "normalize-url";
++var te = X((e) => {
++  if (!e) return "";
++  try {
++    if (e.startsWith("https://www.notion.so/image/")) {
++      let t = new URL(e),
++        o = decodeURIComponent(t.pathname.substr(7)),
++        n = te(o);
++      (t.pathname = `/image/${encodeURIComponent(n)}`), (e = t.toString());
++    }
++    return ee(e, { stripProtocol: !0, stripWWW: !0, stripHash: !0, stripTextFragment: !0, removeQueryParameters: !0 });
++  } catch (t) {
++    return "";
++  }
++});
++function Xe(e, t) {
++  return {
++    block: g(g({}, e.block), t.block),
++    collection: g(g({}, e.collection), t.collection),
++    collection_view: g(g({}, e.collection_view), t.collection_view),
++    notion_user: g(g({}, e.notion_user), t.notion_user),
++    collection_query: g(g({}, e.collection_query), t.collection_query),
++    signed_urls: g(g({}, e.signed_urls), t.signed_urls),
++    preview_images: g(g({}, e.preview_images), t.preview_images),
++  };
++}
++var F = (e, { month: t = "short" } = {}) => {
++  let o = new Date(e);
++  return `${o.toLocaleString("en-US", { month: t })} ${o.getUTCDate()}, ${o.getUTCFullYear()}`;
++};
++var rt = (e) => {
++  const dateString = `${e.start_date}T${
++    e.start_time || '00:00'
++  }+00:00`
++  return F(dateString);
++};
++function oe(e, t, { wordsPerMinute: o = 275, imageReadTimeInSeconds: n = 12 } = {}) {
++  let s = C(e, t),
++    r = s.numWords / o,
++    m = (s.numImages > 10 ? (s.numImages / 2) * (n + 3) + (s.numImages - 10) * 3 : (s.numImages / 2) * (2 * n + (1 - s.numImages))) / 60,
++    c = r + m;
++  return U(g({}, s), { totalWordsReadTimeInMinutes: r, totalImageReadTimeInMinutes: m, totalReadTimeInMinutes: c });
++}
++function ct(e, t, o) {
++  let n = oe(e, t, o);
++  return ne(n.totalReadTimeInMinutes);
++}
++function C(e, t) {
++  var n, s, r, a;
++  let o = { numWords: 0, numImages: 0 };
++  if (!e) return o;
++  for (let m of e.content || []) {
++    let c = (n = t.block[m]) == null ? void 0 : n.value,
++      l = !1;
++    if (!!c) {
++      switch (c.type) {
++        case "quote":
++        case "alias":
++        case "header":
++        case "sub_header":
++        case "sub_sub_header": {
++          let i = v(c, t);
++          o.numWords += E(i);
++          break;
++        }
++        case "callout":
++        case "toggle":
++        case "to_do":
++        case "bulleted_list":
++        case "numbered_list":
++        case "text": {
++          let i = v(c, t);
++          (o.numWords += E(i)), (l = !0);
++          break;
++        }
++        case "embed":
++        case "tweet":
++        case "maps":
++        case "pdf":
++        case "figma":
++        case "typeform":
++        case "codepen":
++        case "excalidraw":
++        case "gist":
++        case "video":
++        case "drive":
++        case "audio":
++        case "file":
++        case "image":
++          o.numImages += 1;
++          break;
++        case "bookmark":
++          o.numImages += 0.25;
++          break;
++        case "code":
++          o.numImages += 2;
++          break;
++        case "table":
++        case "collection_view":
++          o.numImages += 2;
++          break;
++        case "column":
++        case "column_list":
++        case "transclusion_container":
++          l = !0;
++          break;
++        case "table_of_contents": {
++          let i = e;
++          if (!i) continue;
++          let u = S(i, t);
++          for (let y of u) o.numWords += E(y.text);
++          break;
++        }
++        case "transclusion_reference": {
++          let i = (r = (s = c == null ? void 0 : c.format) == null ? void 0 : s.transclusion_reference_pointer) == null ? void 0 : r.id;
++          if (!i) continue;
++          let u = (a = t.block[i]) == null ? void 0 : a.value;
++          u && j(o, C(u, t));
++          break;
++        }
++        default:
++          break;
++      }
++      l && j(o, C(c, t));
++    }
++  }
++  return o;
++}
++function j(e, t) {
++  (e.numWords += t.numWords), (e.numImages += t.numImages);
++}
++function E(e) {
++  return e ? (e.match(/\w+/g) || []).length : 0;
++}
++function ne(e) {
++  return e < 0.5 ? "less than a minute" : e < 1.5 ? "1 minute" : `${Math.ceil(e)} minutes`;
++}
++export {
++  oe as estimatePageReadTime,
++  ct as estimatePageReadTimeAsHumanizedString,
++  F as formatDate,
++  rt as formatNotionDateTime,
++  Ee as getAllPagesInSpace,
++  w as getBlockCollectionId,
++  B as getBlockIcon,
++  O as getBlockParentPage,
++  v as getBlockTitle,
++  We as getCanonicalPageId,
++  Y as getDateValue,
++  je as getPageBreadcrumbs,
++  Te as getPageContentBlockIds,
++  Ye as getPageImageUrls,
++  P as getPageProperty,
++  S as getPageTableOfContents,
++  pe as getPageTitle,
++  h as getTextContent,
++  L as idToUuid,
++  A as isUrl,
++  Xe as mergeRecordMaps,
++  z as normalizeTitle,
++  te as normalizeUrl,
++  W as parsePageId,
++  M as uuidToId,
++};
