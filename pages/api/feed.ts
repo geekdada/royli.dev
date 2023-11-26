@@ -6,9 +6,9 @@ import { createRouter } from 'next-connect'
 import pMapSeries from 'p-map-series'
 import Handlebars from 'handlebars'
 
-import feedItemTemplateString from '../../templates/feed-item'
-import { getCachedBlogPosts } from '../../lib/notion'
-import { PaginatedResponse, Post } from '../../lib/types'
+import feedItemTemplateString from '@/templates/feed-item'
+import { getCachedBlogPosts } from '@/lib/notion'
+import { PaginatedResponse, Post } from '@/lib/types'
 
 const router = createRouter<NextApiRequest, NextApiResponse>()
 const domain = 'https://royli.dev'

@@ -1,4 +1,4 @@
-import finalSiteConfig from '../../site-config'
+import finalSiteConfig from '@/site-config'
 
 export * from './getters'
 

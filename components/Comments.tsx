@@ -1,6 +1,6 @@
 import Giscus from '@giscus/react'
-import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
+import { useTheme } from '@/lib/theme'
 
 const Comments = () => {
   const { theme } = useTheme()

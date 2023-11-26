@@ -108,6 +108,14 @@ button {
   @apply bg-sky-300/20 dark:bg-sky-400/30;
 }
 
+html.light {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
 body {
   background-color: #FDFDFD;
   background-image:  radial-gradient(#CBCEFA 0.85px, transparent 0.85px), radial-gradient(#CBCEFA 0.85px, #FDFDFD 0.85px);

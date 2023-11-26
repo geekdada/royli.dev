@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { useTheme } from 'next-themes'
 import { FiMoon, FiSun } from 'react-icons/fi'
+import { useTheme } from '@/lib/theme'
 
 const ThemeSwitch = () => {
   const [mounted, setMounted] = useState(false)

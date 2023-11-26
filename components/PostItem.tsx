@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import Balancer from 'react-wrap-balancer'
 
-import { Post } from '../lib/types'
+import { Post } from '@/lib/types'
 import Time from './Time'
 
 dayjs.extend(localizedFormat)

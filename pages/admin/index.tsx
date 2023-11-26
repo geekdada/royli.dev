@@ -5,7 +5,7 @@ import DefaultErrorPage from 'next/error'
 import * as Yup from 'yup'
 import ky from 'ky'
 
-import { siteAdminUserId } from '../../lib/config'
+import { siteAdminUserId } from '@/lib/config'
 
 const RevalidateBlogPostSchema = Yup.object().shape({
   URI: Yup.string()

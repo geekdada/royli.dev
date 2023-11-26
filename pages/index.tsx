@@ -3,9 +3,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Balancer from 'react-wrap-balancer'
 
-import { getBlogPosts } from '../lib/notion'
-import { PaginatedResponse, Post } from '../lib/types'
-import { sec } from '../lib/utils/time'
+import { getBlogPosts } from '@/lib/notion'
+import { PaginatedResponse, Post } from '@/lib/types'
+import { sec } from '@/lib/utils/time'
 
 interface Props {
   posts: PaginatedResponse<Post>

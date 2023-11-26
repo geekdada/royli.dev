@@ -1,6 +1,6 @@
 import Redis from 'ioredis'
 
-import { redisURL } from '../config'
+import { redisURL } from '@/lib/config'
 
 const redis = new Redis(redisURL)
 

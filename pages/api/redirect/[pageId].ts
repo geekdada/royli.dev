@@ -4,7 +4,7 @@ import { createRouter } from 'next-connect'
 import boom from '@hapi/boom'
 import { getPageProperty } from 'notion-utils'
 
-import { getPageByPageId } from '../../../lib/notion'
+import { getPageByPageId } from '@/lib/notion'
 
 const router = createRouter<NextApiRequest, NextApiResponse>()
 

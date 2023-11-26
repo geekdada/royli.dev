@@ -2,10 +2,10 @@ import { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 
-import PostItem from '../components/PostItem'
-import { getBlogPosts } from '../lib/notion'
-import { PaginatedResponse, Post } from '../lib/types'
-import { sec } from '../lib/utils/time'
+import PostItem from '@/components/PostItem'
+import { getBlogPosts } from '@/lib/notion'
+import { PaginatedResponse, Post } from '@/lib/types'
+import { sec } from '@/lib/utils/time'
 
 interface Props {
   posts: PaginatedResponse<Post>

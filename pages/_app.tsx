@@ -8,15 +8,15 @@ import { GeistMono } from 'geist/font/mono'
 
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import { ThemeProvider } from 'next-themes'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
 import { useMemo, ReactNode } from 'react'
 import { UserProvider } from '@auth0/nextjs-auth0'
 
-import '../styles/globals.css'
-import Layout from '../components/Layout'
-import NoIndexHead from '../components/NoIndexHead'
+import '@/styles/globals.css'
+import Layout from '@/components/Layout'
+import NoIndexHead from '@/components/NoIndexHead'
+import { ThemeProvider } from '@/lib/theme'
 
 const isSashimiEnabled = process.env.NEXT_PUBLIC_SASHIMI_ENABLED === 'true'
 
@@ -76,7 +76,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       )}
 
       <UserProvider>
-        <ThemeProvider attribute="class">
+        <ThemeProvider>
           <main className={`${GeistMono.variable}`}>
             <Layout>
               <LoginGuard>

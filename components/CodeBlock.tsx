@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Code } from 'react-notion-x/build/third-party/code'
 
-import '../lib/utils/prism-libs.js'
+import '@/lib/utils/prism-libs.js'
 
 const CodeBlock = (...params: Parameters<typeof Code>) => {
   return (

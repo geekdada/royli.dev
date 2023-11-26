@@ -2,7 +2,7 @@ import type { ExtendedRecordMap, PageBlock } from 'notion-types'
 import { getPageTableOfContents, uuidToId } from 'notion-utils'
 import { useMemo } from 'react'
 
-import { Post, Page } from '../lib/types'
+import { Post, Page } from '@/lib/types'
 
 interface Props {
   post: Post | Page

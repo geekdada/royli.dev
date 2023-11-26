@@ -2,11 +2,11 @@ import { QueryDatabaseResponse } from '@notionhq/client/build/src/api-endpoints'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
-import { resourceProxyServer } from '../config'
 
-import { Unpacked } from '../types'
-import logger from '../utils/logger'
-import { convertNotionAssetUrl, isNotionImageUrl } from '../utils/notion'
+import { resourceProxyServer } from '@/lib/config'
+import { Unpacked } from '@/lib/types'
+import logger from '@/lib/utils/logger'
+import { convertNotionAssetUrl, isNotionImageUrl } from '@/lib/utils/notion'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)

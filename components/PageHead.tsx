@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import * as React from 'react'
 
-import { defaultPageCover, siteURL } from '../lib/config'
+import { defaultPageCover, siteURL } from '@/lib/config'
 
 const PageHead = ({
   title,

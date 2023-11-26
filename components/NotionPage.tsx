@@ -1,4 +1,3 @@
-import { useTheme } from 'next-themes'
 import { useCallback, useEffect, useState } from 'react'
 import * as React from 'react'
 import Link from 'next/link'
@@ -7,12 +6,13 @@ import dynamic from 'next/dynamic'
 import { NotionRenderer } from 'react-notion-x'
 import type { ExtendedRecordMap, Block } from 'notion-types'
 
-import { resourceProxyServer } from '../lib/config'
+import { useTheme } from '@/lib/theme'
+import { resourceProxyServer } from '@/lib/config'
 import {
   convertNotionAssetUrl,
   isNotionAsset,
   isSelfHostedAsset,
-} from '../lib/utils/notion'
+} from '@/lib/utils/notion'
 
 const Code = dynamic(() => import('./CodeBlock'), {
   ssr: false,

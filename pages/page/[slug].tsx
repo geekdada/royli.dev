@@ -10,20 +10,20 @@ import clx from 'classnames'
 import DefaultErrorPage from 'next/error'
 import Balancer from 'react-wrap-balancer'
 
-import { NotionPage } from '../../components/NotionPage'
-import PageHead from '../../components/PageHead'
-import Time from '../../components/Time'
-import { siteURL } from '../../lib/config'
-import { getCachedPages, getPageByPageId } from '../../lib/notion'
-import { sec } from '../../lib/utils/time'
-import { Page } from '../../lib/types'
+import { NotionPage } from '@/components/NotionPage'
+import PageHead from '@/components/PageHead'
+import Time from '@/components/Time'
+import { siteURL } from '@/lib/config'
+import { getCachedPages, getPageByPageId } from '@/lib/notion'
+import { sec } from '@/lib/utils/time'
+import { Page } from '@/lib/types'
 
 interface Props {
   post: Page | null
   postRecordMap: ExtendedRecordMap | null
 }
 
-const Comments = dynamic(() => import('../../components/Comments'), {
+const Comments = dynamic(() => import('@/components/Comments'), {
   ssr: false,
 })
 
@@ -138,7 +138,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
         post: null,
         postRecordMap: null,
       },
-      revalidate: sec('10m'),
+      revalidate: 0,
     }
   }
 

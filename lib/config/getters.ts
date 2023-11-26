@@ -1,4 +1,4 @@
-import { getEnv } from '../utils/env'
+import { getEnv } from '@/lib/utils/env'
 import { getSiteConfig } from './index'
 
 export const isProd = getEnv('NODE_ENV', 'development') === 'production'

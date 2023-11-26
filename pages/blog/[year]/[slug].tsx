@@ -8,24 +8,24 @@ import type { ExtendedRecordMap } from 'notion-types'
 import { ParsedUrlQuery } from 'querystring'
 import { FiArrowLeft, FiMessageCircle } from 'react-icons/fi'
 import clx from 'classnames'
-import Balancer from 'react-wrap-balancer'
+import { Balancer } from 'react-wrap-balancer'
 
-import Copyright from '../../../components/Copyright'
-import { NotionPage } from '../../../components/NotionPage'
-import PageHead from '../../../components/PageHead'
-import TableOfContent from '../../../components/TableOfContent'
-import Time from '../../../components/Time'
-import { siteURL } from '../../../lib/config'
-import { getPageByPageId, getCachedBlogPosts } from '../../../lib/notion'
-import { sec } from '../../../lib/utils/time'
-import { Post } from '../../../lib/types'
+import Copyright from '@/components/Copyright'
+import { NotionPage } from '@/components/NotionPage'
+import PageHead from '@/components/PageHead'
+import TableOfContent from '@/components/TableOfContent'
+import Time from '@/components/Time'
+import { siteURL } from '@/lib/config'
+import { getPageByPageId, getCachedBlogPosts } from '@/lib/notion'
+import { sec } from '@/lib/utils/time'
+import { Post } from '@/lib/types'
 
 interface Props {
   post: Post | null
   postRecordMap: ExtendedRecordMap | null
 }
 
-const Comments = dynamic(() => import('../../../components/Comments'), {
+const Comments = dynamic(() => import('@/components/Comments'), {
   ssr: false,
 })
 
@@ -163,7 +163,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
         post: null,
         postRecordMap: null,
       },
-      revalidate: sec('10m'),
+      revalidate: 0,
     }
   }
 

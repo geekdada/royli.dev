@@ -1,7 +1,7 @@
 import {
   NOTION_ASSETS_ADDRESSES,
   SELF_HOSTED_ASSETS_ADDRESSES,
-} from '../constants'
+} from '@/lib/constants'
 
 export const isNotionAsset = (url: string): boolean => {
   return NOTION_ASSETS_ADDRESSES.some((address) => url.includes(address))

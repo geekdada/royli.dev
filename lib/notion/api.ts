@@ -3,10 +3,10 @@ import dayjs from 'dayjs'
 import ms from 'ms'
 import type { ExtendedRecordMap } from 'notion-types'
 
-import { CACHE_KEYS, createCacheLayer } from '../cache'
-import { contentDatabaseId, pagesDatabaseId } from '../config'
-import { Page, PaginatedRequest, PaginatedResponse, Post } from '../types'
-import logger from '../utils/logger'
+import { CACHE_KEYS, createCacheLayer } from '@/lib/cache'
+import { contentDatabaseId, pagesDatabaseId } from '@/lib/config'
+import { Page, PaginatedRequest, PaginatedResponse, Post } from '@/lib/types'
+import logger from '@/lib/utils/logger'
 import { notionAPI, notionPrivateAPI } from './client'
 import {
   getBooleanProperty,

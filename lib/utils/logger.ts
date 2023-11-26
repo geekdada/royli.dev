@@ -1,7 +1,7 @@
 import pino from 'pino'
 import pretty from 'pino-pretty'
 
-import { isProd } from '../config'
+import { isProd } from '@/lib/config'
 
 const prettyStream = pretty({
   colorize: true,
