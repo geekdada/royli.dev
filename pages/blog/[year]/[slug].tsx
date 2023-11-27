@@ -92,11 +92,13 @@ const Post: NextPage<Props> = ({ post, postRecordMap }) => {
                   <NotionPage recordMap={postRecordMap} />
                 </div>
 
-                <Copyright
-                  canonical={`${siteURL}${post.readURL}`}
-                  title={`${post.title} - Roy Li's Blog`}
-                  publishDate={post.publishDate}
-                />
+                <aside>
+                  <Copyright
+                    canonical={`${siteURL}${post.readURL}`}
+                    title={`${post.title} - Roy Li's Blog`}
+                    publishDate={post.publishDate}
+                  />
+                </aside>
               </article>
             </div>
 
