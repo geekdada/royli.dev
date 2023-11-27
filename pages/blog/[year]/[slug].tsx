@@ -88,19 +88,6 @@ const Post: NextPage<Props> = ({ post, postRecordMap }) => {
                   </Balancer>
                 </h1>
 
-                <div className="secondary-text flex flex-wrap items-center gap-2">
-                  <span>
-                    <Time datetime={post.publishDate} />
-                  </span>
-                  <span>·</span>
-                  <span>Roy</span>
-                  <span>·</span>
-                  <Link href="#comments-section" className="hover-links">
-                    <FiMessageCircle size={18} className="mr-1 inline" />
-                    <span>comments</span>
-                  </Link>
-                </div>
-
                 <div className="my-6">
                   <NotionPage recordMap={postRecordMap} />
                 </div>
@@ -108,6 +95,7 @@ const Post: NextPage<Props> = ({ post, postRecordMap }) => {
                 <Copyright
                   canonical={`${siteURL}${post.readURL}`}
                   title={`${post.title} - Roy Li's Blog`}
+                  publishDate={post.publishDate}
                 />
               </article>
             </div>
