@@ -6,7 +6,7 @@ const nextConfig = {
     defaultLocale: 'zh-Hans',
   },
   images: {
-    domains: ['resource-proxy.royli.dev'],
+    remotePatterns: [{ hostname: 'resource-proxy.royli.dev' }],
   },
   transpilePackages: ['geist'],
   async redirects() {

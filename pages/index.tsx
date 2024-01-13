@@ -30,15 +30,28 @@ const Home: NextPage<Props> = ({ posts }) => {
           </h1>
 
           <div className="space-y-4 text-lg">
-            <p className="leading-7">
+            <p className="leading-9">
               <Balancer>
-                I am a software engineer based in Berlin, currently working at{' '}
-                <img
-                  className="inline-block w-14"
-                  src="/images/klarna.svg"
-                  alt="Klarna"
-                />
-                , previously at Alibaba.
+                <p>
+                  I am a software engineer based in Berlin, currently working at{' '}
+                  <a href="https://klarna.com" target="_blank" rel="noreferrer">
+                    <img
+                      className="inline-block h-[30px] align-[-9px]"
+                      src="/images/klarna.svg"
+                      alt="Klarna"
+                    />
+                  </a>
+                  ,
+                </p>
+                <p>
+                  previously at{' '}
+                  <img
+                    className="inline-block h-[30px] align-[-9px]"
+                    src="/images/alibaba.svg"
+                    alt="Alibaba"
+                  />
+                  .
+                </p>
               </Balancer>
             </p>
             <p className="leading-9">
