@@ -25,7 +25,7 @@ const PageHead = ({
       <meta property="og:site_name" content="Roy Li" />
       <meta property="twitter:domain" content="royli.dev" />
 
-      <meta name="twitter:creator" content={`@geekdada`} />
+      <meta name="twitter:creator" content="@geekdada" />
 
       {description && (
         <>

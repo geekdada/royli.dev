@@ -1,7 +1,7 @@
 import type { GetStaticProps, NextPage } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import Balancer from 'react-wrap-balancer'
+import { Balancer } from 'react-wrap-balancer'
 
 import { getBlogPosts } from '@/lib/notion'
 import { PaginatedResponse, Post } from '@/lib/types'
@@ -30,10 +30,11 @@ const Home: NextPage<Props> = ({ posts }) => {
           </h1>
 
           <div className="space-y-4 text-lg">
-            <p className="leading-9">
-              <Balancer>
-                <p>
-                  I am a software engineer based in Berlin, currently working at{' '}
+            <div className="leading-9">
+              <p>
+                <Balancer>
+                  I am a software engineer based in Berlin, currently working
+                  at&nbsp;
                   <a href="https://klarna.com" target="_blank" rel="noreferrer">
                     <img
                       className="inline-block h-[30px] align-[-9px]"
@@ -42,20 +43,22 @@ const Home: NextPage<Props> = ({ posts }) => {
                     />
                   </a>
                   ,
-                </p>
-                <p>
-                  previously at{' '}
+                </Balancer>
+              </p>
+              <p>
+                <Balancer>
+                  previously at&nbsp;
                   <img
                     className="inline-block h-[30px] align-[-9px]"
                     src="/images/alibaba.svg"
                     alt="Alibaba"
                   />
                   .
-                </p>
-              </Balancer>
-            </p>
+                </Balancer>
+              </p>
+            </div>
             <p className="leading-9">
-              You can find me on{' '}
+              You can find me on&nbsp;
               <a
                 href="https://github.com/geekdada"
                 target="_blank"
@@ -89,8 +92,8 @@ const Home: NextPage<Props> = ({ posts }) => {
                 className="mx-1 py-1 px-2 rounded font-bold transition-all duration-150 bg-dark-900 text-white hover:bg-dark-900/80"
               >
                 Unsplash
-              </a>{' '}
-              and{' '}
+              </a>
+              &nbsp;and&nbsp;
               <a
                 href="https://www.linkedin.com/in/roy-li-gz/"
                 target="_blank"

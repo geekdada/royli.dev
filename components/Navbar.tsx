@@ -12,11 +12,11 @@ const navigations = [
     link: '/blog',
   },
   {
-    name: '网上邻居',
-    link: '/page/network-neighborhood',
+    name: 'CV',
+    link: 'https://url.royli.dev/cv',
   },
   {
-    name: '付费咨询',
+    name: 'AMA',
     link: 'https://amazt.netlify.app/people/geekdada/',
   },
   {
@@ -57,7 +57,7 @@ const Navbar: React.FC = () => {
       <div className="flex items-center space-x-4">
         <nav className="hidden items-center space-x-2 sm:flex">
           {navigations.map((n, i) => (
-            <Link href={n.link} key={i} className="nav-links font-title">
+            <Link href={n.link} key={n.name} className="nav-links font-title">
               {n.name}
             </Link>
           ))}
@@ -79,7 +79,7 @@ const Navbar: React.FC = () => {
             >
               <Menu.Items className="absolute right-0 mt-2 w-40 origin-top-right rounded bg-white shadow-lg grid divide-y divide-gray-400/30 dark:bg-dark-700 focus:outline-none">
                 {navigations.map((n, i) => (
-                  <Menu.Item key={i}>
+                  <Menu.Item key={n.name}>
                     <MenuItemLink href={n.link}>
                       <div className="py-3 text-center">{n.name}</div>
                     </MenuItemLink>
