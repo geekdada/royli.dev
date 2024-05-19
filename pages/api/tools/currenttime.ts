@@ -36,7 +36,26 @@ router.get(async () => {
     `As reference, the current time in Beijing, China is ${beijingTime}, in New York, USA is ${newYorkTime}, and in San Francisco, USA is ${sfoTime}.`,
   ]
 
-  return new NextResponse(result.join('\n'))
+  return NextResponse.json({
+    local_time: {
+      time: berlinTime,
+      location: 'Berlin, Germany',
+    },
+    reference_time: [
+      {
+        time: beijingTime,
+        location: 'Beijing, China',
+      },
+      {
+        time: newYorkTime,
+        location: 'New York, USA',
+      },
+      {
+        time: sfoTime,
+        location: 'San Francisco, USA',
+      },
+    ],
+  })
 })
 
 export default router.handler({
