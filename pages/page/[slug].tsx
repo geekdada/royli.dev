@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import { GetStaticProps, NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
@@ -27,7 +26,7 @@ const Comments = dynamic(() => import('@/components/Comments'), {
   ssr: false,
 })
 
-const Page: NextPage<Props> = ({ post, postRecordMap }) => {
+const PageEndpoint: NextPage<Props> = ({ post, postRecordMap }) => {
   if (!post || !postRecordMap) {
     return (
       <>
@@ -153,4 +152,4 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   }
 }
 
-export default Page
+export default PageEndpoint
