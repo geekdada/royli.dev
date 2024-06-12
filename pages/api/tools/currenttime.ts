@@ -31,10 +31,6 @@ router.get(async () => {
   const sfoTime = dayjs(date)
     .tz('America/Los_Angeles')
     .format('YYYY-MM-DD HH:mm:ss')
-  const result = [
-    `The user is currenly located in Berlin, Germany. Their local time is ${berlinTime}.`,
-    `As reference, the current time in Beijing, China is ${beijingTime}, in New York, USA is ${newYorkTime}, and in San Francisco, USA is ${sfoTime}.`,
-  ]
 
   return NextResponse.json({
     local_time: {

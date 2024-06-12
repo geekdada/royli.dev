@@ -4,7 +4,7 @@ import {
   NextResponse,
 } from 'next/server'
 import { createEdgeRouter } from 'next-connect'
-import boom from '@hapi/boom'
+import * as boom from '@hapi/boom'
 
 const router = createEdgeRouter<NextRequest, NextFetchEvent>()
 
