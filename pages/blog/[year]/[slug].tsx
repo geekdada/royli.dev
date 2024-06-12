@@ -6,7 +6,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import type { ExtendedRecordMap } from 'notion-types'
 import { ParsedUrlQuery } from 'querystring'
-import { FiArrowLeft, FiMessageCircle } from 'react-icons/fi'
+import { FiArrowLeft } from 'react-icons/fi'
 import clx from 'classnames'
 import { Balancer } from 'react-wrap-balancer'
 
@@ -14,7 +14,6 @@ import Copyright from '@/components/Copyright'
 import { NotionPage } from '@/components/NotionPage'
 import PageHead from '@/components/PageHead'
 import TableOfContent from '@/components/TableOfContent'
-import Time from '@/components/Time'
 import { siteURL } from '@/lib/config'
 import { getPageByPageId, getCachedBlogPosts } from '@/lib/notion'
 import { sec } from '@/lib/utils/time'
@@ -29,7 +28,7 @@ const Comments = dynamic(() => import('@/components/Comments'), {
   ssr: false,
 })
 
-const Post: NextPage<Props> = ({ post, postRecordMap }) => {
+const PostEndpoint: NextPage<Props> = ({ post, postRecordMap }) => {
   if (!post || !postRecordMap) {
     return (
       <>
@@ -172,4 +171,4 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   }
 }
 
-export default Post
+export default PostEndpoint
