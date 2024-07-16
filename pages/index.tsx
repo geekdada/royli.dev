@@ -18,7 +18,7 @@ const Home: NextPage<Props> = ({ posts }) => {
         <div className="mx-auto max-w-3xl px-6">
           <Image
             className="rounded-full"
-            src="/images/avatar.jpg"
+            src="/images/avatar.svg"
             alt="avatar"
             width={120}
             height={120}
