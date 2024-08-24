@@ -3,7 +3,15 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { createRouter } from 'next-connect'
 import * as Yup from 'yup'
 
-import { getCachedBlogPosts } from '@/lib/notion'
+import {
+  getCachedBlogPosts,
+  getCachedBlogPostBySlug,
+  getCachedPages,
+  getCachedPageBySlug,
+  getCachedPrivatePageRecordMapByPageId,
+  getCachedRawPageByPageId,
+  getCachedTags,
+} from '@/lib/notion'
 import { authMiddleware } from '@/lib/server-middlewares/auth'
 
 const router = createRouter<NextApiRequest, NextApiResponse>()
@@ -21,6 +29,12 @@ router.post(authMiddleware, async (req, res) => {
         res.revalidate('/'),
         res.revalidate('/blog'),
         getCachedBlogPosts.clear(),
+        getCachedBlogPostBySlug.clear(),
+        getCachedPages.clear(),
+        getCachedPageBySlug.clear(),
+        getCachedPrivatePageRecordMapByPageId.clear(),
+        getCachedRawPageByPageId.clear(),
+        getCachedTags.clear(),
       ])
       break
     case 'uri':
