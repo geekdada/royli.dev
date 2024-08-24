@@ -13,12 +13,17 @@ import { NotionPage } from '@/components/NotionPage'
 import PageHead from '@/components/PageHead'
 import Time from '@/components/Time'
 import { siteURL } from '@/lib/config'
-import { getCachedPages, getPageByPageId } from '@/lib/notion'
+import {
+  getCachedPageBySlug,
+  getPrivatePageRecordMapByPageId,
+  getCachedPages,
+} from '@/lib/notion'
 import { sec } from '@/lib/utils/time'
-import { Page } from '@/lib/types'
+import { Post } from '@/lib/types'
+import { useTheme } from '@/lib/theme'
 
 interface Props {
-  post: Page | null
+  post: Post | null
   postRecordMap: ExtendedRecordMap | null
 }
 
@@ -26,14 +31,16 @@ const Comments = dynamic(() => import('@/components/Comments'), {
   ssr: false,
 })
 
-const PageEndpoint: NextPage<Props> = ({ post, postRecordMap }) => {
+const PageTypePage: NextPage<Props> = ({ post, postRecordMap }) => {
+  const { theme } = useTheme()
+
   if (!post || !postRecordMap) {
     return (
       <>
         <Head>
           <meta name="robots" content="noindex" />
         </Head>
-        <DefaultErrorPage statusCode={404} />
+        <DefaultErrorPage statusCode={404} withDarkMode={theme === 'dark'} />
       </>
     )
   }
@@ -81,7 +88,7 @@ const PageEndpoint: NextPage<Props> = ({ post, postRecordMap }) => {
 
             <div className="secondary-text flex flex-wrap items-center gap-2">
               <span>
-                <Time datetime={post.createdDate} />
+                <Time datetime={post.publishDate} />
               </span>
               <span>·</span>
               <span>Roy</span>
@@ -128,8 +135,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   }
 
   const { slug } = params as Props
-  const posts = await getCachedPages({ pageSize: 9999 })
-  const post = posts.results.find((p) => p.slug === slug)
+  const post = await getCachedPageBySlug(slug)
 
   if (!post) {
     return {
@@ -137,11 +143,11 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
         post: null,
         postRecordMap: null,
       },
-      revalidate: 0,
+      revalidate: sec('7d'),
     }
   }
 
-  const postPage = await getPageByPageId(post.id)
+  const postPage = await getPrivatePageRecordMapByPageId(post.id)
 
   return {
     props: {
@@ -152,4 +158,4 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   }
 }
 
-export default PageEndpoint
+export default PageTypePage

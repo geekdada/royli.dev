@@ -38,5 +38,6 @@ module.exports = {
     '@typescript-eslint/no-extra-semi': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/no-var-requires': 'off',
+    'import/no-named-as-default-member': 'off',
   },
 }

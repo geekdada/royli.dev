@@ -3,10 +3,10 @@ import { getPageTableOfContents, uuidToId } from 'notion-utils'
 import { useMemo, useState, useEffect } from 'react'
 import clx from 'classnames'
 
-import { Post, Page } from '@/lib/types'
+import { Post } from '@/lib/types'
 
 interface Props {
-  post: Post | Page
+  post: Post
   postRecordMap: ExtendedRecordMap
 }
 

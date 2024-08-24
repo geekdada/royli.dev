@@ -6,7 +6,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import type { ExtendedRecordMap } from 'notion-types'
 import { ParsedUrlQuery } from 'querystring'
-import { FiArrowLeft } from 'react-icons/fi'
+import { FiArrowLeft, FiTag } from 'react-icons/fi'
 import clx from 'classnames'
 import { Balancer } from 'react-wrap-balancer'
 
@@ -15,9 +15,14 @@ import { NotionPage } from '@/components/NotionPage'
 import PageHead from '@/components/PageHead'
 import TableOfContent from '@/components/TableOfContent'
 import { siteURL } from '@/lib/config'
-import { getPageByPageId, getCachedBlogPosts } from '@/lib/notion'
+import {
+  getPrivatePageRecordMapByPageId,
+  getCachedBlogPosts,
+  getCachedBlogPostBySlug,
+} from '@/lib/notion'
 import { sec } from '@/lib/utils/time'
-import { Post } from '@/lib/types'
+import type { Post } from '@/lib/types'
+import { useTheme } from '@/lib/theme'
 
 interface Props {
   post: Post | null
@@ -28,18 +33,21 @@ const Comments = dynamic(() => import('@/components/Comments'), {
   ssr: false,
 })
 
-const PostEndpoint: NextPage<Props> = ({ post, postRecordMap }) => {
+const BlogPostPage: NextPage<Props> = ({ post, postRecordMap }) => {
+  const { theme } = useTheme()
+
   if (!post || !postRecordMap) {
     return (
       <>
         <Head>
           <meta name="robots" content="noindex" />
         </Head>
-        <DefaultErrorPage statusCode={404} />
+        <DefaultErrorPage statusCode={404} withDarkMode={theme === 'dark'} />
       </>
     )
   }
 
+  const { isGallaryView } = post
   const canonical = new URL(post.readURL, siteURL)
   const hasCoverImage = Boolean(post.coverImage)
 
@@ -66,7 +74,12 @@ const PostEndpoint: NextPage<Props> = ({ post, postRecordMap }) => {
         )}
 
         <div className="grid grid-cols-10 gap-8">
-          <div className="col-span-10 lg:col-span-7 space-y-4">
+          <div
+            className={clx(
+              'space-y-4',
+              isGallaryView ? 'col-span-full' : 'col-span-10 lg:col-span-7'
+            )}
+          >
             <div className="post-section">
               <article
                 className={clx(
@@ -90,6 +103,23 @@ const PostEndpoint: NextPage<Props> = ({ post, postRecordMap }) => {
                 <div className="my-6">
                   <NotionPage recordMap={postRecordMap} />
                 </div>
+
+                {post.tags && post.tags.length > 0 && (
+                  <div className="my-6">
+                    <FiTag className="inline-block mr-2" />
+
+                    {post.tags.map((tag) => (
+                      <Link href={`/blog/tags/${tag.id}`} key={tag.id}>
+                        <div
+                          key={tag.id}
+                          className="inline-block px-2 py-1 text-sm font-mono bg-gray-100 dark:bg-dark-900 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-dark-800 cursor-pointer"
+                        >
+                          {tag.name}
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
 
                 <aside>
                   <Copyright
@@ -115,11 +145,13 @@ const PostEndpoint: NextPage<Props> = ({ post, postRecordMap }) => {
             </div>
           </div>
 
-          <div className="sticky top-20 col-span-3 hidden h-0 lg:block">
-            <div className="max-h-screen-md rounded border border-gray-400/30 p-4 relative bg-white dark:bg-dark-700 overflow-hidden">
-              <TableOfContent post={post} postRecordMap={postRecordMap} />
+          {!isGallaryView && (
+            <div className="sticky top-20 col-span-3 hidden lg:block">
+              <div className="max-h-screen-md rounded border border-gray-400/30 p-4 relative bg-white dark:bg-dark-700 overflow-hidden">
+                <TableOfContent post={post} postRecordMap={postRecordMap} />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>
@@ -147,8 +179,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   }
 
   const { slug } = params as Props
-  const posts = await getCachedBlogPosts({ pageSize: 9999 })
-  const post = posts.results.find((p) => p.slug === slug)
+  const post = await getCachedBlogPostBySlug(slug)
 
   if (!post) {
     return {
@@ -156,11 +187,11 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
         post: null,
         postRecordMap: null,
       },
-      revalidate: 0,
+      revalidate: sec('7d'),
     }
   }
 
-  const postPage = await getPageByPageId(post.id)
+  const postPage = await getPrivatePageRecordMapByPageId(post.id)
 
   return {
     props: {
@@ -171,4 +202,4 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   }
 }
 
-export default PostEndpoint
+export default BlogPostPage

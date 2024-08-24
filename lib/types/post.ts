@@ -6,19 +6,16 @@ export interface Post {
   publishDate: string
   lastEditDate: string
   isFeatured: boolean
+  isGallaryView: boolean
   readURL: string
   coverImage: string | null
   coverIcon: string | null
+  tags: Tag[] | null
 }
 
-export interface Page {
+export interface Tag {
   id: string
-  title: string
+  name: string
   slug: string
-  excerpt: string | null
-  lastEditDate: string
-  createdDate: string
-  readURL: string
-  coverImage: string | null
-  coverIcon: string | null
+  description: string | null
 }

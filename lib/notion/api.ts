@@ -1,23 +1,29 @@
-import { QueryDatabaseParameters } from '@notionhq/client/build/src/api-endpoints'
-import dayjs from 'dayjs'
-import ms from 'ms'
+import type { QueryDatabaseParameters } from '@notionhq/client/build/src/api-endpoints'
+import { isFullPage } from '@notionhq/client'
 import type { ExtendedRecordMap } from 'notion-types'
+import Bluebird from 'bluebird'
+import ms from 'ms'
 
 import { CACHE_KEYS, createCacheLayer } from '@/lib/cache'
-import { contentDatabaseId, pagesDatabaseId } from '@/lib/config'
-import { Page, PaginatedRequest, PaginatedResponse, Post } from '@/lib/types'
-import logger from '@/lib/utils/logger'
-import { notionAPI, notionPrivateAPI } from './client'
 import {
-  getBooleanProperty,
-  getDateProperty,
-  getPostCoverImage,
-  getStringProperty,
-} from './utils'
+  contentDatabaseId,
+  pagesDatabaseId,
+  tagsDatabaseId,
+} from '@/lib/config'
+import { getStringProperty } from './utils'
+import type {
+  Tag,
+  PaginatedRequest,
+  PaginatedResponse,
+  Post,
+} from '@/lib/types'
+import { notionAPI, notionPrivateAPI } from './client'
+import { enrichPostFromPageObjectResponse } from './enrich'
 
 export const getBlogPosts = async (
-  { pageSize, startCursor }: PaginatedRequest = {
-    pageSize: 50,
+  { pageSize, startCursor, options }: PaginatedRequest = {
+    pageSize: 20,
+    options: {},
   }
 ): Promise<PaginatedResponse<Post>> => {
   const query: QueryDatabaseParameters = {
@@ -29,42 +35,30 @@ export const getBlogPosts = async (
     page_size: pageSize,
     start_cursor: startCursor,
   }
+
+  if (options?.tagId && query?.filter && 'and' in query.filter) {
+    query.filter.and.push({
+      property: 'Tags',
+      relation: {
+        contains: options.tagId,
+      },
+    })
+  }
+
   const collection = await notionAPI.databases.query(query)
   const blogList: Post[] = []
 
-  collection.results.forEach((item) => {
-    if (!('properties' in item)) {
+  await Bluebird.mapSeries(collection.results, async (item) => {
+    if (!isFullPage(item)) {
       return
     }
 
-    const rawPost = {
-      id: item.id,
-      title: getStringProperty(item, 'Name'),
-      slug: getStringProperty(item, 'Slug'),
-      excerpt: getStringProperty(item, 'Excerpt') || null,
-      publishDate:
-        getDateProperty(item, 'Publish Date') ||
-        getDateProperty(item, 'created_time'),
-      lastEditDate: getDateProperty(item, 'Last Edited Time'),
-      isFeatured: getBooleanProperty(item, 'Featured') ?? false,
-    }
-    const requiredProperties: Array<keyof typeof rawPost> = ['slug', 'title']
-    const isComplete = requiredProperties.every((key) => Boolean(rawPost[key]))
-    const publishYear = dayjs(rawPost.publishDate as string).format('YYYY')
-    const coverImage = getPostCoverImage(item)
-    const coverIcon = item.icon?.type === 'emoji' ? item.icon.emoji : null
+    const post = await enrichPostFromPageObjectResponse(item, {
+      enrichTags: false,
+    })
 
-    if (isComplete) {
-      blogList.push({
-        ...rawPost,
-        title: rawPost.title as string,
-        slug: rawPost.slug as string,
-        publishDate: rawPost.publishDate as string,
-        lastEditDate: rawPost.lastEditDate as string,
-        readURL: `/blog/${publishYear}/${rawPost.slug}`,
-        coverImage,
-        coverIcon,
-      })
+    if (post) {
+      blogList.push(post)
     }
   })
 
@@ -75,70 +69,116 @@ export const getBlogPosts = async (
   }
 }
 
-export const getCachedBlogPosts = createCacheLayer(
-  CACHE_KEYS.BLOG_POSTS,
-  getBlogPosts,
-  ms('24h')
-)
-
-export const getPageByPageId = async (
+export const getPrivatePageRecordMapByPageId = async (
   pageId: string
 ): Promise<ExtendedRecordMap> => {
   return notionPrivateAPI.getPage(pageId, {})
 }
 
-export const getCachedPageByPageId = createCacheLayer(
-  CACHE_KEYS.BLOG_POST_BY_PAGE_ID,
-  getPageByPageId,
-  ms('24h')
-)
+export const getRawPageByPageId = async (pageId: string) => {
+  const page = await notionAPI.pages.retrieve({ page_id: pageId })
+
+  if (!isFullPage(page)) {
+    return null
+  }
+
+  return page
+}
+
+export const getBlogPostBySlug = async (slug: string): Promise<Post | null> => {
+  const query: QueryDatabaseParameters = {
+    database_id: contentDatabaseId,
+    filter: {
+      and: [
+        { property: 'Ready to Publish', checkbox: { equals: true } },
+        {
+          property: 'Slug',
+          rich_text: {
+            equals: slug,
+          },
+        },
+      ],
+    },
+    page_size: 1,
+  }
+  const collection = await notionAPI.databases.query(query)
+
+  if (collection.results.length === 0) {
+    return null
+  }
+
+  const item = collection.results[0]
+
+  if (!isFullPage(item)) {
+    return null
+  }
+
+  return enrichPostFromPageObjectResponse(item, {
+    enrichTags: true,
+  })
+}
+
+export const getPageBySlug = async (slug: string): Promise<Post | null> => {
+  const query: QueryDatabaseParameters = {
+    database_id: pagesDatabaseId,
+    filter: {
+      and: [
+        { property: 'Ready to Publish', checkbox: { equals: true } },
+        {
+          property: 'Slug',
+          rich_text: {
+            equals: slug,
+          },
+        },
+      ],
+    },
+    page_size: 1,
+  }
+  const collection = await notionAPI.databases.query(query)
+
+  if (collection.results.length === 0) {
+    return null
+  }
+
+  const item = collection.results[0]
+
+  if (!isFullPage(item)) {
+    return null
+  }
+
+  return enrichPostFromPageObjectResponse(item, {
+    enrichTags: true,
+  })
+}
 
 export const getPages = async (
   { pageSize, startCursor }: PaginatedRequest = {
     pageSize: 50,
   }
-): Promise<PaginatedResponse<Page>> => {
+): Promise<PaginatedResponse<Post>> => {
   const query: QueryDatabaseParameters = {
     database_id: pagesDatabaseId,
     filter: {
-      and: [{ property: 'Publish', checkbox: { equals: true } }],
+      and: [{ property: 'Ready to Publish', checkbox: { equals: true } }],
     },
-    sorts: [{ timestamp: 'created_time', direction: 'descending' }],
+    sorts: [{ property: 'Publish Date', direction: 'descending' }],
     page_size: pageSize,
     start_cursor: startCursor,
   }
   const collection = await notionAPI.databases.query(query)
-  const pageList: Page[] = []
+  const pageList: Post[] = []
 
-  collection.results.forEach((item) => {
-    if (!('properties' in item)) {
+  await Bluebird.mapSeries(collection.results, async (item) => {
+    if (!isFullPage(item)) {
       return
     }
 
-    const rawPost = {
-      id: item.id,
-      title: getStringProperty(item, 'Name'),
-      slug: getStringProperty(item, 'Slug'),
-      excerpt: getStringProperty(item, 'Excerpt') || null,
-      createdTime: getDateProperty(item, 'Created Time'),
-      lastEditDate: getDateProperty(item, 'Last Edited Time'),
-    }
-    const requiredProperties: Array<keyof typeof rawPost> = ['slug', 'title']
-    const isComplete = requiredProperties.every((key) => Boolean(rawPost[key]))
-    const coverImage = getPostCoverImage(item)
-    const coverIcon = item.icon?.type === 'emoji' ? item.icon.emoji : null
+    const post = await enrichPostFromPageObjectResponse(item, {
+      enrichTags: false,
+    })
 
-    if (isComplete) {
-      pageList.push({
-        ...rawPost,
-        title: rawPost.title as string,
-        slug: rawPost.slug as string,
-        createdDate: rawPost.createdTime as string,
-        lastEditDate: rawPost.lastEditDate as string,
-        readURL: `/page/${rawPost.slug}`,
-        coverImage,
-        coverIcon,
-      })
+    if (post) {
+      pageList.push(post)
     }
   })
 
@@ -149,8 +189,78 @@ export const getPages = async (
   }
 }
 
+export const getTags = async () => {
+  const query: QueryDatabaseParameters = {
+    database_id: tagsDatabaseId,
+    page_size: 50,
+  }
+  const collection = await notionAPI.databases.query(query)
+  const tags: Tag[] = []
+
+  for (const item of collection.results) {
+    if (!isFullPage(item)) {
+      continue
+    }
+
+    const name = getStringProperty(item, 'Name')
+    const slug = getStringProperty(item, 'Slug')
+    const description = getStringProperty(item, 'Description') || null
+
+    if (!name || !slug) {
+      continue
+    }
+
+    const tag: Tag = {
+      id: item.id,
+      name,
+      slug,
+      description,
+    }
+
+    tags.push(tag)
+  }
+
+  return tags
+}
+
+export const getCachedBlogPosts = createCacheLayer(
+  CACHE_KEYS.BLOG_POSTS,
+  getBlogPosts,
+  ms('7d')
+)
+
 export const getCachedPages = createCacheLayer(
   CACHE_KEYS.PAGES,
   getPages,
+  ms('7d')
+)
+
+export const getCachedPrivatePageRecordMapByPageId = createCacheLayer(
+  CACHE_KEYS.BLOG_POST_BY_PAGE_ID,
+  getPrivatePageRecordMapByPageId,
+  ms('7d')
+)
+
+export const getCachedRawPageByPageId = createCacheLayer(
+  CACHE_KEYS.RAW_PAGE,
+  getRawPageByPageId,
+  ms('7d')
+)
+
+export const getCachedBlogPostBySlug = createCacheLayer(
+  CACHE_KEYS.BLOG_POST,
+  getBlogPostBySlug,
+  ms('7d')
+)
+
+export const getCachedPageBySlug = createCacheLayer(
+  CACHE_KEYS.PAGE,
+  getPageBySlug,
+  ms('7d')
+)
+
+export const getCachedTags = createCacheLayer(
+  CACHE_KEYS.TAGS,
+  getTags,
   ms('7d')
 )

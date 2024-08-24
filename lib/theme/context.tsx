@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  useMemo,
-} from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
 type ThemeProviderProps = {
   children: React.ReactNode

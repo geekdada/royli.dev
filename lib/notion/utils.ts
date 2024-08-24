@@ -1,10 +1,9 @@
-import { QueryDatabaseResponse } from '@notionhq/client/build/src/api-endpoints'
+import type { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 
 import { resourceProxyServer } from '@/lib/config'
-import { Unpacked } from '@/lib/types'
 import logger from '@/lib/utils/logger'
 import { convertNotionAssetUrl, isNotionImageUrl } from '@/lib/utils/notion'
 
@@ -12,14 +11,14 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 
 export const getStringProperty = (
-  databaseEntry: Unpacked<QueryDatabaseResponse['results']>,
+  databaseEntry: PageObjectResponse,
   key: string
 ): undefined | string | null => {
-  if (!('properties' in databaseEntry)) {
+  const value = databaseEntry.properties[key]
+
+  if (!value) {
     return undefined
   }
-
-  const value = databaseEntry.properties[key]
 
   switch (value.type) {
     case 'number':
@@ -44,15 +43,37 @@ export const getStringProperty = (
   }
 }
 
-export const getDateProperty = (
-  databaseEntry: Unpacked<QueryDatabaseResponse['results']>,
+export const getRelationProperty = (
+  databaseEntry: PageObjectResponse,
   key: string
-): undefined | string | [string, string] => {
-  if (!('properties' in databaseEntry)) {
+): undefined | string[] => {
+  const value = databaseEntry.properties[key]
+
+  if (!value) {
     return undefined
   }
 
+  switch (value.type) {
+    case 'relation':
+      return value.relation?.map((v) => v.id) || []
+    default:
+      logger.warn(
+        'key "%s" is of type "%s" instead of "relation"',
+        key,
+        value.type
+      )
+  }
+}
+
+export const getDateProperty = (
+  databaseEntry: PageObjectResponse,
+  key: string
+): undefined | string | [string, string] => {
   const value = databaseEntry.properties[key]
+
+  if (!value) {
+    return undefined
+  }
 
   switch (value.type) {
     case 'date':
@@ -75,14 +96,14 @@ export const getDateProperty = (
 }
 
 export const getBooleanProperty = (
-  databaseEntry: Unpacked<QueryDatabaseResponse['results']>,
+  databaseEntry: PageObjectResponse,
   key: string
 ): undefined | boolean => {
-  if (!('properties' in databaseEntry)) {
+  const value = databaseEntry.properties[key]
+
+  if (!value) {
     return undefined
   }
-
-  const value = databaseEntry.properties[key]
 
   switch (value.type) {
     case 'checkbox':
@@ -97,12 +118,8 @@ export const getBooleanProperty = (
 }
 
 export const getPostCoverImage = (
-  collectionItem: Unpacked<QueryDatabaseResponse['results']>
+  collectionItem: PageObjectResponse
 ): string | null => {
-  if (!('properties' in collectionItem)) {
-    return null
-  }
-
   const cover = collectionItem.cover
 
   if (!cover) {

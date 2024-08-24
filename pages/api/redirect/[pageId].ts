@@ -4,7 +4,7 @@ import { createRouter } from 'next-connect'
 import boom from '@hapi/boom'
 import { getPageProperty } from 'notion-utils'
 
-import { getPageByPageId } from '@/lib/notion'
+import { getPrivatePageRecordMapByPageId } from '@/lib/notion'
 
 const router = createRouter<NextApiRequest, NextApiResponse>()
 
@@ -15,7 +15,7 @@ router.get(async (req, res) => {
     throw boom.notFound()
   }
 
-  const post = await getPageByPageId(pageId as string)
+  const post = await getPrivatePageRecordMapByPageId(pageId as string)
   const blockId = Object.keys(post.block)[0]
   const block = post.block[blockId]
   const slug = getPageProperty<string>('Slug', block.value, post)
@@ -27,7 +27,7 @@ router.get(async (req, res) => {
   const createdTime = block.value.created_time
   const publishYear = dayjs(publishDate || createdTime).format('YYYY')
 
-  res.status(302).redirect(`/blog/${publishYear}/${slug}`)
+  res.status(301).redirect(`/blog/${publishYear}/${slug}`)
 })
 
 export default router.handler({
