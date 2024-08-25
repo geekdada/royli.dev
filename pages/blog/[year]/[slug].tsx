@@ -7,6 +7,7 @@ import { ParsedUrlQuery } from 'querystring'
 import { FiArrowLeft, FiTag } from 'react-icons/fi'
 import clx from 'classnames'
 import { Balancer } from 'react-wrap-balancer'
+import { useRouter } from 'next/router'
 
 import Copyright from '@/components/Copyright'
 import { NotionPage } from '@/components/NotionPage'
@@ -26,6 +27,11 @@ interface Props {
   postRecordMap: ExtendedRecordMap | null
 }
 
+interface Params extends ParsedUrlQuery {
+  slug: string
+  year: string
+}
+
 const Comments = dynamic(() => import('@/components/Comments'), {
   ssr: false,
 })
@@ -40,17 +46,12 @@ export const getStaticPaths = async () => {
         params: { slug: p.slug, year: publishYear },
       }
     }),
-    fallback: true,
+    fallback: 'blocking',
   }
 }
 
 export const getStaticProps = (async ({ params }) => {
-  interface Props extends ParsedUrlQuery {
-    slug: string
-    year: string
-  }
-
-  const { slug, year } = params as Props
+  const { slug, year } = params || {}
 
   if (!slug || !year) {
     return {
@@ -75,14 +76,23 @@ export const getStaticProps = (async ({ params }) => {
       post,
       postRecordMap: postPage,
     },
-    revalidate: sec('7d'),
   }
-}) satisfies GetStaticProps<Props>
+}) satisfies GetStaticProps<Props, Params>
 
 export default function BlogPostPage({
   post,
   postRecordMap,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const router = useRouter()
+
+  if (router.isFallback) {
+    return (
+      <div className="container mx-auto text-center font-mono text-slate-900 dark:text-slate-100 font-bold">
+        Loading...
+      </div>
+    )
+  }
+
   if (!post || !postRecordMap) {
     return null
   }

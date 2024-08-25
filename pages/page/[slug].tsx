@@ -6,18 +6,22 @@ import { ParsedUrlQuery } from 'querystring'
 import { FiMessageCircle } from 'react-icons/fi'
 import clx from 'classnames'
 import { Balancer } from 'react-wrap-balancer'
+import { useRouter } from 'next/router'
 
 import { NotionPage } from '@/components/NotionPage'
 import PageHead from '@/components/PageHead'
 import Time from '@/components/Time'
 import { siteURL } from '@/lib/config'
 import { getPageBySlug, getPrivatePageRecordMapByPageId } from '@/lib/notion'
-import { sec } from '@/lib/utils/time'
 import { Post } from '@/lib/types'
 
 interface Props {
   post: Post | null
   postRecordMap: ExtendedRecordMap | null
+}
+
+interface Params extends ParsedUrlQuery {
+  slug: string
 }
 
 const Comments = dynamic(() => import('@/components/Comments'), {
@@ -27,16 +31,20 @@ const Comments = dynamic(() => import('@/components/Comments'), {
 export const getStaticPaths = async () => {
   return {
     paths: [],
-    fallback: true,
+    fallback: 'blocking',
   }
 }
 
 export const getStaticProps = (async ({ params }) => {
-  interface Props extends ParsedUrlQuery {
-    slug: string
+  const { slug } = params || {}
+
+  if (!slug) {
+    return {
+      notFound: true,
+      revalidate: 10,
+    }
   }
 
-  const { slug } = params as Props
   const post = await getPageBySlug(slug)
 
   if (!post) {
@@ -53,14 +61,23 @@ export const getStaticProps = (async ({ params }) => {
       post,
       postRecordMap: postPage,
     },
-    revalidate: sec('7d'),
   }
-}) satisfies GetStaticProps<Props>
+}) satisfies GetStaticProps<Props, Params>
 
 export default function PageTypePage({
   post,
   postRecordMap,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const router = useRouter()
+
+  if (router.isFallback) {
+    return (
+      <div className="container mx-auto text-center font-mono text-slate-900 dark:text-slate-100 font-bold">
+        Loading...
+      </div>
+    )
+  }
+
   if (!post || !postRecordMap) {
     return null
   }
