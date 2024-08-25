@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { createRouter } from 'next-connect'
 import * as Yup from 'yup'
 
-import { getCachedBlogPosts, getCachedRawPageByPageId } from '@/lib/notion'
+import { getCachedBlogPosts } from '@/lib/notion'
 import { authMiddleware } from '@/lib/server-middlewares/auth'
 
 const router = createRouter<NextApiRequest, NextApiResponse>()
