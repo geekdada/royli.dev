@@ -1,8 +1,6 @@
 import dayjs from 'dayjs'
-import { GetStaticProps, NextPage } from 'next'
+import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import dynamic from 'next/dynamic'
-import DefaultErrorPage from 'next/error'
-import Head from 'next/head'
 import Link from 'next/link'
 import type { ExtendedRecordMap } from 'notion-types'
 import { ParsedUrlQuery } from 'querystring'
@@ -18,11 +16,10 @@ import { siteURL } from '@/lib/config'
 import {
   getPrivatePageRecordMapByPageId,
   getCachedBlogPosts,
-  getCachedBlogPostBySlug,
+  getBlogPostBySlug,
 } from '@/lib/notion'
 import { sec } from '@/lib/utils/time'
 import type { Post } from '@/lib/types'
-import { useTheme } from '@/lib/theme'
 
 interface Props {
   post: Post | null
@@ -33,18 +30,61 @@ const Comments = dynamic(() => import('@/components/Comments'), {
   ssr: false,
 })
 
-const BlogPostPage: NextPage<Props> = ({ post, postRecordMap }) => {
-  const { theme } = useTheme()
+export const getStaticPaths = async () => {
+  const posts = await getCachedBlogPosts({ pageSize: 9999 })
 
+  return {
+    paths: posts.results.map((p) => {
+      const publishYear = dayjs(p.publishDate as string).format('YYYY')
+      return {
+        params: { slug: p.slug, year: publishYear },
+      }
+    }),
+    fallback: true,
+  }
+}
+
+export const getStaticProps = (async ({ params }) => {
+  interface Props extends ParsedUrlQuery {
+    slug: string
+    year: string
+  }
+
+  const { slug, year } = params as Props
+
+  if (!slug || !year) {
+    return {
+      notFound: true,
+      revalidate: 10,
+    }
+  }
+
+  const post = await getBlogPostBySlug(slug)
+
+  if (!post || post.publishYear !== year) {
+    return {
+      notFound: true,
+      revalidate: 10,
+    }
+  }
+
+  const postPage = await getPrivatePageRecordMapByPageId(post.id)
+
+  return {
+    props: {
+      post,
+      postRecordMap: postPage,
+    },
+    revalidate: sec('7d'),
+  }
+}) satisfies GetStaticProps<Props>
+
+export default function BlogPostPage({
+  post,
+  postRecordMap,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   if (!post || !postRecordMap) {
-    return (
-      <>
-        <Head>
-          <meta name="robots" content="noindex" />
-        </Head>
-        <DefaultErrorPage statusCode={404} withDarkMode={theme === 'dark'} />
-      </>
-    )
+    return null
   }
 
   const { isGallaryView } = post
@@ -157,49 +197,3 @@ const BlogPostPage: NextPage<Props> = ({ post, postRecordMap }) => {
     </>
   )
 }
-
-export const getStaticPaths = async () => {
-  const posts = await getCachedBlogPosts({ pageSize: 9999 })
-
-  return {
-    paths: posts.results.map((p) => {
-      const publishYear = dayjs(p.publishDate as string).format('YYYY')
-      return {
-        params: { slug: p.slug, year: publishYear },
-      }
-    }),
-    fallback: 'blocking',
-  }
-}
-
-export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-  interface Props extends ParsedUrlQuery {
-    slug: string
-    year: string
-  }
-
-  const { slug } = params as Props
-  const post = await getCachedBlogPostBySlug(slug)
-
-  if (!post) {
-    return {
-      props: {
-        post: null,
-        postRecordMap: null,
-      },
-      revalidate: sec('7d'),
-    }
-  }
-
-  const postPage = await getPrivatePageRecordMapByPageId(post.id)
-
-  return {
-    props: {
-      post,
-      postRecordMap: postPage,
-    },
-    revalidate: sec('7d'),
-  }
-}
-
-export default BlogPostPage

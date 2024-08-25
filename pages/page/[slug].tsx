@@ -1,26 +1,19 @@
-import { GetStaticProps, NextPage } from 'next'
+import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import dynamic from 'next/dynamic'
-import Head from 'next/head'
 import Link from 'next/link'
 import type { ExtendedRecordMap } from 'notion-types'
 import { ParsedUrlQuery } from 'querystring'
 import { FiMessageCircle } from 'react-icons/fi'
 import clx from 'classnames'
-import DefaultErrorPage from 'next/error'
 import { Balancer } from 'react-wrap-balancer'
 
 import { NotionPage } from '@/components/NotionPage'
 import PageHead from '@/components/PageHead'
 import Time from '@/components/Time'
 import { siteURL } from '@/lib/config'
-import {
-  getCachedPageBySlug,
-  getPrivatePageRecordMapByPageId,
-  getCachedPages,
-} from '@/lib/notion'
+import { getPageBySlug, getPrivatePageRecordMapByPageId } from '@/lib/notion'
 import { sec } from '@/lib/utils/time'
 import { Post } from '@/lib/types'
-import { useTheme } from '@/lib/theme'
 
 interface Props {
   post: Post | null
@@ -31,18 +24,45 @@ const Comments = dynamic(() => import('@/components/Comments'), {
   ssr: false,
 })
 
-const PageTypePage: NextPage<Props> = ({ post, postRecordMap }) => {
-  const { theme } = useTheme()
+export const getStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: true,
+  }
+}
 
+export const getStaticProps = (async ({ params }) => {
+  interface Props extends ParsedUrlQuery {
+    slug: string
+  }
+
+  const { slug } = params as Props
+  const post = await getPageBySlug(slug)
+
+  if (!post) {
+    return {
+      notFound: true,
+      revalidate: 10,
+    }
+  }
+
+  const postPage = await getPrivatePageRecordMapByPageId(post.id)
+
+  return {
+    props: {
+      post,
+      postRecordMap: postPage,
+    },
+    revalidate: sec('7d'),
+  }
+}) satisfies GetStaticProps<Props>
+
+export default function PageTypePage({
+  post,
+  postRecordMap,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   if (!post || !postRecordMap) {
-    return (
-      <>
-        <Head>
-          <meta name="robots" content="noindex" />
-        </Head>
-        <DefaultErrorPage statusCode={404} withDarkMode={theme === 'dark'} />
-      </>
-    )
+    return null
   }
 
   const canonical = new URL(post.readURL, siteURL)
@@ -115,47 +135,3 @@ const PageTypePage: NextPage<Props> = ({ post, postRecordMap }) => {
     </>
   )
 }
-
-export const getStaticPaths = async () => {
-  const posts = await getCachedPages({ pageSize: 9999 })
-
-  return {
-    paths: posts.results.map((p) => {
-      return {
-        params: { slug: p.slug },
-      }
-    }),
-    fallback: 'blocking',
-  }
-}
-
-export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-  interface Props extends ParsedUrlQuery {
-    slug: string
-  }
-
-  const { slug } = params as Props
-  const post = await getCachedPageBySlug(slug)
-
-  if (!post) {
-    return {
-      props: {
-        post: null,
-        postRecordMap: null,
-      },
-      revalidate: sec('7d'),
-    }
-  }
-
-  const postPage = await getPrivatePageRecordMapByPageId(post.id)
-
-  return {
-    props: {
-      post,
-      postRecordMap: postPage,
-    },
-    revalidate: sec('7d'),
-  }
-}
-
-export default PageTypePage

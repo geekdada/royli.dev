@@ -9,7 +9,7 @@ import {
   getStringProperty,
   getRelationProperty,
 } from './utils'
-import { getCachedRawPageByPageId } from './api'
+import { getRawPageByPageId } from './api'
 
 export const enrichPostFromPageObjectResponse = async (
   pageObjectResponse: PageObjectResponse,
@@ -54,7 +54,7 @@ export const enrichPostFromPageObjectResponse = async (
     tags = []
 
     for (const relation of tagRelations) {
-      const tagPage = await getCachedRawPageByPageId(relation)
+      const tagPage = await getRawPageByPageId(relation)
 
       if (!tagPage) {
         continue
@@ -84,6 +84,7 @@ export const enrichPostFromPageObjectResponse = async (
     title: rawPost.title as string,
     slug: rawPost.slug as string,
     publishDate: rawPost.publishDate as string,
+    publishYear,
     lastEditDate: rawPost.lastEditDate as string,
     readURL: `/blog/${publishYear}/${rawPost.slug}`,
     coverImage,

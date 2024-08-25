@@ -4,6 +4,7 @@ export interface Post {
   slug: string
   excerpt: string | null
   publishDate: string
+  publishYear: string
   lastEditDate: string
   isFeatured: boolean
   isGallaryView: boolean

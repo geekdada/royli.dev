@@ -1,4 +1,4 @@
-import { GetStaticProps, NextPage } from 'next'
+import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 
@@ -11,7 +11,18 @@ interface Props {
   posts: PaginatedResponse<Post>
 }
 
-const Blog: NextPage<Props> = ({ posts }) => {
+export const getStaticProps = (async () => {
+  const posts = await getBlogPosts()
+
+  return {
+    props: { posts },
+    revalidate: sec('7d'),
+  }
+}) satisfies GetStaticProps<Props>
+
+export default function BlogPage({
+  posts,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <>
       <Head>
@@ -36,14 +47,3 @@ const Blog: NextPage<Props> = ({ posts }) => {
     </>
   )
 }
-
-export const getStaticProps: GetStaticProps<Props> = async () => {
-  const posts = await getBlogPosts()
-
-  return {
-    props: { posts },
-    revalidate: sec('7d'),
-  }
-}
-
-export default Blog

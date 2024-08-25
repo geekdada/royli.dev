@@ -1,4 +1,4 @@
-import type { GetStaticProps, NextPage } from 'next'
+import type { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Balancer } from 'react-wrap-balancer'
@@ -11,7 +11,18 @@ interface Props {
   posts: PaginatedResponse<Post>
 }
 
-const Home: NextPage<Props> = ({ posts }) => {
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const posts = await getBlogPosts()
+
+  return {
+    props: { posts },
+    revalidate: sec('7d'),
+  }
+}
+
+export default function IndexPage({
+  posts,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <>
       <div className="flex justify-center flex-col flex-1">
@@ -128,14 +139,3 @@ const Home: NextPage<Props> = ({ posts }) => {
     </>
   )
 }
-
-export const getStaticProps: GetStaticProps<Props> = async () => {
-  const posts = await getBlogPosts()
-
-  return {
-    props: { posts },
-    revalidate: sec('7d'),
-  }
-}
-
-export default Home

@@ -228,39 +228,3 @@ export const getCachedBlogPosts = createCacheLayer(
   getBlogPosts,
   ms('7d')
 )
-
-export const getCachedPages = createCacheLayer(
-  CACHE_KEYS.PAGES,
-  getPages,
-  ms('7d')
-)
-
-export const getCachedPrivatePageRecordMapByPageId = createCacheLayer(
-  CACHE_KEYS.BLOG_POST_BY_PAGE_ID,
-  getPrivatePageRecordMapByPageId,
-  ms('7d')
-)
-
-export const getCachedRawPageByPageId = createCacheLayer(
-  CACHE_KEYS.RAW_PAGE,
-  getRawPageByPageId,
-  ms('7d')
-)
-
-export const getCachedBlogPostBySlug = createCacheLayer(
-  CACHE_KEYS.BLOG_POST,
-  getBlogPostBySlug,
-  ms('7d')
-)
-
-export const getCachedPageBySlug = createCacheLayer(
-  CACHE_KEYS.PAGE,
-  getPageBySlug,
-  ms('7d')
-)
-
-export const getCachedTags = createCacheLayer(
-  CACHE_KEYS.TAGS,
-  getTags,
-  ms('7d')
-)
