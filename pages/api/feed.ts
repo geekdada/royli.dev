@@ -20,7 +20,7 @@ const generateRSS = async (posts: PaginatedResponse<Post>): Promise<string> => {
     id: domain,
     link: `${domain}/blog/feed.xml`,
     title: "Roy Li's Blog",
-    description: '',
+    description: 'feedId:54868671634178060+userId:55996681666002944',
     copyright: `©️ ${year}, Roy Li`,
     favicon: `${domain}/favicon.ico`,
     author: {
