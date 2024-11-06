@@ -1,7 +1,6 @@
 import type { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Balancer } from 'react-wrap-balancer'
 
 import { getBlogPosts } from '@/lib/notion'
 import { PaginatedResponse, Post } from '@/lib/types'
@@ -19,6 +18,34 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     revalidate: sec('7d'),
   }
 }
+
+const Klarna = () => (
+  <a href="https://klarna.com" target="_blank" rel="noreferrer">
+    <img
+      className="inline-block px-2 h-[30px] align-[-9px]"
+      src="/images/klarna.svg"
+      alt="Klarna"
+    />
+  </a>
+)
+
+const Alibaba = () => (
+  <img
+    className="inline-block px-2 h-[26px] align-[-7px]"
+    src="/images/alibaba.svg"
+    alt="Alibaba"
+  />
+)
+
+const Nelly = () => (
+  <a href="https://getnelly.de" target="_blank" rel="noreferrer">
+    <img
+      className="inline-block px-2 h-[30px] align-[-9px]"
+      src="/images/nelly.svg"
+      alt="Nelly"
+    />
+  </a>
+)
 
 export default function IndexPage({
   posts,
@@ -43,29 +70,15 @@ export default function IndexPage({
           <div className="space-y-4 text-lg">
             <div className="leading-9">
               <p>
-                <Balancer>
-                  I am a software engineer based in Berlin, currently working
-                  at&nbsp;
-                  <a href="https://klarna.com" target="_blank" rel="noreferrer">
-                    <img
-                      className="inline-block h-[30px] align-[-9px]"
-                      src="/images/klarna.svg"
-                      alt="Klarna"
-                    />
-                  </a>
-                  ,
-                </Balancer>
-              </p>
-              <p>
-                <Balancer>
-                  previously at&nbsp;
-                  <img
-                    className="inline-block h-[30px] align-[-9px]"
-                    src="/images/alibaba.svg"
-                    alt="Alibaba"
-                  />
-                  .
-                </Balancer>
+                <span>
+                  I am a software engineer based in Berlin, currently working at
+                </span>
+                <Nelly />
+                <span>, previously at</span>
+                <Klarna />
+                <span>and</span>
+                <Alibaba />
+                <span>.</span>
               </p>
             </div>
             <p className="leading-9">
