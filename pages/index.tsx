@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { getBlogPosts } from '@/lib/notion'
 import { PaginatedResponse, Post } from '@/lib/types'
 import { sec } from '@/lib/utils/time'
+import NellyIcon from '@/components/NellyIcon'
+import Icon from '@/components/Icon'
 
 interface Props {
   posts: PaginatedResponse<Post>
@@ -39,11 +41,7 @@ const Alibaba = () => (
 
 const Nelly = () => (
   <a href="https://getnelly.de" target="_blank" rel="noreferrer">
-    <img
-      className="inline-block px-2 h-[30px] align-[-9px]"
-      src="/images/nelly.svg"
-      alt="Nelly"
-    />
+    <Icon className="px-2 h-[30px] align-[-9px]" icon={<NellyIcon />} />
   </a>
 )
 

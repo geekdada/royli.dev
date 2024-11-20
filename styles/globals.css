@@ -135,3 +135,7 @@ body {
     fixed 0 0 / 30px 30px radial-gradient(#313131 1px, transparent 0),
     fixed 15px 15px / 30px 30px radial-gradient(#313131 1px, transparent 0);
 }
+
+.component-icon > * {
+  @apply w-full h-full;
+}
