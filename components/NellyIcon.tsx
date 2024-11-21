@@ -23,7 +23,7 @@ export default function NellyIcon() {
   }, [control])
 
   return (
-    <motion.svg width="100%" viewBox="0 0 86 35" fill="currentColor">
+    <motion.svg viewBox="0 0 86 35" fill="currentColor">
       <motion.path
         fillRule="evenodd"
         clipRule="evenodd"

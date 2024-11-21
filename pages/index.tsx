@@ -41,7 +41,10 @@ const Alibaba = () => (
 
 const Nelly = () => (
   <a href="https://getnelly.de" target="_blank" rel="noreferrer">
-    <Icon className="px-2 h-[30px] align-[-9px]" icon={<NellyIcon />} />
+    <Icon
+      className="px-2 w-[90px] align-[-9px] overflow-hidden"
+      icon={<NellyIcon />}
+    />
   </a>
 )
 
@@ -66,19 +69,13 @@ export default function IndexPage({
           </h1>
 
           <div className="space-y-4 text-lg">
-            <div className="leading-9">
-              <p>
-                <span>
-                  I am a software engineer based in Berlin, currently working at
-                </span>
-                <Nelly />
-                <span>, previously at</span>
-                <Klarna />
-                <span>and</span>
-                <Alibaba />
-                <span>.</span>
-              </p>
-            </div>
+            <p className="leading-9">
+              I am a software engineer based in Berlin, currently working at
+              <Nelly />, previously at
+              <Klarna />
+              and
+              <Alibaba />.
+            </p>
             <p className="leading-9">
               You can find me on&nbsp;
               <a
