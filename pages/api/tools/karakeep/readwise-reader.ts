@@ -25,7 +25,13 @@ const bodySchema = z.object({
 })
 
 router.post(async (req) => {
-  const body = await req.json()
+  const text = await req.text()
+
+  if (!text) {
+    return new NextResponse(null, { status: 204 })
+  }
+
+  const body = JSON.parse(text)
   const parsedBody = bodySchema.safeParse(body)
 
   if (!parsedBody.success) {

@@ -59,7 +59,7 @@ router.post(async (req) => {
         type: 'link',
         title: title || '',
         url,
-        summary: summary || '',
+        summary: summary.content || '',
         source: 'api',
       },
     })
