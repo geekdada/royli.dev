@@ -17,3 +17,7 @@ export const notionKey = getEnv('NOTION_KEY', '')
 export const resourceProxyServer = getSiteConfig('resourceProxyServer')
 
 export const siteAdminUserId = getSiteConfig('siteAdminUserId')
+
+export const giteaAPIKey = getEnv('GITEA_API_KEY')
+
+export const karakeepAPIKey = getEnv('KARAKEEP_API_KEY')

@@ -1,12 +1,12 @@
 import axios, { AxiosError } from 'axios'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { ResultAsync } from 'neverthrow'
-import logger from '@/lib/utils/logger'
+import { giteaAPIKey } from '@/lib/config'
 
 const giteaAPI = axios.create({
   baseURL: 'https://git.royli.dev/api/v1',
   headers: {
-    Authorization: `token ${process.env.GITEA_API_KEY}`,
+    Authorization: `token ${giteaAPIKey}`,
   },
 })
 

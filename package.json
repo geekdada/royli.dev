@@ -54,7 +54,8 @@
     "react-tweet-embed": "^2.0.0",
     "react-wrap-balancer": "^1.0.0",
     "sharp": "^0.31.0",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "zod": "^4.2.1"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.2",
