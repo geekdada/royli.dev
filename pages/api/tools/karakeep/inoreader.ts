@@ -18,9 +18,9 @@ const router = createEdgeRouter<NextRequest, NextFetchEvent>()
 const bodySchema = z.object({
   items: z.array(
     z.object({
-      title: z.string().optional(),
+      title: z.string().optional().nullable(),
       summary: z.object({
-        content: z.string().optional(),
+        content: z.string().optional().nullable(),
       }),
       canonical: z.array(
         z.object({

@@ -16,12 +16,12 @@ export const config = {
 const router = createEdgeRouter<NextRequest, NextFetchEvent>()
 
 const bodySchema = z.object({
-  url: z.url().optional(),
-  summary: z.string().optional(),
-  content: z.string().optional(),
-  source_url: z.url().optional(),
-  image_url: z.url().optional(),
-  title: z.string().optional(),
+  url: z.url().optional().nullable(),
+  summary: z.string().optional().nullable(),
+  content: z.string().optional().nullable(),
+  source_url: z.url().optional().nullable(),
+  image_url: z.url().optional().nullable(),
+  title: z.string().optional().nullable(),
 })
 
 router.post(async (req) => {
