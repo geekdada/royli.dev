@@ -19,9 +19,6 @@ const bodySchema = z.object({
   items: z.array(
     z.object({
       title: z.string().optional().nullable(),
-      summary: z.object({
-        content: z.string().optional().nullable(),
-      }),
       canonical: z.array(
         z.object({
           href: z.url(),
@@ -43,7 +40,7 @@ router.post(async (req) => {
   const { items } = parsedBody.data
 
   for (const item of items) {
-    const { title, summary, canonical } = item
+    const { title, canonical } = item
 
     if (canonical.length === 0) {
       continue
@@ -59,7 +56,6 @@ router.post(async (req) => {
         type: 'link',
         title: title || '',
         url,
-        summary: summary.content || '',
         source: 'api',
       },
     })
