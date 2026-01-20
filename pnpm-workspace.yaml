@@ -1,0 +1,3 @@
+onlyBuiltDependencies:
+  - postinstall-postinstall
+  - sharp
