@@ -3,21 +3,18 @@ import type { UserProfile } from '@auth0/nextjs-auth0/client'
 import { Formik, Form, Field } from 'formik'
 import { GetServerSideProps, NextPage } from 'next'
 import DefaultErrorPage from 'next/error'
-import * as Yup from 'yup'
 import ky from 'ky'
+import { z } from 'zod'
 
 import { siteAdminUserId } from '@/lib/config'
+import { validateWithZod } from '@/lib/utils/validation'
 
-const RevalidateBlogPostSchema = Yup.object().shape({
-  URI: Yup.string()
-    .matches(/^\/blog\/\d{4}\//)
-    .required('A valid URI is required'),
+const RevalidateBlogPostSchema = z.object({
+  URI: z.string().regex(/^\/blog\/\d{4}\//, 'A valid URI is required'),
 })
 
-const RevalidatePageSchema = Yup.object().shape({
-  URI: Yup.string()
-    .matches(/^\/page\//)
-    .required('A valid URI is required'),
+const RevalidatePageSchema = z.object({
+  URI: z.string().regex(/^\/page\//, 'A valid URI is required'),
 })
 
 interface Props {
@@ -64,7 +61,7 @@ const AdminHome: NextPage<Props> = ({ user }) => {
             initialValues={{
               URI: '',
             }}
-            validationSchema={RevalidateBlogPostSchema}
+            validate={validateWithZod(RevalidateBlogPostSchema)}
             onSubmit={async (values, actions) => {
               await ky.post('/api/admin/revalidate', {
                 json: {
@@ -107,7 +104,7 @@ const AdminHome: NextPage<Props> = ({ user }) => {
             initialValues={{
               URI: '',
             }}
-            validationSchema={RevalidatePageSchema}
+            validate={validateWithZod(RevalidatePageSchema)}
             onSubmit={async (values, actions) => {
               await ky.post('/api/admin/revalidate', {
                 json: {
