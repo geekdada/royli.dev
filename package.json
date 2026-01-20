@@ -1,12 +1,12 @@
 {
   "name": "royli.dev",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "test:types": "tsc --noEmit",
     "postinstall": "patch-package"
   },
@@ -22,7 +22,6 @@
     "bluebird": "^3.7.2",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.19",
-    "eslint-config-next": "^14.2.35",
     "feed": "^4.2.2",
     "formik": "^2.4.9",
     "framer-motion": "^11.18.2",
@@ -58,6 +57,7 @@
     "zod": "^4.3.5"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
     "@tailwindcss/typography": "^0.5.19",
     "@types/bluebird": "^3.5.42",
     "@types/lodash-es": "^4.17.12",
@@ -66,19 +66,17 @@
     "@types/prismjs": "^1.26.5",
     "@types/react": "^18.3.27",
     "@types/react-dom": "^18.3.7",
-    "@typescript-eslint/eslint-plugin": "^5.62.0",
-    "@typescript-eslint/parser": "^5.62.0",
     "autoprefixer": "^10.4.23",
-    "eslint": "^8.57.1",
-    "eslint-config-prettier": "^8.10.2",
-    "eslint-import-resolver-typescript": "^3.10.1",
-    "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-prettier": "^4.2.5",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint": "^9.39.2",
+    "eslint-config-next": "^16.1.4",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "globals": "^17.0.0",
     "postcss": "^8.5.6",
-    "prettier": "^2.8.8",
+    "prettier": "^3.8.0",
     "tailwindcss": "^3.4.19",
-    "typescript": "^5.9.3"
-  }
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.53.1"
+  },
+  "packageManager": "pnpm@10.28.1+sha512.7d7dbbca9e99447b7c3bf7a73286afaaf6be99251eb9498baefa7d406892f67b879adb3a1d7e687fc4ccc1a388c7175fbaae567a26ab44d1067b54fcb0d6a316"
 }
