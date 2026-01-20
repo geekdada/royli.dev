@@ -1,13 +1,68 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@plugin '@tailwindcss/typography';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-light-50: #fdfdfd;
+  --color-light-100: #fcfcfc;
+  --color-light-200: #fafafa;
+  --color-light-300: #f8f9fa;
+  --color-light-400: #f6f6f6;
+  --color-light-500: #f2f2f2;
+  --color-light-600: #f1f3f5;
+  --color-light-700: #e9ecef;
+  --color-light-800: #dee2e6;
+  --color-light-900: #dde1e3;
+
+  --color-dark-50: #4a4a4a;
+  --color-dark-100: #3c3c3c;
+  --color-dark-200: #323232;
+  --color-dark-300: #2d2d2d;
+  --color-dark-400: #222222;
+  --color-dark-500: #1f1f1f;
+  --color-dark-600: #1c1c1e;
+  --color-dark-700: #1b1b1b;
+  --color-dark-800: #181818;
+  --color-dark-900: #0f0f0f;
+
+  --font-sans:
+    ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --font-mono:
+    var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --font-title:
+    Poppins, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
 
 .hover-links {
   @apply border-b border-b-dark-200/30 no-underline transition-all duration-150 hover:border-b-dark-200/60 dark:border-b-light-900/50 dark:hover:border-b-light-900/80;
 }
 
 .nav-links {
-  @apply cursor-pointer rounded border-none p-2 transition-all duration-150 font-medium hover:bg-light-200 hover:opacity-80 dark:hover:bg-dark-700;
+  @apply cursor-pointer rounded-sm border-none p-2 transition-all duration-150 font-medium hover:bg-light-200 hover:opacity-80 dark:hover:bg-dark-700;
 }
 
 .heading-text {
@@ -27,7 +82,7 @@
 }
 
 .post-section {
-  @apply overflow-hidden md:rounded border-t border-b md:border border-gray-400/30 bg-white dark:bg-dark-700;
+  @apply overflow-hidden md:rounded-sm border-t border-b md:border border-gray-400/30 bg-white dark:bg-dark-700;
 }
 
 .notion-header-anchor {
@@ -103,7 +158,7 @@
 }
 
 button {
-  @apply focus:outline-none focus-visible:outline-none !important;
+  @apply focus:outline-hidden! focus-visible:outline-hidden!;
 }
 
 * {
