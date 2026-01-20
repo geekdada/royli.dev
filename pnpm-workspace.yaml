@@ -1,3 +1,4 @@
 onlyBuiltDependencies:
   - postinstall-postinstall
   - sharp
+  - unrs-resolver
