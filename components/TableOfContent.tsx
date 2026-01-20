@@ -75,7 +75,7 @@ const TableOfContent = ({ postRecordMap }: Props) => {
 
       {toc.length === 0 ? (
         <div className="mt-3">
-          <code className="leading-8 bg-dark-50 text-white px-3 py-1 rounded">
+          <code className="leading-8 bg-dark-50 text-white px-3 py-1 rounded-sm">
             NULL
           </code>
         </div>

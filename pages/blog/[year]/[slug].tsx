@@ -197,7 +197,7 @@ export default function BlogPostPage({
 
           {!isGallaryView && (
             <div className="sticky top-20 col-span-3 hidden lg:block">
-              <div className="max-h-screen-md rounded border border-gray-400/30 p-4 relative bg-white dark:bg-dark-700 overflow-hidden">
+              <div className="max-h-screen-md rounded-sm border border-gray-400/30 p-4 relative bg-white dark:bg-dark-700 overflow-hidden">
                 <TableOfContent post={post} postRecordMap={postRecordMap} />
               </div>
             </div>

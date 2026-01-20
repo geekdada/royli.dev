@@ -77,7 +77,7 @@ const Navbar: React.FC = () => {
               leaveFrom="transform scale-100 opacity-100"
               leaveTo="transform scale-95 opacity-0"
             >
-              <Menu.Items className="absolute right-0 mt-2 w-40 origin-top-right rounded bg-white shadow-lg grid divide-y divide-gray-400/30 dark:bg-dark-700 focus:outline-none">
+              <Menu.Items className="absolute right-0 mt-2 w-40 origin-top-right rounded-sm bg-white shadow-lg grid divide-y divide-gray-400/30 dark:bg-dark-700 focus:outline-hidden">
                 {navigations.map((n, i) => (
                   <Menu.Item key={n.name}>
                     <MenuItemLink href={n.link}>
