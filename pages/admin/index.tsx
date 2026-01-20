@@ -1,4 +1,5 @@
-import { withPageAuthRequired, UserProfile } from '@auth0/nextjs-auth0'
+import { withPageAuthRequired } from '@auth0/nextjs-auth0'
+import type { UserProfile } from '@auth0/nextjs-auth0/client'
 import { Formik, Form, Field } from 'formik'
 import { GetServerSideProps, NextPage } from 'next'
 import DefaultErrorPage from 'next/error'
@@ -39,7 +40,7 @@ const AdminHome: NextPage<Props> = ({ user }) => {
     <div className="container mx-auto px-6 max-w-3xl lg:max-w-5xl xl:max-w-7xl">
       <h1 className="heading-text mb-8 text-4xl font-bold font-title">Admin</h1>
 
-      <div className="bg-white dark:bg-dark-700 shadow-md rounded overflow-hidden p-8 space-y-9">
+      <div className="bg-white dark:bg-dark-700 shadow-md rounded-sm overflow-hidden p-8 space-y-9">
         <div className="space-y-4">
           <h2 className="text-xl font-bold">Revalidate blog post list</h2>
           <button
@@ -79,7 +80,7 @@ const AdminHome: NextPage<Props> = ({ user }) => {
                 <div>
                   <Field
                     autoComplete="off"
-                    className="w-full border rounded px-4 py-2 primary-text"
+                    className="w-full border rounded-sm px-4 py-2 primary-text"
                     name="URI"
                     placeholder="/blog/2022/..."
                   />
@@ -122,7 +123,7 @@ const AdminHome: NextPage<Props> = ({ user }) => {
                 <div>
                   <Field
                     autoComplete="off"
-                    className="w-full border rounded px-4 py-2 primary-text"
+                    className="w-full border rounded-sm px-4 py-2 primary-text"
                     name="URI"
                     placeholder="/page/..."
                   />
