@@ -5,7 +5,7 @@ import { siteAdminUserId } from '@/lib/config'
 import { Middleware } from '@/lib/types/server'
 
 export const authMiddleware: Middleware = async (req, res, next) => {
-  const session = getSession(req, res)
+  const session = await getSession(req, res)
 
   if (!session || session.user.sub !== siteAdminUserId) {
     throw boom.unauthorized()
