@@ -1,4 +1,18 @@
 import createMDX from '@next/mdx'
+import rehypePrettyCode from 'rehype-pretty-code'
+
+/** @type {import('rehype-pretty-code').Options} */
+const prettyCodeOptions = {
+  theme: 'github-dark',
+  keepBackground: true,
+  transformers: [
+    {
+      line(node, line) {
+        node.properties['data-line-number'] = line
+      },
+    },
+  ],
+}
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -39,7 +53,7 @@ const nextConfig = {
 const withMDX = createMDX({
   options: {
     remarkPlugins: ['remark-gfm'],
-    rehypePlugins: ['rehype-slug', 'rehype-highlight'],
+    rehypePlugins: ['rehype-slug', [rehypePrettyCode, prettyCodeOptions]],
   },
 })
 

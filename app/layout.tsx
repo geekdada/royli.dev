@@ -1,13 +1,12 @@
-import '@fontsource/poppins/400.css'
-import '@fontsource/poppins/500.css'
-import '@fontsource/poppins/700.css'
+import '@fontsource/inter/400.css'
+import '@fontsource/inter/500.css'
+import '@fontsource/inter/700.css'
+import '@/styles/globals.css'
 
-import 'prismjs/themes/prism-tomorrow.css'
 import { GeistMono } from 'geist/font/mono'
 
 import Script from 'next/script'
 
-import '@/styles/globals.css'
 import Layout from '@/components/Layout'
 import { Providers } from './providers'
 
@@ -37,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="zh-Hans" suppressHydrationWarning>
+    <html lang="zh-Hans" className={`${GeistMono.variable}`}>
       <body>
         {isSashimiEnabled && (
           <Script
@@ -50,7 +49,7 @@ export default function RootLayout({
         )}
 
         <Providers>
-          <main className={`${GeistMono.variable}`}>
+          <main>
             <Layout>{children}</Layout>
           </main>
         </Providers>

@@ -8,6 +8,7 @@ import type { Metadata } from 'next'
 import Comments from '@/components/Comments'
 import Copyright from '@/components/Copyright'
 import TableOfContents from '@/components/mdx/TableOfContents'
+import ArticleContent from '@/components/mdx/ArticleContent'
 import { siteURL } from '@/lib/config'
 
 export const revalidate = 86400
@@ -46,11 +47,17 @@ export default async function BlogPostPage({ params }: PageProps) {
 
       <div className="grid grid-cols-10 gap-8">
         <div
-          className={clx('space-y-4', isGalleryView ? 'col-span-full' : 'col-span-10 lg:col-span-7')}
+          className={clx(
+            'space-y-4',
+            isGalleryView ? 'col-span-full' : 'col-span-10 lg:col-span-7'
+          )}
         >
           <div className="post-section">
             <article
-              className={clx('px-5 lg:px-7', hasCoverImage ? 'pt-5 lg:pt-6' : 'pt-3 lg:pt-4')}
+              className={clx(
+                'px-5 lg:px-7',
+                hasCoverImage ? 'pt-5 lg:pt-6' : 'pt-3 lg:pt-4'
+              )}
             >
               <h1
                 className="relative mb-2 flex justify space-x-2 text-3xl font-bold font-title"
@@ -58,14 +65,16 @@ export default async function BlogPostPage({ params }: PageProps) {
               >
                 <span id="blog-title" className="scroll-mt-20" />
                 <Balancer>
-                  {post.coverIcon ? <span className="mr-2">{post.coverIcon}</span> : null}
+                  {post.coverIcon ? (
+                    <span className="mr-2">{post.coverIcon}</span>
+                  ) : null}
                   {post.title}
                 </Balancer>
               </h1>
 
-              <div className="my-6 prose prose-gray dark:prose-invert max-w-none">
+              <ArticleContent>
                 <Content />
-              </div>
+              </ArticleContent>
 
               {post.tags && post.tags.length > 0 && (
                 <div className="my-6">
@@ -110,7 +119,10 @@ export default async function BlogPostPage({ params }: PageProps) {
 
         {!isGalleryView && (
           <div className="sticky top-20 col-span-3 hidden lg:block self-start">
-            <div className="max-h-screen-md rounded-sm border border-gray-400/30 p-4 relative bg-white dark:bg-dark-700 overflow-hidden">
+            <div className="max-h-screen-md py-3 relative overflow-hidden">
+              <div className="mb-2 px-3 text-[11px] font-medium uppercase tracking-wider text-gray-400 dark:text-gray-500">
+                On this page
+              </div>
               <TableOfContents />
             </div>
           </div>
@@ -128,7 +140,9 @@ export async function generateStaticParams() {
   }))
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { year, slug } = await params
   const post = await getPostBySlug(slug, year)
 

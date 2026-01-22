@@ -35,7 +35,7 @@
     var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
     Consolas, 'Liberation Mono', 'Courier New', monospace;
   --font-title:
-    Poppins, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    Inter, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
     'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
@@ -155,4 +155,42 @@ body {
 
 .component-icon > * {
   @apply w-full h-full;
+}
+
+/* rehype-pretty-code styles */
+[data-rehype-pretty-code-figure] {
+  @apply my-4;
+}
+
+[data-rehype-pretty-code-figure] pre {
+  @apply rounded-lg py-4 text-sm leading-relaxed pl-0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+[data-rehype-pretty-code-figure] code {
+  @apply font-mono grid;
+}
+
+[data-rehype-pretty-code-figure] [data-line] {
+  @apply px-4 border-l-2 border-transparent;
+}
+
+[data-rehype-pretty-code-figure] [data-highlighted-line] {
+  @apply bg-white/10 border-l-blue-400;
+}
+
+/* Line numbers - shown by default */
+[data-rehype-pretty-code-figure] [data-line-number]::before {
+  content: attr(data-line-number);
+  @apply inline-block w-8 mr-4 text-right text-gray-500 select-none;
+}
+
+[data-rehype-pretty-code-figure] [data-highlighted-chars] {
+  @apply bg-amber-500/20 rounded px-1;
+}
+
+/* Inline code */
+.prose :not(pre) > code {
+  @apply px-1.5 py-0.5 rounded bg-gray-200 dark:bg-dark-300 text-sm font-mono;
 }

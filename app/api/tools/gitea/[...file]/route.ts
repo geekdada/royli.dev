@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { NextResponse } from 'next/server'
 import { ResultAsync } from 'neverthrow'
 import { giteaAPIKey } from '@/lib/config'
 
@@ -10,14 +10,14 @@ const giteaAPI = axios.create({
   },
 })
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ file: string[] }> }
 ) {
-  const { file } = req.query
+  const { file } = await params
 
   if (!Array.isArray(file)) {
-    return res.status(400)
+    return new NextResponse(null, { status: 400 })
   }
 
   const [owner, repo, ...rest] = file
@@ -29,15 +29,19 @@ export default async function handler(
   )
 
   if (response.isErr()) {
-    return res.status(response.error.response?.status ?? 500).send(undefined)
+    return new NextResponse(null, {
+      status: response.error.response?.status ?? 500,
+    })
   }
 
-  res
-    .setHeader('Content-Type', 'text/plain')
-    .send(
-      Buffer.from(
-        response.value.data.content,
-        response.value.data.encoding
-      ).toString('utf-8')
-    )
+  const content = Buffer.from(
+    response.value.data.content,
+    response.value.data.encoding
+  ).toString('utf-8')
+
+  return new NextResponse(content, {
+    headers: {
+      'Content-Type': 'text/plain',
+    },
+  })
 }

@@ -1,15 +1,12 @@
-import boom from '@hapi/boom'
 import dayjs from 'dayjs'
-import type { NextApiRequest, NextApiResponse } from 'next'
 import { Feed } from 'feed'
-import { createRouter } from 'next-connect'
 import pMapSeries from 'p-map-series'
 import Handlebars from 'handlebars'
+import { NextResponse } from 'next/server'
 
 import feedItemTemplateString from '@/templates/feed-item'
 import { getAllPosts, type Post } from '@/lib/content/posts'
 
-const router = createRouter<NextApiRequest, NextApiResponse>()
 const domain = 'https://royli.dev'
 const year = new Date().getFullYear()
 let feedItemTemplate: HandlebarsTemplateDelegate
@@ -51,34 +48,19 @@ const generateRSS = async (posts: Post[]): Promise<string> => {
   return feed.rss2()
 }
 
-router.get(async (req, res) => {
+export async function GET() {
   if (!feedItemTemplate) {
     feedItemTemplate = Handlebars.compile(feedItemTemplateString)
   }
-
-  res.setHeader('Cache-Control', 'public, max-age=600, stale-while-revalidate')
 
   const allPosts = await getAllPosts()
   const posts = allPosts.slice(0, 10)
   const xmlFeed = await generateRSS(posts)
 
-  res.setHeader('Content-Type', 'application/rss+xml;charset=utf-8')
-  res.write(xmlFeed)
-  res.end()
-})
-
-export default router.handler({
-  onError: (err, req, res) => {
-    console.error(err)
-
-    if (boom.isBoom(err)) {
-      res.status(err.output.statusCode).send(err.message)
-      return
-    } else if (err instanceof Error) {
-      res.status(500).send(err.message)
-      return
-    }
-
-    res.status(500).end()
-  },
-})
+  return new NextResponse(xmlFeed, {
+    headers: {
+      'Content-Type': 'application/rss+xml;charset=utf-8',
+      'Cache-Control': 'public, max-age=600, stale-while-revalidate',
+    },
+  })
+}

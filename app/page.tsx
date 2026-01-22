@@ -1,26 +1,11 @@
-import type { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { getAllPosts, type Post } from '@/lib/content/posts'
-import { sec } from '@/lib/utils/time'
+import { getAllPosts } from '@/lib/content/posts'
 import NellyIcon from '@/components/NellyIcon'
 import Icon from '@/components/Icon'
 
-interface Props {
-  posts: Post[]
-}
-
-export const getStaticProps: GetStaticProps<Props> = async () => {
-  const posts = await getAllPosts()
-
-  return {
-    props: {
-      posts: JSON.parse(JSON.stringify(posts)),
-    },
-    revalidate: sec('7d'),
-  }
-}
+export const revalidate = 604800 // 7 days
 
 const Klarna = () => (
   <a href="https://klarna.com" target="_blank" rel="noreferrer">
@@ -49,9 +34,9 @@ const Nelly = () => (
   </a>
 )
 
-export default function IndexPage({
-  posts,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+export default async function IndexPage() {
+  const posts = await getAllPosts()
+
   return (
     <>
       <div className="flex justify-center flex-col flex-1">

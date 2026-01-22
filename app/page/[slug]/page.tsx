@@ -9,6 +9,7 @@ import { FiMessageCircle } from 'react-icons/fi'
 import { getPageBySlug, getAllPages } from '@/lib/content/pages'
 import { notFound } from 'next/navigation'
 import Time from '@/components/Time'
+import ArticleContent from '@/components/mdx/ArticleContent'
 import Comments from '@/components/Comments'
 import { siteURL } from '@/lib/config'
 
@@ -42,7 +43,12 @@ export default async function StaticPage({ params }: PageProps) {
       )}
 
       <div className="post-section bg-white dark:bg-dark-700">
-        <article className={clx('px-5 lg:px-7', hasCoverImage ? 'pt-5 lg:pt-6' : 'pt-3 lg:pt-4')}>
+        <article
+          className={clx(
+            'px-5 lg:px-7',
+            hasCoverImage ? 'pt-5 lg:pt-6' : 'pt-3 lg:pt-4'
+          )}
+        >
           <h1 className="mb-2 flex justify space-x-2 text-3xl font-bold font-title">
             <Balancer>{page.title}</Balancer>
           </h1>
@@ -60,13 +66,16 @@ export default async function StaticPage({ params }: PageProps) {
             </Link>
           </div>
 
-          <div className="my-6 prose prose-gray dark:prose-invert max-w-none">
+          <ArticleContent>
             <Content />
-          </div>
+          </ArticleContent>
         </article>
       </div>
 
-      <div id="comments-section" className="post-section p-4 bg-white dark:bg-dark-700">
+      <div
+        id="comments-section"
+        className="post-section p-4 bg-white dark:bg-dark-700"
+      >
         <Comments />
       </div>
     </div>

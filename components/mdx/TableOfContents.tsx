@@ -40,7 +40,11 @@ const TableOfContents = ({ contentSelector = '.prose' }: Props) => {
     headings.forEach((heading) => {
       let id = heading.id
       if (!id) {
-        id = heading.textContent?.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') || ''
+        id =
+          heading.textContent
+            ?.toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/[^a-z0-9-]/g, '') || ''
         heading.id = id
       }
 
@@ -67,7 +71,9 @@ const TableOfContents = ({ contentSelector = '.prose' }: Props) => {
       .filter(Boolean) as HTMLElement[]
 
     const visibilityRecord: Array<{ id: string; visible: boolean }> = []
-    headingElements.forEach((el) => visibilityRecord.push({ id: el.id, visible: false }))
+    headingElements.forEach((el) =>
+      visibilityRecord.push({ id: el.id, visible: false })
+    )
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -97,50 +103,84 @@ const TableOfContents = ({ contentSelector = '.prose' }: Props) => {
     }
   }, [extractHeadings])
 
-  const minLevel = toc.length > 0 ? Math.min(...toc.map((item) => item.level)) : 1
+  const minLevel =
+    toc.length > 0 ? Math.min(...toc.map((item) => item.level)) : 1
+
+  const allItems = [
+    { id: 'blog-title', text: '', level: minLevel, isHome: true },
+    ...toc,
+  ]
 
   return (
-    <nav>
+    <nav className="relative">
       {toc.length === 0 ? (
-        <div>
-          <code className="leading-8 bg-dark-50 text-white px-3 py-1 rounded-sm">NULL</code>
+        <div className="text-xs text-gray-400 dark:text-gray-500 font-mono pl-3">
+          No headings
         </div>
       ) : (
-        <ul className="list-inside list-none mt-3 -mx-1">
-          <li className="leading-4">
-            <a href="#blog-title" onClick={(e) => handleClick(e, 'blog-title')}>
-              <div
-                className={clx(
-                  'flex py-1.5 px-2.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors',
-                  highlightId === 'blog-title' && 'bg-gray-200 dark:bg-gray-800'
-                )}
-              >
-                🏠
-              </div>
-            </a>
-          </li>
+        <div className="relative">
+          {/* Active indicator line */}
+          <div className="absolute left-0 top-0 bottom-0 w-px bg-gray-200 dark:bg-gray-700/50" />
 
-          {toc.map((item) => (
-            <li
-              key={item.id}
-              className="leading-4"
-              style={{
-                paddingLeft: (item.level - minLevel) * 0.8 + 'rem',
-              }}
-            >
-              <a href={`#${item.id}`} onClick={(e) => handleClick(e, item.id)}>
-                <div
-                  className={clx(
-                    'flex py-1.5 px-2.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors text-sm',
-                    highlightId === item.id && 'bg-gray-200 dark:bg-gray-800'
-                  )}
-                >
-                  {item.text}
-                </div>
-              </a>
-            </li>
-          ))}
-        </ul>
+          <ul className="list-none space-y-0.5">
+            {allItems.map((item, index) => {
+              const isActive = highlightId === item.id
+              const indent = 'isHome' in item ? 0 : (item.level - minLevel) * 12
+
+              return (
+                <li key={item.id} className="relative">
+                  {/* Active indicator */}
+                  <div
+                    className={clx(
+                      'absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 rounded-full transition-all duration-200',
+                      isActive
+                        ? 'bg-gray-900 dark:bg-white opacity-100'
+                        : 'bg-transparent opacity-0'
+                    )}
+                  />
+
+                  <a
+                    href={`#${item.id}`}
+                    onClick={(e) => handleClick(e, item.id)}
+                    className="block"
+                  >
+                    <div
+                      className={clx(
+                        'py-1.5 pl-3 pr-2 text-[13px] leading-snug rounded-r-md transition-all duration-150',
+                        'hover:bg-gray-100 dark:hover:bg-white/5',
+                        isActive
+                          ? 'text-gray-900 dark:text-white font-medium'
+                          : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                      )}
+                      style={{ paddingLeft: `${12 + indent}px` }}
+                    >
+                      {'isHome' in item ? (
+                        <span className="inline-flex items-center gap-1.5">
+                          <svg
+                            className="w-3.5 h-3.5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M5 10l7-7m0 0l7 7m-7-7v18"
+                            />
+                          </svg>
+                          <span>Top</span>
+                        </span>
+                      ) : (
+                        <span className="line-clamp-2">{item.text}</span>
+                      )}
+                    </div>
+                  </a>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
       )}
     </nav>
   )
