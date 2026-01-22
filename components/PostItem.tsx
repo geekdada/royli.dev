@@ -2,41 +2,89 @@
 
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
-import Balancer from 'react-wrap-balancer'
+import { FiArrowUpRight } from 'react-icons/fi'
 
 import type { Post } from '@/lib/content/posts'
-import Time from './Time'
 
 dayjs.extend(localizedFormat)
 
-const PostItem = ({ post }: { post: Post }) => {
-  return (
-    <div className="bg-white dark:bg-dark-700 shadow-md rounded-xl overflow-hidden">
-      {post.coverImage && (
-        <div className="post-cover-image">
+interface PostItemProps {
+  post: Post
+  isGalleryView?: boolean
+}
+
+const PostItem = ({ post, isGalleryView = false }: PostItemProps) => {
+  const formattedDate = dayjs(post.publishDate).format('MMM D, YYYY')
+
+  if (isGalleryView) {
+    return (
+      <div className="group overflow-hidden rounded-xl border border-gray-200/60 bg-white/50 transition-all duration-200 hover:border-gray-300 hover:bg-white dark:border-white/10 dark:bg-white/2 dark:hover:border-white/20 dark:hover:bg-white/4">
+        {post.coverImage && (
           <div
-            style={{
-              backgroundImage: `url(${post.coverImage})`,
-            }}
-          ></div>
-        </div>
-      )}
-
-      <div className="px-6 py-6">
-        <h2 className="heading-text font-bold text-xl mb-3">
-          <Balancer>
-            {post.coverIcon ? <span className="mr-2">{post.coverIcon}</span> : null}
-            {post.title}
-          </Balancer>
-        </h2>
-        <div className="border-t space-y-4 pt-3">
-          {post.excerpt ? <p className="primary-text">{post.excerpt}</p> : null}
-
-          <div className="secondary-text flex flex-wrap items-center space-x-2 text-sm">
-            <div>
-              <Time datetime={post.publishDate} />
-            </div>
+            className="aspect-[16/9] w-full bg-cover bg-center"
+            style={{ backgroundImage: `url(${post.coverImage})` }}
+          />
+        )}
+        <div className="px-5 py-4">
+          <div className="flex items-center justify-between gap-4">
+            <h2 className="flex items-center gap-1.5 text-base font-medium text-gray-900 dark:text-gray-100">
+              {post.coverIcon && (
+                <span className="shrink-0">{post.coverIcon}</span>
+              )}
+              <span className="group-hover:text-gray-700 dark:group-hover:text-white">
+                {post.title}
+              </span>
+              <FiArrowUpRight className="h-3.5 w-3.5 shrink-0 text-gray-400 opacity-0 transition-opacity group-hover:opacity-100" />
+            </h2>
+            <time
+              dateTime={post.publishDate}
+              className="shrink-0 font-mono text-xs text-gray-400 dark:text-gray-500"
+            >
+              {formattedDate}
+            </time>
           </div>
+          {post.excerpt && (
+            <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
+              {post.excerpt}
+            </p>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="group rounded-lg border border-gray-200/60 bg-white/50 px-4 py-4 transition-all duration-200 hover:border-gray-300 hover:bg-white dark:border-white/10 dark:bg-white/2 dark:hover:border-white/20 dark:hover:bg-white/4">
+      <div className="flex items-start gap-4">
+        {post.coverImage && (
+          <div
+            className="h-32 w-48 shrink-0 rounded-md bg-cover bg-center"
+            style={{ backgroundImage: `url(${post.coverImage})` }}
+          />
+        )}
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center justify-between gap-4">
+            <h2 className="flex min-w-0 items-center gap-1.5 text-[15px] font-medium text-gray-900 dark:text-gray-100">
+              {post.coverIcon && (
+                <span className="shrink-0">{post.coverIcon}</span>
+              )}
+              <span className="group-hover:text-gray-700 dark:group-hover:text-white">
+                {post.title}
+              </span>
+              <FiArrowUpRight className="h-3.5 w-3.5 shrink-0 text-gray-400 opacity-0 transition-opacity group-hover:opacity-100" />
+            </h2>
+            <time
+              dateTime={post.publishDate}
+              className="shrink-0 self-start font-mono text-xs leading-6 text-gray-400 dark:text-gray-500"
+            >
+              {formattedDate}
+            </time>
+          </div>
+          {post.excerpt && (
+            <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
+              {post.excerpt}
+            </p>
+          )}
         </div>
       </div>
     </div>

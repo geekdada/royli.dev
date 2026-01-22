@@ -38,7 +38,7 @@ const MenuItemLink = (props: { href: string; children: React.ReactNode }) => {
 
 const Navbar: React.FC = () => {
   return (
-    <header className="primary-text z-10 flex items-center px-4 py-3 justify-between sticky top-0 backdrop-blur-lg bg-white/30 dark:bg-dark-900/50">
+    <header className="primary-text z-10 flex items-center px-4 py-3 justify-between sticky top-0 bg-[#fafafa] dark:bg-[#0a0a0b]">
       <div
         style={{
           width: '42px',

@@ -22,13 +22,11 @@ export default async function BlogPage() {
     <div className="mx-auto max-w-3xl container px-6">
       <h1 className="heading-text mb-8 text-4xl font-bold font-title">Blog</h1>
 
-      <div className="space-y-5">
+      <div className="flex flex-col gap-2">
         {posts.map((post) => (
-          <div key={post.id}>
-            <Link href={`/blog/${post.publishYear}/${post.slug}`}>
-              <PostItem post={post} />
-            </Link>
-          </div>
+          <Link key={post.id} href={`/blog/${post.publishYear}/${post.slug}`}>
+            <PostItem post={post} isGalleryView={post.isGallaryView} />
+          </Link>
         ))}
       </div>
 

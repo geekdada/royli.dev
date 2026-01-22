@@ -35,7 +35,7 @@ const generateRSS = async (posts: Post[]): Promise<string> => {
       title: post.title,
       guid: isOldBlogPost
         ? `https://blog.royli.dev${readURL.replace('/blog', '')}`
-        : `${domain}/${readURL}`,
+        : `${domain}${readURL}`,
       link: `${domain}${readURL}`,
       date: new Date(post.publishDate),
       content: feedItemTemplate({

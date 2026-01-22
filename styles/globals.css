@@ -61,8 +61,13 @@
   @apply border-b border-b-dark-200/30 no-underline transition-all duration-150 hover:border-b-dark-200/60 dark:border-b-light-900/50 dark:hover:border-b-light-900/80;
 }
 
+/* Linear-style badge */
+.linear-badge {
+  @apply inline-flex items-center rounded-full border border-gray-200/60 bg-white/60 px-3 py-1.5 text-sm font-medium text-gray-700 backdrop-blur-sm transition-all duration-200 hover:border-gray-300 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-gray-300 dark:hover:border-white/20 dark:hover:bg-white/10;
+}
+
 .nav-links {
-  @apply cursor-pointer rounded-sm border-none p-2 transition-all duration-150 font-medium hover:bg-light-200 hover:opacity-80 dark:hover:bg-dark-700;
+  @apply cursor-pointer rounded-lg border-none px-3 py-2 text-sm transition-all duration-200 font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white;
 }
 
 .heading-text {
@@ -124,7 +129,7 @@ button {
 }
 
 *::selection {
-  @apply bg-sky-300/20 dark:bg-sky-400/30;
+  @apply bg-gray-200 dark:bg-gray-700;
 }
 
 html.light {
@@ -136,21 +141,11 @@ html.dark {
 }
 
 body {
-  background-color: #fdfdfd;
-  background-image:
-    radial-gradient(#cbcefa 0.85px, transparent 0.85px),
-    radial-gradient(#cbcefa 0.85px, #fdfdfd 0.85px);
-  background-size: 34px 34px;
-  background-position:
-    0 0,
-    17px 17px;
+  background-color: #fafafa;
 }
 
 .dark body {
-  background:
-    linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #111 600px),
-    fixed 0 0 / 30px 30px radial-gradient(#313131 1px, transparent 0),
-    fixed 15px 15px / 30px 30px radial-gradient(#313131 1px, transparent 0);
+  background-color: #0a0a0b;
 }
 
 .component-icon > * {
