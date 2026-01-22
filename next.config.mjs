@@ -18,10 +18,6 @@ const prettyCodeOptions = {
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   reactStrictMode: true,
-  i18n: {
-    locales: ['zh-Hans'],
-    defaultLocale: 'zh-Hans',
-  },
   images: {
     remotePatterns: [{ hostname: 'resource-proxy.royli.dev' }],
   },
