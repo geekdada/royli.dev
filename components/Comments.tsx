@@ -1,3 +1,5 @@
+'use client'
+
 import Giscus from '@giscus/react'
 import { useEffect, useState } from 'react'
 import { useTheme } from '@/lib/theme'

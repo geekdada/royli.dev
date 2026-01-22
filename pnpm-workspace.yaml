@@ -1,4 +1,5 @@
 onlyBuiltDependencies:
+  - esbuild
   - postinstall-postinstall
   - sharp
   - unrs-resolver

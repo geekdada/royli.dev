@@ -1,0 +1,203 @@
+export const metadata = {
+  id: '52c996da-a532-484f-ba4e-9540b16bb4fc',
+  title: 'Blog, recharged',
+  slug: 'blog-recharged',
+  excerpt: 'I’ve been using Typlog as my blogging platform for the past few years. It’s been an excellent product for many reasons — extremely low friction editing experience, easy-to-use dashboard, reliability. I have to admit that I don’t write very often, but when I do, it doesn’t give me a hard time. However, an idea has been keeping bugging me for the past few months.',
+  publishDate: '2022-07-12T19:30:00.000Z',
+  publishYear: 2022,
+  isFeatured: false,
+  isGallaryView: false,
+  coverImage: 'https://images.unsplash.com/photo-1457364887197-9150188c107b?ixlib=rb-1.2.1&q=80&cs=tinysrgb&fm=jpg&crop=entropy',
+}
+
+I’ve been using [Typlog](https://typlog.io/) as my blogging platform for the past few years. It’s been an excellent product for many reasons — extremely low friction editing experience, easy-to-use dashboard, reliability. I have to admit that I don’t write very often, but when I do, it doesn’t give me a hard time. However, an idea has been keeping bugging me for the past few months.
+
+
+Typlog and other blogging platforms, like [Ghost.org](http://ghost.org/) (paid version), promise a user-friendly experience, but they’ve rarely used “customization” as a selling point. Typlog supports code injections, custom header/footer, custom HTML contents, etc, which are already better than many blogging platforms (some of the features need the Pro plan). However, customizing a component on the website is still very hard. For example, preview links like Notion.
+
+
+<MDXImage src="./resources/eaa05ddd.jpg" alt="" />
+
+
+<Callout icon="☝">Typlog has added the link preview support for some websites, like Douban and IMDB, still not as good as Notion.</Callout>
+
+
+Another reason that made me really think about migrating to somewhere else was that engineering a dynamic personal website isn’t really different from engineering a product. It’s a great opportunity to learn and experiment stuff. If you look at Brian Lovin’s personal website, it literally has everything you could think of.
+
+
+[https://brianlovin.com/writing/how-my-website-works](https://brianlovin.com/writing/how-my-website-works)
+
+
+## Options out there
+
+
+### Self-host Ghost
+
+
+It’s funny that before I moved to Typlog, I was using the self-host Ghost and now it’s become an option again. Developing a custom theme for a Ghost blog is tremendous work, not to mention adapting to the **big** yearly update. Many third-party packages like the S3 storage package haven’t been updated for years. It takes time to keep your instance and theme updated.
+
+
+The paid service is good, however, it’s not cheap as I’m not a regular blogger, I also don’t need the subscription management feature.
+
+
+### Static Site Generation
+
+
+Static Site Generation (SSG) is a quite enticing option as it can be very flexible in styling and other customization aspects. It’s now much easier to generate the website in an automated way, such as using GitHub Actions, as compared to the old way, doing everything locally.
+
+
+This solution (Gatsby, Hugo, Hexo…) satisfies my current needs. However, if I want to add dynamic content in the future it’d be difficult for the following reasons:
+
+
+- The solutions don’t include a running service, which means I’d need another service to output the dynamic content.
+
+- Generating happens in build time, the time consumed only grows over time.
+
+### Notion + X
+
+
+Notion is more than capable of being a CMS, and it’s free! The problem left is how to render the content to a browser, like a blog. There are quite a few cool services doing so.
+
+
+[https://super.so/](https://super.so/)
+
+
+[https://feather.so/](https://feather.so/)
+
+
+However, I don’t want to spend more than 10 bucks a month on this 😈.
+
+
+Spencer first introduced his idea back in 2021, which uses Next.js as the renderer. It got my eyes.
+
+
+[https://spencerwoo.com/blog/nextjs-blog-notion](https://spencerwoo.com/blog/nextjs-blog-notion)
+
+
+## Notion + Next.js
+
+
+Next.js probably is one of the coolest projects in the React community. It’s made by Vercel, which probably is one of the coolest companies out there.
+
+
+Next.js gives different ways to _deliver_ your content.
+
+
+- Server-Side Rendering (SSR)
+
+- Static Site Generation (SSG)
+
+- Client-side Rendering (CSR)
+
+- [Incremental Static Regeneration (ISR)](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration)
+
+The last one is what I want to talk about.
+
+
+If you’ve ever used the SSG before, you know everything hosted on your server is rendered at build-time, meaning if you want to add or change content, you need to build again. ISR, however, doesn’t require the subsequent building. A page would be built when someone accesses the URL. Pages that have already been built can also be updated upon new requests once become expired. How cool is that?
+
+
+Since it essentially is a Next.js service, it’s up to you to decide which parts are dynamic and which aren’t.
+
+
+In order to render blocks from Notion, you’ve got two options.
+
+
+### Digest the raw data and render them
+
+
+Notion has its official API now. You can query your database, search content and many stuff through the API.
+
+
+[https://developers.notion.com/](https://developers.notion.com/)
+
+
+### [**react-notion-x**](https://github.com/NotionX/react-notion-x)** suite**
+
+
+_react-notion-x_ consists of two essential parts:
+
+
+1. `notion-client` - A wrapper of the Notion private API used by their clients.
+
+1. `react-notion-x`- A collection of React components that transform the raw data into actual pages with Notion-like styling.
+
+Yes, it uses private APIs. The author published another package `notion-compat` to make it possible to use the official API, but it has a few drawbacks (see the link).
+
+
+[https://github.com/NotionX/react-notion-x/blob/master/packages/notion-compat/readme.md](https://github.com/NotionX/react-notion-x/blob/master/packages/notion-compat/readme.md)
+
+
+You’d be amazed by how much _react-notion-x_ can do out of the box. Kudos to [Travis Fischer](https://github.com/transitive-bullshit).
+
+
+## Blog, recharged
+
+
+What you are seeing right now is the recharged blog that results from my days of work. I have to say “thank you” to Spencer because I copied a lot of things from this blog so that I could have this MVP this fast. I strongly recommend you to read these posts about his website if you are interested in the idea (promise me you will come back).
+
+
+[https://spencerwoo.com/blog/nextjs-blog-notion](https://spencerwoo.com/blog/nextjs-blog-notion)
+
+
+[https://spencerwoo.com/blog/revisiting-blogging-with-notion-2022](https://spencerwoo.com/blog/revisiting-blogging-with-notion-2022)
+
+
+[My blog](https://github.com/geekdada/royli.dev) uses both the official and the private API because the former one handles Collections better and the latter one handles rendering better.
+
+
+<LinkPreview url="https://github.com/geekdada/royli.dev" />
+
+
+Apart from copying things from Spencer’s website, I tried to solve the problems Spencer mentioned in his post.
+
+
+### Image
+
+
+Notion stores images (and other assets) on the S3 service. The image URLs you get from Notion’s API, either the private or the public, are signed. They are short-lived instead of permanent. There’s a chance that the page generated by Next.js is still valid but the URLs are expired, and the viewer gets a bunch of 400 errors.
+
+
+<LinkPreview url="https://github.com/geekdada/resource-proxy" />
+
+
+Introducing the Resource Proxy (I know, I’m bad at naming). What it does is shown below.
+
+
+<MDXImage src="./resources/46017c2f.png" alt="" />
+
+
+The key used for indexing each asset is calculated based on the _identifier_. When the same _identifier_ is requested, no matter what the signature is, the Resource Proxy always point to the same file in the private S3 bucket.
+
+
+<MDXImage src="./resources/98c38bd7.png" alt="" />
+
+
+Unlike the Notion S3 bucket, which takes permission very seriously, we don’t need to react if the author changes the permission. Once the asset is saved, it’s there forever.
+
+
+The Resource Proxy takes care of the dimension as well. It saves the image in a temporary place, probes the dimension using [https://github.com/nodeca/probe-image-size](https://github.com/nodeca/probe-image-size), then saves the metadata to the database. The metadata makes it possible to use `next/image`.
+
+
+## What’s left
+
+
+### RSS feed
+
+
+If you have subscribed to my blog, the feed still works, just without the main content. Generating the body content in an RSS feed is not easy as Next.js only allows outputting HTML content unless you fiddle with `_server.ts`.
+
+
+[https://nextjs.org/docs/advanced-features/custom-server](https://nextjs.org/docs/advanced-features/custom-server)
+
+
+### Tag and search
+
+
+Will be available soon.
+
+
+## The end
+
+
+I really enjoyed the process of building this website, especially when I could control almost everything however I’d like.

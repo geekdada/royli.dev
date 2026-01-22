@@ -2,21 +2,22 @@ import type { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { getBlogPosts } from '@/lib/notion'
-import { PaginatedResponse, Post } from '@/lib/types'
+import { getAllPosts, type Post } from '@/lib/content/posts'
 import { sec } from '@/lib/utils/time'
 import NellyIcon from '@/components/NellyIcon'
 import Icon from '@/components/Icon'
 
 interface Props {
-  posts: PaginatedResponse<Post>
+  posts: Post[]
 }
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const posts = await getBlogPosts()
+  const posts = await getAllPosts()
 
   return {
-    props: { posts },
+    props: {
+      posts: JSON.parse(JSON.stringify(posts)),
+    },
     revalidate: sec('7d'),
   }
 }
@@ -129,10 +130,10 @@ export default function IndexPage({
             <p>
               <span>Read the latest post:&nbsp;</span>
               <Link
-                href={posts.results[0].readURL}
+                href={`/blog/${posts[0].publishYear}/${posts[0].slug}`}
                 className="hover-links mx-2"
               >
-                {posts.results[0].title}
+                {posts[0].title}
               </Link>
             </p>
             <p>

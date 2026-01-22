@@ -1,0 +1,63 @@
+export const metadata = {
+  id: 'fcb9d6d0-a7ca-4a9d-bc0d-9a45b694e516',
+  title: 'OS X 默认字体的讨论与修改方法',
+  slug: 'os-x-mo-ren-zi-ti-de-tao-lun-yu-xiu-gai-fang-fa-2d38abb1',
+  publishDate: '2018-02-14T00:00:00.000Z',
+  publishYear: 2018,
+  isFeatured: false,
+  isGallaryView: false,
+}
+
+使用了Mac以后，对Mac系统下字体的表现非常满意。从 Windows Vista 开始，微软便将系统默认的中文字体改为了无衬线的雅黑字体，字体表现比之前 XP 中使用的宋体要好了很多。但是 Windows 和 Mac OS 相比，字体的视觉效果还是有非常大的区别，Windows 偏向清晰，Mac OS 则偏向美观。然而，也有一些人对 Mac OS 的中文默认字体 —— 华文黑体 —— 也不满意，觉得它在小字体的表现上非常虚。这篇博文也会教大家如何修改Mac的默认中文字体。
+
+
+关于第一个问题的解答，[我在知乎上请教了字体排印的老师](http://www.zhihu.com/question/20026266)。
+
+
+下面是信黑体作者許瀚文老师的回答：
+
+
+> 首先，Windows與Mac的文字渲染（Font-rendering，我不認同翻譯，但暫且使用）誰好誰差，不在此定義。因為字體設計師相信肉眼較易接受相對輪廓圓潤的視覺文字（visual language)，mac是基於這個想法去調較osx的font rendering engine (Apple quartz, 有錯謝謝指正），在外國文字設計論壇
+http://typophile.com 上字體愛好者幾乎一面倒支持mac的文字渲染方法；然而另一陣營，windows一方以工程師為主的，相信文字一定要「清晰」，「清晰」即時易認性。因此無論GDI、cleartype等技術的「喜好」也偏向將文字硬性拆成細碎的點陣，這也解釋了為何字體到了Windows都變了形，又有Hinting，而OSX上字較「濛」，但字體的設計優劣就容易看出，也沒有Hinting的需要。
+
+
+> 總括來說，mac一方是以字體設計師喜好的方向出發，而Windows一方則以工程師喜好的方向出發。而Windows 7新的渲染API DirectWrite，比起GDI 和 Cleartype都較人性化了，不過與OSX的分別仍然很大。然而最終極影響可讀性的因素：習慣與否。
+
+
+我在另一篇文章中了解到 Mac OS 中已经附带的另一款字体：冬青黑体（Hiragino），并且对他产生了兴趣。该字体原为 [日本字游工坊](http://screen.co.jp/) 设计。
+
+
+几篇文章有助于大家了解冬青黑这款字体：
+
+
+1. [雪豹新简体字体Hiragino Sans GB](http://www.typeisbeautiful.com/2010/01/1894)
+
+1. [冬青黑体Hiragino Sans GB — — 字体推荐](http://www.logoair.com/hiragino-sans-gb.html)
+
+1. [Hiragino Sans GB适合做屏幕显示字体吗？](http://www.zhihu.com/question/19628689)
+
+关于如何修改Mac OS的默认中文字体，这里引用知乎上梁海的回答，[原文地址](http://www.zhihu.com/question/19862629)。
+
+
+修改以下目录文件
+
+
+```plain text
+/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/Resources/DefaultFontFallbacks.plist
+```
+
+
+除了默认的西文字体 Lucida Grande，用于其他文字的字体基本都可以通过简单替换该文件内的字符串来修改。
+
+
+比如，想把简体中文介面（locale）的黑体-简（华文黑体）换成冬青黑体简体中文（Hiragino Sans
+GB），就可以这样做（注意做好原始文件备份，尽管这个改动其实很干净；hacker 们懂得解决权限问题的话，完全可以忽略下面的迂回手法 :P……）：
+
+
+用 TextEdit（「文本编辑」）之类的文本编辑器打开上面说的 `DefaultFontFallbacks.plist` 文件，搜索到 3个 `STHeitiSC-Light` 并将其替换为 `HiraginoSansGB-W3`（这是冬青黑体简体中文 W3 这一字重变体的 PostScript name）。
+
+
+将文件另存（因为没有直接保存的权限），然后拷贝回这个目录，确认授权并覆盖原始文件。
+
+
+重启，迎接中西文黑度一致的世界。（一开始一定会感觉中文的黑度过大，但用上几天就会习惯。）

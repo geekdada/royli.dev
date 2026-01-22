@@ -1,8 +1,10 @@
+'use client'
+
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import Balancer from 'react-wrap-balancer'
 
-import { Post } from '@/lib/types'
+import type { Post } from '@/lib/content/posts'
 import Time from './Time'
 
 dayjs.extend(localizedFormat)
@@ -23,9 +25,7 @@ const PostItem = ({ post }: { post: Post }) => {
       <div className="px-6 py-6">
         <h2 className="heading-text font-bold text-xl mb-3">
           <Balancer>
-            {post.coverIcon ? (
-              <span className="mr-2">{post.coverIcon}</span>
-            ) : null}
+            {post.coverIcon ? <span className="mr-2">{post.coverIcon}</span> : null}
             {post.title}
           </Balancer>
         </h2>

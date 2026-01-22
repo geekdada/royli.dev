@@ -2,9 +2,7 @@ import '@fontsource/poppins/400.css'
 import '@fontsource/poppins/500.css'
 import '@fontsource/poppins/700.css'
 
-import 'react-notion-x/src/styles.css'
 import 'prismjs/themes/prism-tomorrow.css'
-// eslint-disable-next-line import/no-unresolved
 import { GeistMono } from 'geist/font/mono'
 
 import type { AppProps } from 'next/app'
@@ -12,7 +10,6 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
 import { useMemo, ReactNode } from 'react'
-import { UserProvider } from '@auth0/nextjs-auth0/client'
 
 import '@/styles/globals.css'
 import Layout from '@/components/Layout'
@@ -77,17 +74,15 @@ function MyApp({ Component, pageProps }: AppProps) {
         ></Script>
       )}
 
-      <UserProvider>
-        <ThemeProvider>
-          <main className={`${GeistMono.variable}`}>
-            <Layout>
-              <LoginGuard>
-                <Component {...pageProps} />
-              </LoginGuard>
-            </Layout>
-          </main>
-        </ThemeProvider>
-      </UserProvider>
+      <ThemeProvider>
+        <main className={`${GeistMono.variable}`}>
+          <Layout>
+            <LoginGuard>
+              <Component {...pageProps} />
+            </LoginGuard>
+          </Layout>
+        </main>
+      </ThemeProvider>
     </>
   )
 }

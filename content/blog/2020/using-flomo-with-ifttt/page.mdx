@@ -1,0 +1,68 @@
+export const metadata = {
+  id: '7be12d91-a70f-462e-91d5-9c8980a19733',
+  title: '使用 IFTTT 来添加 flomo 条目',
+  slug: 'using-flomo-with-ifttt',
+  excerpt: 'flomo 可以和 IFTTT 成为好朋友。',
+  publishDate: '2020-12-17T00:00:00.000Z',
+  publishYear: 2020,
+  isFeatured: false,
+  isGallaryView: false,
+}
+
+[flomo](https://flomoapp.com/register2/?Mzk3=) 已经以光速支持了从 API 导入条目，这为我们使用 flomo 提供了更多的可能性。这篇文章我会以 Pocket 为例，教大家如何用 IFTTT 来自动添加加星文章到 flomo。
+
+
+因为 IFTTT 的 Webhook 程序（applets）无法分享，大家只能举一反三来自己建立程序。
+
+
+## 新建一个程序
+
+
+我们先选择一个触发器。这里我们选择 "New favorite item"。
+
+
+<MDXImage src="./resources/ee3e7aa2.png" alt="" />
+
+
+随后，再选择一个服务。搜索 "Webhooks" 即可找到 Webhooks 服务。这个服务只有一个动作，那就是发起一个请求。
+
+
+<MDXImage src="./resources/7c2f7737.png" alt="" />
+
+
+将你的 flomo API 填入 URL，其它菜单项如图填入。
+
+
+<MDXImage src="./resources/905ae743.png" alt="" />
+
+
+最后一项 Body 你可以抄我的，也可以自己发挥。需要注意的是，变量需要用 `<<<` 和 `>>>` 包裹，不然将无法调用 API。
+
+
+**Body**
+
+
+```plain text
+{
+  "content": "Starred: <<<{{Title}}>>>\\nURL: <<< {{Url}}>>>\\nTags: <<< {{Tags}}>>>\\n\\n<<< {{Excerpt}}>>>\\n\\n#Pocket"
+}
+
+```
+
+
+**效果**
+
+
+<MDXImage src="./resources/00354387.png" alt="" />
+
+
+## 问题
+
+
+Pocket 本身有标签系统，但是因为 IFTTT 的限制我们无法将 Pocket 的标签转变为 flomo 的标签。希望将来 flomo 能拓展其 API 把此链路打通。
+
+
+如果你还没开始使用 flomo，欢迎使用我的 [推荐链接](https://flomoapp.com/register2/?Mzk3=) 注册。通过此链接注册你可获赠 14 天 PRO 会员！
+
+
+欢迎各位在评论区分享你有什么借助 IFTTT 实现的好点子吧！

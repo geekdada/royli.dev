@@ -7,15 +7,14 @@ import pMapSeries from 'p-map-series'
 import Handlebars from 'handlebars'
 
 import feedItemTemplateString from '@/templates/feed-item'
-import { getCachedBlogPosts } from '@/lib/notion'
-import { PaginatedResponse, Post } from '@/lib/types'
+import { getAllPosts, type Post } from '@/lib/content/posts'
 
 const router = createRouter<NextApiRequest, NextApiResponse>()
 const domain = 'https://royli.dev'
 const year = new Date().getFullYear()
 let feedItemTemplate: HandlebarsTemplateDelegate
 
-const generateRSS = async (posts: PaginatedResponse<Post>): Promise<string> => {
+const generateRSS = async (posts: Post[]): Promise<string> => {
   const feed = new Feed({
     id: domain,
     link: `${domain}/blog/feed.xml`,
@@ -29,8 +28,8 @@ const generateRSS = async (posts: PaginatedResponse<Post>): Promise<string> => {
     },
   })
 
-  // Add posts to feed based on queried data from Notion
-  await pMapSeries(posts.results, async (post) => {
+  await pMapSeries(posts, async (post) => {
+    const readURL = `/blog/${post.publishYear}/${post.slug}`
     const isOldBlogPost = dayjs(post.publishDate).isBefore(
       'Sat, 05 Jun 2022 00:00:00 +0000'
     )
@@ -38,13 +37,13 @@ const generateRSS = async (posts: PaginatedResponse<Post>): Promise<string> => {
     feed.addItem({
       title: post.title,
       guid: isOldBlogPost
-        ? `https://blog.royli.dev${post.readURL.replace('/blog', '')}`
-        : `${domain}/${post.readURL}`,
-      link: `${domain}${post.readURL}`,
+        ? `https://blog.royli.dev${readURL.replace('/blog', '')}`
+        : `${domain}/${readURL}`,
+      link: `${domain}${readURL}`,
       date: new Date(post.publishDate),
       content: feedItemTemplate({
         ...post,
-        readURL: `${domain}${post.readURL}`,
+        readURL: `${domain}${readURL}`,
       }),
     })
   })
@@ -59,7 +58,8 @@ router.get(async (req, res) => {
 
   res.setHeader('Cache-Control', 'public, max-age=600, stale-while-revalidate')
 
-  const posts = await getCachedBlogPosts({ pageSize: 10 })
+  const allPosts = await getAllPosts()
+  const posts = allPosts.slice(0, 10)
   const xmlFeed = await generateRSS(posts)
 
   res.setHeader('Content-Type', 'application/rss+xml;charset=utf-8')

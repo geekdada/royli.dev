@@ -1,0 +1,114 @@
+export const metadata = {
+  id: 'f087fa52-d172-4d6c-ab35-966f3e99e5d6',
+  title: '更加高效的 Surge Ponte 网络分流',
+  slug: 'more-efficient-surge-ponte-traffic-routing',
+  excerpt: '自从 Ponte 上线以来，我就一直用它来实现外网访问内网的隧道。这个方案稳定，适应不同类型的宽带网络，无论是 NAT 网络还是公网 IP 都能无感回家。最近无意发现一直以来使用的配置有一个微小的缺陷所以用这篇文章来记录优化的过程。',
+  publishDate: '2024-05-31T00:00:00.000Z',
+  publishYear: 2024,
+  isFeatured: false,
+  isGallaryView: false,
+  coverImage: 'https://images.unsplash.com/photo-1605798037618-f3be41c15db6?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb',
+}
+
+## 背景
+
+
+自从 Ponte 上线以来，我就一直用它来实现外网访问内网的隧道。这个方案稳定，适应不同类型的宽带网络，无论是 NAT 网络还是公网 IP 都能无感回家。最近无意发现一直以来使用的配置有一个微小的缺陷所以用这篇文章来记录优化的过程。
+
+
+**2024-06-02 Update: **经 @Blankwonder 指点，后面更新了更简单的办法。
+
+
+## 起因
+
+
+我家的网段是 `192.168.114.0/24` ，Surge 的配置中有这样一段：
+
+
+```plain text
+IP-CIDR,192.168.114.0/24,DEVICE:PYCELLE
+```
+
+
+这样即便身处内网连接也会通过设备 PYCELLE 转发。我家的大部分网络服务都位于这台设备上，但同时也有 NAS 和路由器。一般情况下这么写都没问题，但如果遇到 Mac mini 升级我的 Surge 就完全无法访问内网，电脑使用 NAS 备份也会先经过一次 PYCELLE 再去到 NAS，略显低效。
+
+
+**2024-06-01 Update: **我为了方便好记给家里的网络设备分配了域名，这些域名能够被公网的 DNS 正常解析。如果你使用 IP 地址访问内网设备那就不存在这篇文章所述的问题。
+
+
+## 解决
+
+
+```plain text
+[Proxy Group]
+Ponte Link = subnet, default = DEVICE:PYCELLE, SSID:Wintefell = DIRECT, ROUTER:192.168.114.1 = DIRECT
+
+[Rule]
+# 放在靠近末尾的地方
+IP-CIDR,192.168.114.0/24,Ponte Link
+```
+
+
+新的办法借助 [Subnet Group](https://manual.nssurge.com/policy-group/subnet.html) 实现了近似的功能。需要注意的是因为不能写更复杂的逻辑判断，所以只要网关地址是 `192.168.114.1` 就直连。考虑到这个网段不常见，就不再深入推敲了。
+
+
+---
+
+
+<Callout icon="⚠️">下面的办法太麻烦请勿参考</Callout>
+
+
+解决的思路很简单，在家时直连 `192.168.114.0/24` ，在外面时先隧道连接 PYCELLE 再去到目标的地址。Surge 提供 Rule 类型的脚本，能够很容易解决这个问题。
+
+
+```javascript
+(() => {
+  const isHomeWiFi = $network.wifi?.ssid === "Winterfell";
+  const isConnectedToLAN = $network.wifi?.ssid === null;
+  const isHomeLAN = $network.v4?.primaryRouter === "192.168.114.1";
+  const isHome = isHomeWiFi || (isConnectedToLAN && isHomeLAN);
+  const { dnsResult } = $request;
+
+  if (!dnsResult || isHome) {
+    return $done({ matched: false });
+  }
+
+  const isRequestingHomeNetwork = dnsResult.v4Addresses.some((add) =>
+    add.includes("192.168.114")
+  );
+
+  if (isRequestingHomeNetwork) {
+    return $done({ matched: true });
+  }
+
+  $done({ matched: false });
+})();
+```
+
+
+是的，我家所有联网的设备都以 GOT 角色或者城市命名了。
+
+
+这个脚本主要的判断依据有三点：
+
+
+1. 是否连接了家里的 WiFi 热点
+
+1. 有线连接的设备是否使用 `192.168.114.1` 作为网关
+
+1. 连接的目的地是否位于 `192.168.114.0/24`
+
+另外为了使这个脚本生效，你还要在配置中引入它：
+
+
+```plain text
+[Rule]
+#...
+#...
+
+# 放在靠近末尾的地方
+SCRIPT,home-network,DEVICE:PYCELLE,requires-resolve
+
+[Script]
+home-network = script-path=home-network.js,type=rule,debug=false,engine=jsc
+```

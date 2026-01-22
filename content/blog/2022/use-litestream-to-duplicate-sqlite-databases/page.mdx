@@ -1,0 +1,108 @@
+export const metadata = {
+  id: 'eda6abbf-99e6-491a-822e-b280e20736de',
+  title: '借由 Litestream 方便备份你的 SQLite 数据库',
+  slug: 'use-litestream-to-duplicate-sqlite-databases',
+  excerpt: '只需极低的成本就可以实现 SQLite 的数据安全储存。',
+  publishDate: '2022-06-04T20:23:00.000Z',
+  publishYear: 2022,
+  isFeatured: false,
+  isGallaryView: false,
+  coverImage: 'https://images.unsplash.com/photo-1538474705339-e87de81450e8?ixlib=rb-1.2.1&q=80&cs=tinysrgb&fm=jpg&crop=entropy',
+}
+
+SQLite 数据库有着管理简单、功能丰富等优点，很多时候我都偏向于在个人项目或者部署开源项目时选择使用 SQLite，而不是 MySQL 或者 PostgresQL。 这么做虽然开机一时爽，但是时间久了就会在不同服务器的不同目录下留下一个个数据库文件。如何备份他们成了一件头痛的事情。
+
+
+## 什么是 Litestream
+
+
+[Litestream](https://litestream.io/)  是一个用 Go 编写的，用于 SQLite 数据库的流式复制工具。它作为一个单独的后台进程运行，并不断地从磁盘上复制写前日志页到一个或多个副本。这种异步复制提供了类似于 Postgres 或 MySQL 等数据库服务器的灾难恢复。
+
+
+SQLite 有一个名为 "WAL"（预写日志）的日志模式。它首先将数据库页面的变化写入一个单独的 `-wal` 文件，然后再将这些页面复制回主数据库文件。这让 SQLite 提供了安全的原子事务，因为如果一个事务被回滚，它可以简单地删除 WAL。如果页面直接写入数据库文件，那么在回滚时就没有办法取回原始的页面数据。WAL 也允许读事务在事务开始时有自己的数据库快照视图，因为同一数据库页面可以有多个实例分布在数据库文件和 WAL 中。然而，WAL 不断增长，所以最终页面必须被移回数据库文件，以便 WAL 可以重新开始记录。这个过程被称为 _检查点_，只有在没有事务的情况下才能进行。这就是 Litestream 复制 SQLite 的关键所在。
+
+
+> 上面一段翻译自 Litestream 文档
+
+
+Litestream 除了使用简单的优点，它还省钱。我目前所有备份的数据库加起来不到 500MB，一个月只需几十美分（默认备份频率和快照留存配置）。
+
+
+<MDXImage src="./resources/69126b4f.gif" alt="" />
+
+
+## Getting Started
+
+
+<Callout icon="💡">本文以 Ubuntu 系统为例</Callout>
+
+
+为了避免本文随时间推移而过时，请参照 [官方文档](https://litestream.io/install/debian/) 进行安装。安装完成后 Litestream 便会以守护程序的方式随系统启动。
+
+
+安装完成之后你就可以编辑它的配置文件 `/etc/litestream.yml`。
+
+
+```plain text
+# AWS credentials
+access-key-id:     AKIAxxxxxxxxxxxxxxxx
+secret-access-key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xxxxxxxxx
+
+dbs:
+  - path: /srv/docker/app-1/db.sqlite
+    replicas:
+      - type: s3
+        bucket: litestream-us-west-1
+        path: app-1
+        region: us-west-1
+  - path: /srv/docker/app-2/db.sqlite
+    replicas:
+      - type: s3
+        bucket: litestream-us-west-1
+        path: app-2
+        region: us-west-1
+
+```
+
+
+- 关于配置文件完整的解释请看 [这里](https://litestream.io/reference/config/)。
+
+- [如何创建一个 S3 储存库并安全地存取](https://litestream.io/guides/s3/)
+
+编辑结束后就可以重启 Litestream。
+
+
+```plain text
+$ sudo systemctl restart litestream
+
+$ litestream databases
+path                                 replicas
+/srv/docker/app-1/db.sqlite          s3
+/srv/docker/app-2/db.sqlite          s3
+
+```
+
+
+成功！
+
+
+<MDXImage src="./resources/dee009c0.gif" alt="" />
+
+
+## 如何恢复
+
+
+```plain text
+# 恢复到最近一个副本
+$ litestream restore /srv/docker/app-1/db.sqlite
+
+# 恢复最近一个副本到一个新的文件
+$ litestream restore -o ./db.sqlite /srv/docker/app-1/db.sqlite
+
+# 恢复到时间点
+$ litestream restore -timestamp 2020-01-01T00:00:00Z /srv/docker/app-1/db.sqlite
+
+```
+
+
+- [文档](https://litestream.io/reference/restore/)

@@ -1,0 +1,154 @@
+export const metadata = {
+  id: '8a58ef78-1385-4494-a44b-cd296eef2671',
+  title: '让 Tailscale MagicDNS 和 Surge 共存',
+  slug: 'tailscale-magicdns-and-surge',
+  excerpt: 'Surge 和 Tailscale 因为同为网络工具存在互相冲突的情况，一直以来我都不得不关闭 Tailscale 的某些功能使其工作。这篇文章试图使用一些特殊方法绕过限制，让 Tailscale  MagicDNS 和 Surge 共存。',
+  publishDate: '2024-06-01T09:30:00.000Z',
+  publishYear: 2024,
+  isFeatured: false,
+  isGallaryView: false,
+}
+
+Surge 和 Tailscale 因为同为网络工具存在互相冲突的情况，一直以来我都不得不关闭 Tailscale 的某些功能使其工作。这篇文章试图使用一些特殊方法绕过限制，让 Tailscale  MagicDNS 和 Surge 共存。
+
+
+<Callout icon="💡">@Blankwonder 审阅这篇文章后更新了 Surge for Mac，现在已经能够正常使用 `<machine name>.<tailnet name>.ts.net` 域名，如果你想省略 `<tailnet name>` 可以继续往下读。</Callout>
+
+
+## 什么是 Tailscale MagicDNS
+
+
+> Tailscale can automatically assign DNS names for devices in your network when you use the [**MagicDNS**](https://tailscale.com/kb/1054/dns) feature.
+
+
+Tailnet 内的设备会被分配一个唯一的 `100.64.0.0/10` 地址。你可以直接访问这个 IP 地址，但是正如直接使用 IP 网上冲浪是个坏主意，直接使用 IP 也不是个好主意。所以 Tailscale 会为每个 IP 也分配一个 [`ts.net`](http://ts.net/) 的地址。
+
+
+这个域名并非公网 DNS 能够解析，而是由 Tailnet 内 `100.100.100.100` 这个 DNS 服务器解析的。这一 DNS 服务名叫 MagicDNS。
+
+
+<MDXImage src="./resources/9ffe8c53.png" alt="" />
+
+
+如图，你只需要记得 machine name，并且开启 Tailscale MagicDNS，在浏览器中输入 `https://monitoring` 就相当于访问 `https://onitoring.yak-bebop.ts.net:443` 。
+
+
+## 问题
+
+
+当 Tailscale 启动时它会在路由表中写入下面的内容，告诉系统遇到这些 IP 的请求就交给 Tailscale 的 utun 接口。
+
+
+```plain text
+Destination        Gateway            Flags               Netif Expire
+100.64/10          link#37            UCS                 utun9
+100.100.100.100    link#37            UHWIi               utun9
+```
+
+
+然而当 Surge 的高级模式开启时，Surge 处于某种原因无法将 DNS 查询的数据包发往 utun9，即便你在规则中写了这样的规则。
+
+
+```plain text
+[Proxy]
+Tailscale = DIRECT, interface = utun9
+
+[Host]
+*.ts.net = server:100.100.100.100
+
+[Rule]
+IP-CIDR,100.64.0.0/10,Tailscale,no-resolve
+```
+
+
+这个限制似乎并不发生在 TCP 请求，因为后面的解决方案无需加入这些的规则。
+
+
+<Callout icon="💡">这个问题在新版的 Surge for Mac 中已经得到解决</Callout>
+
+
+## 解决
+
+
+我在浏览 Tailscale 文档时发现，他们提供了 API 接口来获取所有的实例名称和地址，这样就能自己实现一个 DNS 解析。下面是脚本内容。
+
+
+<Callout icon="⚠️">如果你加入了多个 Tailnet，这个脚本并不适用！</Callout>
+
+
+```javascript
+const TENANT_ID = "TENANT_ID";
+const TAILNET_NAME = "<NAME>.ts.net";
+const ACCESS_KEY = "YOU_KEY";
+
+(async () => {
+  $httpClient.get(
+    {
+      url: `https://api.tailscale.com/api/v2/tailnet/${TENANT_ID}/devices?fields=default`,
+      headers: {
+        Authorization: `Bearer ${ACCESS_KEY}`,
+      },
+    },
+    function (error, response, data) {
+      if (error) {
+        $done({});
+        return;
+      }
+
+      data = JSON.parse(data);
+
+      for (const device of data.devices) {
+        const { addresses, name } = device;
+
+        if (
+          name === $domain ||
+          name.replace(TAILNET_NAME, "ts.net") === $domain
+        ) {
+          return $done({ addresses, ttl: 2629746 });
+        }
+      }
+
+      $done({});
+    }
+  );
+})();
+```
+
+
+使用脚本之前，你需要准备三个字段：
+
+
+- `TENANT_ID`
+
+<MDXImage src="./resources/37087123.png" alt="" />
+
+
+- `TAILNET_NAME` - 你可以在 [这里](https://login.tailscale.com/admin/dns) 找到，填入包含 `ts.net` 的名称
+
+- `ACCESS_KEY` - 你可以在 [这里](https://login.tailscale.com/admin/settings/keys) 申请  **API access tokens**，有效期最长 90 天
+
+## 使用
+
+
+```plain text
+[Host]
+*.<tailnet name>.ts.net = server:100.100.100.100
+*.ts.net = script:tailscale-dns
+
+[Script]
+tailscale-dns = script-path=tailscale-dns.js,type=dns,debug=false,engine=jsc
+```
+
+
+接下来你便可以使用 `<machine name>.ts.net` 来连接对应的主机实例。
+
+
+这个方案无法实现 search domains 所以你至少需要写上 [`ts.net`](http://ts.net/)。由于我不考虑多个 Tailnet 的情况，也不需要记住你 Tailnet 的名称。
+
+
+### 注意
+
+
+1. 脚本的 Key 只有 90 天有效期，你需要定期更新
+
+1. 每次访问 `*.ts.net` 只要域名解析未过期都会发起一次请求，通常这不是问题，如果你遇到了问题可以在评论中告诉我

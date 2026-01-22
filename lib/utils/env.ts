@@ -1,6 +1,6 @@
 export const getEnv = (
   key: string,
-  defaultValue?: string,
+  defaultValue: string = '',
   env = process.env
 ): string => {
   const value = env[key]
@@ -9,9 +9,5 @@ export const getEnv = (
     return value
   }
 
-  if (defaultValue !== undefined) {
-    return defaultValue
-  }
-
-  throw new Error(`Config error: missing required env variable "${key}"`)
+  return defaultValue
 }

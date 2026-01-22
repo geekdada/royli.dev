@@ -1,0 +1,52 @@
+export const metadata = {
+  id: '12c766e7-4dd7-8099-a017-d4ece1a356ad',
+  title: '解决 Tailscale 上 Hysteria 和其他 QUIC 数据流传输问题',
+  slug: 'hysteria-mtu-issue-with-tailscale',
+  excerpt: '在使用 Tailscale 网络进行 Hysteria 或其他基于 quic-go 的 QUIC 数据流传输时，您可能会遇到连接不稳定甚至无法传输的问题。这种情况与 Tailscale 的 MTU（最大传输单元）设置密切相关。本文将讨论如何通过调整 MTU 来解决这些问题。',
+  publishDate: '2024-10-26T23:40:00.000Z',
+  publishYear: 2024,
+  isFeatured: false,
+  isGallaryView: false,
+  coverImage: 'https://images.unsplash.com/photo-1521106047354-5a5b85e819ee?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb',
+}
+
+在使用 Tailscale 网络进行 Hysteria 或其他基于 quic-go 的 QUIC 数据流传输时，您可能会遇到连接不稳定甚至无法传输的问题。这种情况与 Tailscale 的 MTU（最大传输单元）设置密切相关。本文将讨论如何通过调整 MTU 来解决这些问题。
+
+
+### 背景分析
+
+
+Tailscale 默认使用 1280 字节的 MTU，这是一个适用于 IPv6 最小开销和隧道场景的保守选择。QUIC 协议对 MTU 也有一定的要求，其中最低未分片 MTU 为 1200 字节，这意味着 QUIC 必须至少能够支持 1200 字节的传输才可以正常工作。然而，由于 Tailscale 默认的 MTU 与 QUIC 最小未分片的 MTU 相差无几，这可能会导致一些基于 QUIC 的应用在传输过程中出现问题。
+
+
+在 GitHub issue [#8219](https://github.com/tailscale/tailscale/issues/8219) 中，有用户提到，通过调整 Tailscale 的 MTU 可以改善这种不稳定情况。而在另一则讨论 [#2633](https://github.com/tailscale/tailscale/issues/2633#issuecomment-2358219952) 中，也有人解释了 Tailscale 默认的 MTU 与 QUIC 最小要求之间的关系。
+
+
+### 解决方法
+
+
+为了确保 QUIC 数据流能够顺利地在 Tailscale 网络中传输，您可以尝试将 Tailscale 的 MTU 适度调大。例如，将 MTU 设置为 1350，在实际操作中已经证明可以正常工作。
+
+
+具体步骤如下：
+
+
+1. 编辑 `/etc/default/tailscaled` 文件，新增以下行以将 MTU 设置为 1350：
+
+1. 重新启动 Tailscale 以应用新配置：
+
+1. 通过以下命令确认是否生效：
+
+### 注意事项
+
+
+在调整 MTU 时，请根据您具体的网络环境进行测试，因为不同网络设备和链路可能对 MTU 的支持情况有所不同。过大的 MTU 可能导致数据包分片，反而降低传输效率。因此，找到适合自己网络的 MTU 数值至关重要。
+
+
+### 结论
+
+
+Tailscale 默认的 1280 MTU 值在某些基于 QUIC 协议的数据流传输中可能表现不佳。通过适度增加 MTU，如设置为 1350，可以有效地解决传输不稳定的问题。希望这篇简短的技术博客能帮助您解决在 Tailscale 网络下使用 QUIC 的困扰。
+
+
+如果您有类似的情况，建议参考以上方法进行尝试，并根据您的具体环境调试最合适的 MTU 值。

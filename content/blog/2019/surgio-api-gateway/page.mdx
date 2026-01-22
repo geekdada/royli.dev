@@ -1,0 +1,58 @@
+export const metadata = {
+  id: '3eeffc90-cded-4ef5-bda5-263ecd38c8a8',
+  title: '利用 Surgio 快速搭建 API 服务',
+  slug: 'surgio-api-gateway',
+  publishDate: '2019-10-15T15:25:00.000Z',
+  publishYear: 2019,
+  isFeatured: false,
+  isGallaryView: false,
+}
+
+<Callout icon="💡">本篇文章属于 [Surgio](https://surgio.royli.dev/) 的进阶使用教程</Callout>
+
+
+## 前言
+
+
+相信很多人都用过网络上处理规则的 API 接口，也有人在使用过 Surgio 后觉得更新规则不太灵活。虽然我们已经能够通过自动化的方法每隔一段时间更新一次规则，但还是无法做到实时更新。这篇文章就是想教大家，利用现成的 SAAS(Software as a Service) 服务，来实现一个 Surgio 规则仓库的 API。
+
+
+## 简述实现
+
+
+目前 Surgio 支持两个部署平台，阿里云函数服务和 zeit 的 [now.sh](http://now.sh/)。他们各自有各自的优缺点，由各位定夺使用谁（无法同时使用）。
+
+
+### 阿里云函数
+
+
+优点：
+
+
+- 有免费额度
+
+- 有香港机房
+
+缺点：
+
+
+- 管理复杂（文档很多很杂）
+
+### [now.sh](http://now.sh/)（推荐）
+
+
+优点：
+
+
+- 管理简单
+
+- 有免费额度（几乎不可能用完）
+
+- 有香港边缘服务器节点（源站位于美国）
+
+缺点：
+
+
+- 英文界面、文档
+
+<Callout icon="💡">前往 [surgio.royli.dev](https://surgio.royli.dev/guide/advance/api-gateway.html) 继续阅读</Callout>

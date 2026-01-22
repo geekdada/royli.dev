@@ -1,13 +1,15 @@
 import nextConfig from "eslint-config-next";
 import tseslint from "typescript-eslint";
 import eslintConfigPrettier from "eslint-config-prettier";
+import eslint from '@eslint/js';
 
 export default tseslint.config(
   {
     ignores: [".next/", "node_modules/", "public/"],
   },
   ...nextConfig,
-  ...tseslint.configs.recommended,
+  eslint.configs.recommended,
+  tseslint.configs.recommended,
   eslintConfigPrettier,
   {
     rules: {

@@ -1,0 +1,71 @@
+export const metadata = {
+  id: 'd2e8c12a-4cef-4413-8c08-76e9d5a6a7fb',
+  title: 'Apple TV + LG C2 + SONOS Beam + Dolby Atmos 配置',
+  slug: 'apple-tv-lg-c2-sonos-beam-dolby-atmos-configuration',
+  excerpt: '前不久从 Grover 租了个 SONOS Beam Gen 2，在配置 Dolby Atmos 时遇到了点小问题，在这里记录一下最终的配置方法。',
+  publishDate: '2023-11-25T17:00:00.000Z',
+  publishYear: 2023,
+  isFeatured: false,
+  isGallaryView: false,
+  coverImage: 'https://images.unsplash.com/photo-1621685950846-9323d993bbf3?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb',
+}
+
+前不久从 Grover 租了个 SONOS Beam Gen 2，在配置 Dolby Atmos 时遇到了点小问题，在这里记录一下最终的配置方法。
+
+
+<MDXImage src="./resources/a9a7d266.png" alt="" />
+
+
+SONOS Beam 是一款很实惠并且支持 Dolby Atmos 的回音壁。最近德国 Grover 黒五给出了很实惠的价格我就果断下手了。本来是想租 Arc 的，但苦于我家电视无法壁挂，不能给 Arc 流出足够空间，只能退一步要了 Beam。
+
+
+这篇文章虽然是关于 Dolby Atmos 的配置，但我想提一下解决另一个有趣的问题。LG C2 的底座高度非常矮，根本无法在不改造底座的情况下容下任何回音壁。我在 Reddit 上意外碰到有个老兄给电视垫了一个 [Ikea LACK 书柜架](https://www.ikea.com/de/de/p/lack-wandregal-weiss-90282180/)，完美留出一个 Beam 的高度，这才解决了不凿墙使用回音壁的问题。
+
+
+这款书架的高度是 5 厘米，长和宽非常适合 LG C 系列的底座。书架和底座的高度之和约为 11 厘米。
+
+
+[https://www.reddit.com/r/LGOLED/comments/qeffeo/lg_c1_on_ikea_lack_shelves/](https://www.reddit.com/r/LGOLED/comments/qeffeo/lg_c1_on_ikea_lack_shelves/)
+
+
+<MDXImage src="./resources/805f34e0.png" alt="Credit [u/frenchname247](https://www.reddit.com/user/frenchname247/)" />
+
+
+好了，进入正题。
+
+
+## Beam 的配置
+
+
+注意你需要把回音壁连接至电视的 eARC 接口。LG C2 的 HDMI 2 是 eARC 接口。
+
+
+## 电视的配置
+
+
+- 「音频 Sound」-「音频输出 Sound Out」-「使用有线扬声器 Use Wired Speaker」，选择「HDMI(ARC) Device」
+
+- 「音频 Sound」- 「高级设定 Advanced Settings」-「选择 HDMI 输入音频格式」，选择「比特流 Bitstream」
+
+- 「音频 Sound」- 「高级设定 Advanced Settings」-「DTV 音频设定 DTV Audio Settings」，选择「自动 Auto」
+
+- 「音频 Sound」- 「高级设定 Advanced Settings」-「eARC 支持」，选择「开启 On」
+
+- 「音频 Sound」- 「高级设定 Advanced Settings」-「数字音频输出 Digital Sound Output」，选择「自动 Auto」
+
+## Apple TV 的配置
+
+
+<MDXImage src="./resources/be60efb1.jpg" alt="" />
+
+
+如果你能在「设置」-「视频和音频」-「音频格式」中看到如截图所示的样子，「沉浸式音频」处于「开」的状态，则说明设置成功。
+
+
+## 验证
+
+
+随便找一部支持 Dolby Atmos 的电影，如果你能在 SONOS 应用中看到标识则说明音频流被正确识别。
+
+
+<MDXImage src="./resources/b0fd31f6.png" alt="" />

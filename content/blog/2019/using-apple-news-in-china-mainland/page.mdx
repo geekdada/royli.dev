@@ -1,0 +1,122 @@
+export const metadata = {
+  id: 'cbd221a1-e5ed-471a-9c6b-d8273eee17bf',
+  title: '如何在大陆使用 Apple News',
+  slug: 'using-apple-news-in-china-mainland',
+  excerpt: '苹果于3月26日推出了全新的杂志订阅服务 Apple News+，不过因为苹果至今都对大陆用户实施了最严厉的地理位置限制，所以想要使用 Apple News 一直以来都是一件非常困难并且麻烦的事情。',
+  publishDate: '2019-03-26T00:00:00.000Z',
+  publishYear: 2019,
+  isFeatured: false,
+  isGallaryView: false,
+}
+
+苹果于3月26日推出了全新的杂志订阅服务 Apple News+，不过因为苹果至今都对大陆用户实施了最严厉的地理位置限制，所以想要使用 Apple News 一直以来都是一件非常困难并且麻烦的事情。
+
+
+这篇教程会在几项前提下，尽可能简单地让你快速使用这一服务。
+
+
+## 前提
+
+
+- 一个位于美国的代理
+
+- 拥有美国区的 Apple ID（不然你怎么打开 News）
+
+- 一个类似 Surge 的 App（原则上其它类 Surge 的 App 也可以，不过我条件有限所以只提供这个 App 的配置方法）
+
+- 系统设置修改地区和语言为美国和美式英语
+
+~~是的，不需要美国运营商电话卡，也不需要在使用过程中打开飞行模式。~~
+
+
+目前还无法做到大陆运营商网络下使用，不过在有 WiFi 的情况下可以不开飞行模式。
+
+
+## 开始
+
+
+Mac 和 iOS 流程上没有太大区别，我会在文章中提醒你有差异的地方。
+
+
+### 准备 Surge 规则
+
+
+需要注意的是，迷惑系统位置服务的代价是无法使用由高德提供的地图服务， 这会让你在大陆的数位生活变得非常不方便，所以我的建议是单独提供一组「Proxy Group」，不用的时候就把它改为 `DIRECT`。
+
+
+> 以下为规则节选，你可以添加到现有的规则中
+
+
+```plain text
+[Proxy Group]
+Apple 地理限制 = select, DIRECT, US
+US = url-test, xxx, url = <http://www.gstatic.com/generate_204>, interval = 1200
+
+```
+
+
+```plain text
+[Rule]
+USER-AGENT,com.apple.geod*,Apple 地理限制
+USER-AGENT,com.apple.Maps,Apple 地理限制
+USER-AGENT,geod*,Apple 地理限制
+USER-AGENT,locationd*,Apple 地理限制
+USER-AGENT,Maps*,Apple 地理限制
+DOMAIN,gs-loc.apple.com,Apple 地理限制 // Maps
+DOMAIN-SUFFIX,lcdn-locator.apple.com,Apple 地理限制
+DOMAIN-SUFFIX,lcdn-registration.apple.com,Apple 地理限制
+DOMAIN-SUFFIX,ls.apple.com,Apple 地理限制
+
+USER-AGENT,AppleNews*,US
+DOMAIN-SUFFIX,apple.news,US
+DOMAIN,news-events.apple.com,US
+DOMAIN,news-edge.apple.com,US
+DOMAIN,apple.comscoreresearch.com,US
+DOMAIN,play.itunes.apple.com,US
+DOMAIN,play-cdn.itunes-apple.com.akadns.net,US
+
+```
+
+
+确保规则已经更新，就可以继续后面的步骤了。
+
+
+### 打开地图应用（Maps.app）
+
+
+iOS 请在这里打开飞行模式，然后保持 WiFi 连接。打开地图应用，你会看到内容闪烁一下便切到了没有高德地图的版本。
+
+
+<MDXImage src="./resources/6cffc794.png" alt="" />
+
+
+### 打开 Apple News
+
+
+不出意外你已经可以使用了。
+
+
+<MDXImage src="./resources/443ddf0d.jpg" alt="" />
+
+
+这个时候你就可以把 Surge 中「Apple 地理限制」改回 `DIRECT` 了。iOS 用户这时可以关闭飞行模式。
+
+
+<Video src="https://dada-oss.dacdn.top/drops/RPReplay_Final1553580956-1553582709.MP4" />
+
+
+居然在摇动手机的时候标题会有光泽变化…
+
+
+## 后续
+
+
+后续如果出现不可以使用的情况，就重复以上的步骤。使用 News 的过程中可以关闭飞行模式。经过测试发现每打开地图应用后就需要重置一次，不过谁又会用苹果的地图呢（滑稽。
+
+
+## QA
+
+
+- Q：我可以给 News App 地理位置权限吗？
+
+- A：无所谓，给也没关系。

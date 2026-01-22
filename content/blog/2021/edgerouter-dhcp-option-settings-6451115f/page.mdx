@@ -1,0 +1,66 @@
+export const metadata = {
+  id: '0443ab5d-ad56-4db8-a7c8-cc8cd6fe6810',
+  title: 'EdgeRouter 为特定设备设置 DHCP Option',
+  slug: 'edgerouter-dhcp-option-settings-6451115f',
+  excerpt: '方便让特定局域网设备更好地与 Surge 工作。',
+  publishDate: '2021-12-28T15:52:00.000Z',
+  publishYear: 2021,
+  isFeatured: false,
+  isGallaryView: false,
+  coverImage: 'https://images.unsplash.com/photo-1554098415-4052459dc340?ixlib=rb-1.2.1&q=80&cs=tinysrgb&fm=jpg&crop=entropy',
+}
+
+对于开启了 Surge 高级模式的局域网来说，分别配置网关和 DNS 无疑是痛苦的。我们既希望 Apple TV 这样的设备能利用 Surge，又希望普通的上网设备，如智能家居，能直接连接路由器。你可以使用 Surge 的路由器功能，但这不是适用所有人的解决方案。这篇文章会介绍如何使用 EdgeRouter 来给局域网内的特定设备分配独立的 DHCP 配置，节约你的宝贵时间。
+
+
+首先说明我使用的设备和系统版本：
+
+
+```plain text
+EdgeRouter X v2.0.9-hotfix.2
+```
+
+
+另外需要说明的一点是，这篇教程不依赖路由器系统内置的 dnsmasq，可以直接在现有的 DHCP 配置上做修改。
+
+
+我不能保证其它版本也能如法炮制，不过其它型号应该都能参考这篇教程。
+
+
+## 分配静态 IP
+
+
+在 EdgeOS 中，想要独立配置 DHCP Option，分配静态 IP 是必不可少的。请先为你要配置的设备设置一个静态的 IP。
+
+
+<MDXImage src="./resources/0df94105.png" alt="" />
+
+
+## 配置 DHCP Option
+
+
+这篇教程会使用 GUI ，也就是 Config Tree，进行配置。
+
+
+在 `service / dhcp-server / shared-network-name / LAN / subnet / 192.168.114.0/24 / static-mapping` 下找到你要配置的设备。
+
+
+<MDXImage src="./resources/51d0b815.png" alt="" />
+
+
+这时候右边会显示下面的表单。
+
+
+<MDXImage src="./resources/9893e84a.png" alt="" />
+
+
+`ip-address` 和 `mac-address` 已经被预先填入，你需要做的就是增加两项 `static-mapping-parameters`。假如你的 Surge 网管地址是 `192.168.114.10` 则你需要在两个输入框内填入下面的字段。
+
+
+```plain text
+option routers 192.168.114.10;
+option domain-name-servers 198.18.0.2;
+```
+
+
+你可以一次性配置多台设备，或者分别预览后保存。配置成功后重新连接设备 Wi-Fi 即可生效。
