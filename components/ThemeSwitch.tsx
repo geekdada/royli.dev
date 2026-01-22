@@ -17,11 +17,11 @@ const ThemeSwitch = () => {
   return (
     <>
       {theme === 'dark' ? (
-        <button className="nav-links" onClick={() => setTheme('light')}>
+        <button className="nav-links flex items-center justify-center" onClick={() => setTheme('light')}>
           <FiSun size={20} />
         </button>
       ) : (
-        <button className="nav-links" onClick={() => setTheme('dark')}>
+        <button className="nav-links flex items-center justify-center" onClick={() => setTheme('dark')}>
           <FiMoon size={20} />
         </button>
       )}

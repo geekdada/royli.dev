@@ -33,9 +33,21 @@ Tailscale 默认使用 1280 字节的 MTU，这是一个适用于 IPv6 最小开
 
 1. 编辑 `/etc/default/tailscaled` 文件，新增以下行以将 MTU 设置为 1350：
 
-1. 重新启动 Tailscale 以应用新配置：
+```plain text
+TS_DEBUG_MTU=1350
+```
 
-1. 通过以下命令确认是否生效：
+2. 重新启动 Tailscale 以应用新配置：
+
+```bash
+sudo systemctl restart tailscaled
+```
+
+3. 通过以下命令确认是否生效：
+
+```bash
+sudo journalctl -eu tailscaled | grep MTU | tail -n1
+```
 
 ### 注意事项
 

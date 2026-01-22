@@ -56,7 +56,7 @@ const Navbar: React.FC = () => {
         </Link>
       </div>
 
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center ">
         <nav className="hidden items-center space-x-2 sm:flex">
           {navigations.map((n, i) => (
             <Link href={n.link} key={n.name} className="nav-links font-title">
@@ -67,24 +67,32 @@ const Navbar: React.FC = () => {
 
         <div className="block sm:hidden">
           <Menu as="div" className="relative text-left">
-            <Menu.Button className="flex items-center text-current">
+            <Menu.Button className="nav-links flex items-center justify-center">
               <FiMenu size={20} />
             </Menu.Button>
             <Transition
               as={Fragment}
-              enter="transition duration-150 ease-out"
-              enterFrom="transform scale-95 opacity-0"
-              enterTo="transform scale-100 opacity-100"
-              leave="transition duration-75 ease-out"
-              leaveFrom="transform scale-100 opacity-100"
-              leaveTo="transform scale-95 opacity-0"
+              enter="transition duration-200 ease-[cubic-bezier(0.32,0.72,0,1)]"
+              enterFrom="transform scale-95 opacity-0 translate-y-[-4px]"
+              enterTo="transform scale-100 opacity-100 translate-y-0"
+              leave="transition duration-150 ease-[cubic-bezier(0.32,0.72,0,1)]"
+              leaveFrom="transform scale-100 opacity-100 translate-y-0"
+              leaveTo="transform scale-95 opacity-0 translate-y-[-4px]"
             >
-              <Menu.Items className="absolute right-0 mt-2 w-40 origin-top-right rounded-sm bg-white shadow-lg grid divide-y divide-gray-400/30 dark:bg-dark-700 focus:outline-hidden">
+              <Menu.Items className="absolute right-0 mt-2 w-44 origin-top-right rounded-xl bg-white/80 backdrop-blur-xl shadow-lg shadow-black/5 ring-1 ring-black/8 p-1.5 dark:bg-neutral-900/80 dark:ring-white/8 dark:shadow-black/20 focus:outline-hidden">
                 {navigations.map((n, i) => (
                   <Menu.Item key={n.name}>
-                    <MenuItemLink href={n.link}>
-                      <div className="py-3 text-center">{n.name}</div>
-                    </MenuItemLink>
+                    {({ active }) => (
+                      <MenuItemLink href={n.link}>
+                        <div
+                          className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-100 ${
+                            active ? 'bg-black/5 dark:bg-white/8' : ''
+                          }`}
+                        >
+                          {n.name}
+                        </div>
+                      </MenuItemLink>
+                    )}
                   </Menu.Item>
                 ))}
               </Menu.Items>
@@ -98,7 +106,7 @@ const Navbar: React.FC = () => {
           href="/blog/feed.xml"
           target="_blank"
           rel="noopener noreferrer"
-          className="nav-links"
+          className="nav-links flex items-center justify-center"
         >
           <FiRss size={20} />
         </a>

@@ -21,7 +21,7 @@ const PostItem = ({ post, isGalleryView = false }: PostItemProps) => {
       <div className="group overflow-hidden rounded-xl border border-gray-200/60 bg-white/50 transition-all duration-200 hover:border-gray-300 hover:bg-white dark:border-white/10 dark:bg-white/2 dark:hover:border-white/20 dark:hover:bg-white/4">
         {post.coverImage && (
           <div
-            className="aspect-[16/9] w-full bg-cover bg-center"
+            className="aspect-video w-full bg-cover bg-center"
             style={{ backgroundImage: `url(${post.coverImage})` }}
           />
         )}
@@ -55,15 +55,15 @@ const PostItem = ({ post, isGalleryView = false }: PostItemProps) => {
 
   return (
     <div className="group rounded-lg border border-gray-200/60 bg-white/50 px-4 py-4 transition-all duration-200 hover:border-gray-300 hover:bg-white dark:border-white/10 dark:bg-white/2 dark:hover:border-white/20 dark:hover:bg-white/4">
-      <div className="flex items-start gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
         {post.coverImage && (
           <div
-            className="h-32 w-48 shrink-0 rounded-md bg-cover bg-center"
+            className="aspect-video w-full shrink-0 rounded-md bg-cover bg-center sm:aspect-auto sm:h-32 sm:w-48"
             style={{ backgroundImage: `url(${post.coverImage})` }}
           />
         )}
         <div className="min-w-0 flex-1">
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
             <h2 className="flex min-w-0 items-center gap-1.5 text-[15px] font-medium text-gray-900 dark:text-gray-100">
               {post.coverIcon && (
                 <span className="shrink-0">{post.coverIcon}</span>
@@ -75,7 +75,7 @@ const PostItem = ({ post, isGalleryView = false }: PostItemProps) => {
             </h2>
             <time
               dateTime={post.publishDate}
-              className="shrink-0 self-start font-mono text-xs leading-6 text-gray-400 dark:text-gray-500"
+              className="shrink-0 leading-6 font-mono text-xs text-gray-400 dark:text-gray-500 self-start"
             >
               {formattedDate}
             </time>

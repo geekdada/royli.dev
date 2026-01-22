@@ -76,7 +76,7 @@ export default async function IndexPage() {
                 className="hover:opacity-70 transition-opacity"
               >
                 <Icon
-                  className="mx-2 w-[70px] align-[-5px] overflow-hidden"
+                  className="ml-2 mr-1 w-[70px] align-[-5px] overflow-hidden"
                   icon={<NellyIcon />}
                 />
               </a>
