@@ -3,8 +3,9 @@
  */
 
 import Link from 'next/link'
-import { getAllPosts } from '@/lib/content/posts'
+import { getPaginatedPosts } from '@/lib/content/posts'
 import PostItem from '@/components/PostItem'
+import { Pagination } from '@/components/Pagination'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
 export const revalidate = 86400
 
 export default async function BlogPage() {
-  const posts = await getAllPosts()
+  const { posts, currentPage, totalPages } = await getPaginatedPosts(1)
 
   return (
     <div className="mx-auto max-w-3xl container px-6">
@@ -30,6 +31,8 @@ export default async function BlogPage() {
           </div>
         ))}
       </div>
+
+      <Pagination currentPage={currentPage} totalPages={totalPages} basePath="/blog" />
     </div>
   )
 }

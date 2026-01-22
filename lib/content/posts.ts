@@ -14,6 +14,7 @@ export interface PostWithContent extends Post {
 }
 
 const CONTENT_DIR = join(process.cwd(), 'content')
+const POSTS_PER_PAGE = 10
 
 function resolveCoverImage(coverImage: string | undefined, year: string, slug: string): string | undefined {
   if (coverImage?.startsWith('./resources/')) {
@@ -92,4 +93,22 @@ export async function getPostsByYear(year: string): Promise<Post[]> {
 export async function getTotalPostCount(): Promise<number> {
   const posts = await getAllPosts()
   return posts.length
+}
+
+export interface PaginatedPosts {
+  posts: Post[]
+  currentPage: number
+  totalPages: number
+}
+
+export async function getPaginatedPosts(page: number): Promise<PaginatedPosts> {
+  const posts = await getAllPosts()
+  const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE)
+  const start = (page - 1) * POSTS_PER_PAGE
+
+  return {
+    posts: posts.slice(start, start + POSTS_PER_PAGE),
+    currentPage: page,
+    totalPages,
+  }
 }
