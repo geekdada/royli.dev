@@ -32,7 +32,7 @@ Create a new blog post in the `content/blog/` directory with the correct structu
      excerpt: 'Brief description...',  // optional
      publishDate: '2024-01-15T12:00:00.000Z',  // ISO 8601 UTC
      isFeatured: false,
-     isGallaryView: false,  // note: typo preserved for compatibility
+     isGalleryView: false,
      coverImage: './resources/cover.jpg',  // optional
      coverIcon: '📝',  // optional
    }
@@ -44,7 +44,7 @@ Create a new blog post in the `content/blog/` directory with the correct structu
 
 4. **Important notes**:
    - Use ISO 8601 format for `publishDate` with current timestamp
-   - Keep `isGallaryView` spelling (legacy typo in schema)
+   - Keep `isGalleryView` spelling (legacy typo in schema)
    - Images go in `./resources/` directory with relative paths
    - The file must be named `page.mdx`
 

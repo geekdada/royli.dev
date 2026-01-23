@@ -15,11 +15,14 @@ interface PageProps {
   params: Promise<{ page: string }>
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { page } = await params
   return {
     title: `Roy Li's Blog - Page ${page}`,
-    description: 'Articles and thoughts on software development, design, and more.',
+    description:
+      'Articles and thoughts on software development, design, and more.',
   }
 }
 
@@ -63,12 +66,16 @@ export default async function PaginatedBlogPage({ params }: PageProps) {
       <div className="flex flex-col gap-2">
         {posts.map((post) => (
           <Link key={post.slug} href={`/blog/${post.publishYear}/${post.slug}`}>
-            <PostItem post={post} isGalleryView={post.isGallaryView} />
+            <PostItem post={post} isGalleryView={post.isGalleryView} />
           </Link>
         ))}
       </div>
 
-      <Pagination currentPage={currentPage} totalPages={totalPages} basePath="/blog" />
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        basePath="/blog"
+      />
     </div>
   )
 }

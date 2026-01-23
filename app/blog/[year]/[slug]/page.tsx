@@ -30,7 +30,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   }
 
   // Gallery view: fullscreen slideshow
-  if (post.isGallaryView) {
+  if (post.isGalleryView) {
     const galleryImages = await getGalleryImages(year, slug)
     return (
       <GallerySlideshow
@@ -44,7 +44,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   const { Content } = post
   const hasCoverImage = Boolean(post.coverImage)
-  const isGalleryView = post.isGallaryView
+  const isGalleryView = post.isGalleryView
 
   return (
     <div className="container mx-auto md:px-6 max-w-3xl lg:max-w-5xl xl:max-w-7xl">

@@ -10,7 +10,8 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: "Roy Li's Blog",
-  description: 'Articles and thoughts on software development, design, and more.',
+  description:
+    'Articles and thoughts on software development, design, and more.',
 }
 
 export const revalidate = 86400
@@ -25,12 +26,16 @@ export default async function BlogPage() {
       <div className="flex flex-col gap-2">
         {posts.map((post) => (
           <Link key={post.slug} href={`/blog/${post.publishYear}/${post.slug}`}>
-            <PostItem post={post} isGalleryView={post.isGallaryView} />
+            <PostItem post={post} isGalleryView={post.isGalleryView} />
           </Link>
         ))}
       </div>
 
-      <Pagination currentPage={currentPage} totalPages={totalPages} basePath="/blog" />
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        basePath="/blog"
+      />
     </div>
   )
 }

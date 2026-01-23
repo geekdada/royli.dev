@@ -12,7 +12,7 @@ export const PostFrontmatterSchema = z.object({
   publishDate: z.string().datetime(),
   lastEditDate: z.string().datetime().optional(),
   isFeatured: z.boolean().default(false),
-  isGallaryView: z.boolean().default(false),
+  isGalleryView: z.boolean().default(false),
   coverImage: z.string().optional(),
   coverIcon: z.string().optional(),
   tags: z.array(TagSchema).optional(),
