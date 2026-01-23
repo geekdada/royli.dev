@@ -121,7 +121,7 @@ export default async function IndexPage() {
           <div className="divide-y divide-gray-100 dark:divide-gray-800">
             {recentPosts.map((post) => (
               <Link
-                key={post.id}
+                key={post.slug}
                 href={`/blog/${post.publishYear}/${post.slug}`}
                 className="group flex items-start justify-between py-4"
               >

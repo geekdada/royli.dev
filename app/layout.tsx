@@ -8,11 +8,13 @@ import { GeistMono } from 'geist/font/mono'
 import Script from 'next/script'
 
 import Layout from '@/components/Layout'
+import { siteURL } from '@/lib/config/getters'
 import { Providers } from './providers'
 
 const isSashimiEnabled = process.env.NEXT_PUBLIC_SASHIMI_ENABLED === 'true'
 
 export const metadata = {
+  metadataBase: new URL(siteURL),
   title: 'Roy Li',
   description: 'Personal blog by Roy Li',
   icons: {

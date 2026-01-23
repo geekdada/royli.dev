@@ -7,7 +7,7 @@ import { join } from 'path'
 import type { ComponentType } from 'react'
 import { PostFrontmatterSchema, type PostFrontmatter } from '@/lib/mdx/frontmatter'
 
-export type Post = PostFrontmatter
+export type Post = PostFrontmatter & { slug: string; publishYear: string }
 
 export interface PostWithContent extends Post {
   Content: ComponentType
@@ -38,8 +38,16 @@ export async function getAllPosts(): Promise<Post[]> {
         try {
           const mdxModule = await import(`@/content/blog/${year}/${slug}/page.mdx`)
           const validated = PostFrontmatterSchema.parse(mdxModule.metadata)
+          const derivedYear = new Date(validated.publishDate).getUTCFullYear().toString()
+          if (derivedYear !== year) {
+            throw new Error(
+              `Year mismatch in /blog/${year}/${slug}: publishDate year is ${derivedYear}`
+            )
+          }
           posts.push({
             ...validated,
+            slug,
+            publishYear: derivedYear,
             coverImage: resolveCoverImage(validated.coverImage, year, slug),
           })
         } catch {
@@ -58,9 +66,17 @@ export async function getPostBySlug(slug: string, year: string): Promise<PostWit
   try {
     const mdxModule = await import(`@/content/blog/${year}/${slug}/page.mdx`)
     const validated = PostFrontmatterSchema.parse(mdxModule.metadata)
+    const derivedYear = new Date(validated.publishDate).getUTCFullYear().toString()
+    if (derivedYear !== year) {
+      throw new Error(
+        `Year mismatch in /blog/${year}/${slug}: publishDate year is ${derivedYear}`
+      )
+    }
 
     return {
       ...validated,
+      slug,
+      publishYear: derivedYear,
       coverImage: resolveCoverImage(validated.coverImage, year, slug),
       Content: mdxModule.default,
     }

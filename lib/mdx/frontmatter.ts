@@ -7,12 +7,9 @@ const TagSchema = z.object({
 })
 
 export const PostFrontmatterSchema = z.object({
-  id: z.uuid(),
   title: z.string(),
-  slug: z.string(),
   excerpt: z.string().optional(),
   publishDate: z.string().datetime(),
-  publishYear: z.coerce.string().regex(/^\d{4}$/),
   lastEditDate: z.string().datetime().optional(),
   isFeatured: z.boolean().default(false),
   isGallaryView: z.boolean().default(false),
@@ -22,9 +19,7 @@ export const PostFrontmatterSchema = z.object({
 })
 
 export const PageFrontmatterSchema = z.object({
-  id: z.uuid(),
   title: z.string(),
-  slug: z.string(),
   publishDate: z.string().datetime(),
   lastEditDate: z.string().datetime().optional(),
   coverImage: z.string().optional(),

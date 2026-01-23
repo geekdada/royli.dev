@@ -36,14 +36,6 @@ const nextConfig = {
       },
     ]
   },
-  async rewrites() {
-    return [
-      {
-        source: '/blog/feed.xml',
-        destination: '/api/feed',
-      },
-    ]
-  },
 }
 
 const withMDX = createMDX({

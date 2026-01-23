@@ -39,9 +39,7 @@ MDX files use JS exports instead of YAML frontmatter:
 
 ```tsx
 export const metadata = {
-  id: 'uuid',
   title: 'Post Title',
-  slug: 'post-slug',
   publishDate: '2024-01-01T00:00:00.000Z',
   publishYear: 2024,
   // ... other fields

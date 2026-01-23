@@ -24,7 +24,7 @@ export default async function BlogPage() {
 
       <div className="flex flex-col gap-2">
         {posts.map((post) => (
-          <Link key={post.id} href={`/blog/${post.publishYear}/${post.slug}`}>
+          <Link key={post.slug} href={`/blog/${post.publishYear}/${post.slug}`}>
             <PostItem post={post} isGalleryView={post.isGallaryView} />
           </Link>
         ))}

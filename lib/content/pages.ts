@@ -7,7 +7,7 @@ import { join } from 'path'
 import type { ComponentType } from 'react'
 import { PageFrontmatterSchema, type PageFrontmatter } from '@/lib/mdx/frontmatter'
 
-export type Page = PageFrontmatter
+export type Page = PageFrontmatter & { slug: string }
 
 export interface PageWithContent extends Page {
   Content: ComponentType
@@ -26,7 +26,7 @@ export async function getAllPages(): Promise<Page[]> {
       try {
         const mdxModule = await import(`@/content/pages/${slug}/page.mdx`)
         const validated = PageFrontmatterSchema.parse(mdxModule.metadata)
-        pages.push(validated)
+        pages.push({ ...validated, slug })
       } catch {
         continue
       }
@@ -45,6 +45,7 @@ export async function getPageBySlug(slug: string): Promise<PageWithContent | nul
 
     return {
       ...validated,
+      slug,
       Content: mdxModule.default,
     }
   } catch {

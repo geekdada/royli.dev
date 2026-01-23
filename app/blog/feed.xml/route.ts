@@ -1,15 +1,17 @@
 import dayjs from 'dayjs'
 import { Feed } from 'feed'
-import pMapSeries from 'p-map-series'
 import Handlebars from 'handlebars'
-import { NextResponse } from 'next/server'
 
 import feedItemTemplateString from '@/templates/feed-item'
 import { getAllPosts, type Post } from '@/lib/content/posts'
 
+export const dynamic = 'force-static'
+export const revalidate = false
+
 const domain = 'https://royli.dev'
 const year = new Date().getFullYear()
-let feedItemTemplate: HandlebarsTemplateDelegate
+
+const feedItemTemplate = Handlebars.compile(feedItemTemplateString)
 
 const generateRSS = async (posts: Post[]): Promise<string> => {
   const feed = new Feed({
@@ -25,11 +27,9 @@ const generateRSS = async (posts: Post[]): Promise<string> => {
     },
   })
 
-  await pMapSeries(posts, async (post) => {
+  for (const post of posts) {
     const readURL = `/blog/${post.publishYear}/${post.slug}`
-    const isOldBlogPost = dayjs(post.publishDate).isBefore(
-      'Sat, 05 Jun 2022 00:00:00 +0000'
-    )
+    const isOldBlogPost = dayjs(post.publishDate).isBefore('Sat, 05 Jun 2022 00:00:00 +0000')
 
     feed.addItem({
       title: post.title,
@@ -43,24 +43,19 @@ const generateRSS = async (posts: Post[]): Promise<string> => {
         readURL: `${domain}${readURL}`,
       }),
     })
-  })
+  }
 
   return feed.rss2()
 }
 
 export async function GET() {
-  if (!feedItemTemplate) {
-    feedItemTemplate = Handlebars.compile(feedItemTemplateString)
-  }
-
   const allPosts = await getAllPosts()
   const posts = allPosts.slice(0, 10)
   const xmlFeed = await generateRSS(posts)
 
-  return new NextResponse(xmlFeed, {
+  return new Response(xmlFeed, {
     headers: {
       'Content-Type': 'application/rss+xml;charset=utf-8',
-      'Cache-Control': 'public, max-age=600, stale-while-revalidate',
     },
   })
 }
