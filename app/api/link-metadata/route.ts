@@ -1,6 +1,44 @@
+import { Redis } from '@upstash/redis'
 import { NextResponse } from 'next/server'
 
+import { isProd, siteURL } from '@/lib/config'
+
 export const runtime = 'edge'
+
+const redis = Redis.fromEnv()
+const CACHE_TTL = 86400 // 24 hours in seconds
+
+function getCacheKey(url: string): string {
+  return `link-metadata:${url}`
+}
+
+function isAllowedOrigin(request: Request): boolean {
+  const referer = request.headers.get('referer')
+  const origin = request.headers.get('origin')
+
+  const checkUrl = referer || origin
+  if (!checkUrl) {
+    return false
+  }
+
+  try {
+    const requestOrigin = new URL(checkUrl).origin
+    const allowedOrigin = new URL(siteURL).origin
+
+    if (requestOrigin === allowedOrigin) {
+      return true
+    }
+
+    // Allow localhost in development
+    if (!isProd && requestOrigin.includes('localhost')) {
+      return true
+    }
+
+    return false
+  } catch {
+    return false
+  }
+}
 
 export interface LinkMetadata {
   url: string
@@ -139,6 +177,10 @@ async function fetchLinkMetadata(url: string): Promise<LinkMetadata> {
 }
 
 export async function GET(request: Request) {
+  if (!isAllowedOrigin(request)) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+  }
+
   const { searchParams } = new URL(request.url)
   const url = searchParams.get('url')
 
@@ -156,12 +198,37 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Invalid URL' }, { status: 400 })
   }
 
+  const cacheKey = getCacheKey(url)
+
+  // Try to get cached metadata
+  try {
+    const cached = await redis.get<LinkMetadata>(cacheKey)
+    if (cached) {
+      return NextResponse.json(cached, {
+        headers: {
+          'Cache-Control':
+            'public, max-age=86400, stale-while-revalidate=604800',
+          'X-Cache': 'HIT',
+        },
+      })
+    }
+  } catch (err) {
+    console.error('Redis get error:', err)
+  }
+
+  // Fetch metadata if not cached
   try {
     const metadata = await fetchLinkMetadata(url)
+
+    // Store in cache (fire-and-forget, don't block response)
+    redis.set(cacheKey, metadata, { ex: CACHE_TTL }).catch((err) => {
+      console.error('Redis set error:', err)
+    })
 
     return NextResponse.json(metadata, {
       headers: {
         'Cache-Control': 'public, max-age=86400, stale-while-revalidate=604800',
+        'X-Cache': 'MISS',
       },
     })
   } catch (err) {

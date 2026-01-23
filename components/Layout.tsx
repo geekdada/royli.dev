@@ -10,7 +10,9 @@ const Layout: React.FC<{
     <>
       <div className="flex min-h-screen flex-col">
         <Navbar />
-        <main className="mt-8 flex-1 flex flex-col">{children}</main>
+        <main className="mt-2 md:mt-4 xl:mt-6 flex-1 flex flex-col">
+          {children}
+        </main>
         <Footer />
       </div>
     </>

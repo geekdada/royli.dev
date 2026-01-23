@@ -122,10 +122,9 @@ function TwitterEmbed({
         containerRef.current.innerHTML = ''
 
         await twttr.widgets.createTweet(tweetId, containerRef.current, {
-          theme:
-            document.documentElement.classList.contains('dark')
-              ? 'dark'
-              : 'light',
+          theme: document.documentElement.classList.contains('dark')
+            ? 'dark'
+            : 'light',
           dnt: true,
         })
         setIsLoading(false)
@@ -249,7 +248,7 @@ export function LinkPreview({ url }: { url: string }) {
         className={`p-4 min-w-0 ${metadata.image ? 'col-span-6' : 'col-span-10'}`}
       >
         {metadata.title && (
-          <h4 className="font-semibold text-gray-900 dark:text-gray-100 line-clamp-2 mb-1">
+          <h4 className="font-semibold text-gray-900 dark:text-gray-100 line-clamp-2 mb-1 text-sm lg:text-base leading-snug">
             {metadata.title}
           </h4>
         )}
