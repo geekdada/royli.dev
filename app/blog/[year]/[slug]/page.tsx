@@ -3,12 +3,14 @@ import clx from 'classnames'
 import { Balancer } from 'react-wrap-balancer'
 import { FiArrowLeft, FiTag } from 'react-icons/fi'
 import { getAllPosts, getPostBySlug } from '@/lib/content/posts'
+import { getGalleryImages } from '@/lib/content/gallery'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Comments from '@/components/Comments'
 import Copyright from '@/components/Copyright'
 import TableOfContents from '@/components/mdx/TableOfContents'
 import ArticleContent from '@/components/mdx/ArticleContent'
+import GallerySlideshow from '@/components/gallery/GallerySlideshow'
 import { siteURL } from '@/lib/config'
 
 export const revalidate = 86400
@@ -25,6 +27,19 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   if (!post) {
     notFound()
+  }
+
+  // Gallery view: fullscreen slideshow
+  if (post.isGallaryView) {
+    const galleryImages = await getGalleryImages(year, slug)
+    return (
+      <GallerySlideshow
+        title={post.title}
+        images={galleryImages}
+        year={year}
+        slug={slug}
+      />
+    )
   }
 
   const { Content } = post
