@@ -15,7 +15,7 @@ Surge 和 Tailscale 因为同为网络工具存在互相冲突的情况，一直
 ## 什么是 Tailscale MagicDNS
 
 
-> Tailscale can automatically assign DNS names for devices in your network when you use the [**MagicDNS**](https://tailscale.com/kb/1054/dns) feature.
+> Tailscale can automatically assign DNS names for devices in your network when you use the [**MagicDNS**](https://tailscale.com/kb/1054/dns) feature.
 
 
 Tailnet 内的设备会被分配一个唯一的 `100.64.0.0/10` 地址。你可以直接访问这个 IP 地址，但是正如直接使用 IP 网上冲浪是个坏主意，直接使用 IP 也不是个好主意。所以 Tailscale 会为每个 IP 也分配一个 [`ts.net`](http://ts.net/) 的地址。
@@ -147,5 +147,4 @@ tailscale-dns = script-path=tailscale-dns.js,type=dns,debug=false,engine=jsc
 
 
 1. 脚本的 Key 只有 90 天有效期，你需要定期更新
-
-1. 每次访问 `*.ts.net` 只要域名解析未过期都会发起一次请求，通常这不是问题，如果你遇到了问题可以在评论中告诉我
+2. 每次访问 `*.ts.net` 只要域名解析未过期都会发起一次请求，通常这不是问题，如果你遇到了问题可以在评论中告诉我
