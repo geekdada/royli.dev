@@ -241,23 +241,32 @@ export function LinkPreview({ url }: { url: string }) {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="not-prose grid grid-cols-10 my-4 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+      className="not-prose relative grid grid-cols-10 my-4 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-gray-50/50 hover:bg-gray-100/80 dark:bg-gray-800/30 dark:hover:bg-gray-800/60 transition-colors"
     >
-      {/* Text content */}
       <div
-        className={`p-4 min-w-0 ${metadata.image ? 'col-span-6' : 'col-span-10'}`}
+        className="pointer-events-none absolute inset-0 z-10"
+        aria-hidden="true"
+        style={{
+          background:
+            'linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(168,85,247,0.03) 40%, transparent 70%)',
+        }}
+      />
+      <div
+        className={`p-4 min-w-0 flex flex-col justify-between ${metadata.image ? 'col-span-6' : 'col-span-10'}`}
       >
-        {metadata.title && (
-          <h4 className="font-semibold text-gray-900 dark:text-gray-100 line-clamp-2 mb-1 text-sm lg:text-base leading-snug">
-            {metadata.title}
-          </h4>
-        )}
-        {metadata.description && (
-          <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-2">
-            {metadata.description}
-          </p>
-        )}
-        <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-500">
+        <div>
+          {metadata.title && (
+            <h4 className="font-semibold text-gray-900 dark:text-gray-100 line-clamp-2 mb-1 text-sm lg:text-base leading-snug">
+              {metadata.title}
+            </h4>
+          )}
+          {metadata.description && (
+            <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+              {metadata.description}
+            </p>
+          )}
+        </div>
+        <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-500 mt-2">
           {metadata.favicon && (
             <img
               src={metadata.favicon}

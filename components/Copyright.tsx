@@ -34,20 +34,24 @@ const Copyright = ({ canonical, title, publishDate }: Props) => {
       </p>
 
       <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
-        <span className="text-neutral-400 dark:text-neutral-500">Title</span>
+        <span className="text-neutral-400 dark:text-neutral-500 font-mono text-xs self-end">
+          Title
+        </span>
         <span className="text-neutral-700 dark:text-neutral-200 truncate">
           {title}
         </span>
 
-        <span className="text-neutral-400 dark:text-neutral-500">
+        <span className="text-neutral-400 dark:text-neutral-500 font-mono text-xs self-end">
           Published
         </span>
         <span className="text-neutral-700 dark:text-neutral-200">
           <Time datetime={publishDate} />
         </span>
 
-        <span className="text-neutral-400 dark:text-neutral-500">URL</span>
-        <span className="text-neutral-700 dark:text-neutral-200 truncate font-mono text-xs">
+        <span className="text-neutral-400 dark:text-neutral-500 font-mono text-xs self-end">
+          URL
+        </span>
+        <span className="text-neutral-700 dark:text-neutral-200 truncate font-mono">
           {canonical}
         </span>
       </div>

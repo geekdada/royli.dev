@@ -154,29 +154,41 @@ body {
 
 /* rehype-pretty-code styles */
 [data-rehype-pretty-code-figure] {
-  @apply my-4;
+  @apply my-4 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700/50;
+}
+
+/* Dual theme support - switch colors based on color scheme */
+code[data-theme*=' '],
+code[data-theme*=' '] span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
+}
+
+html.dark code[data-theme*=' '],
+html.dark code[data-theme*=' '] span {
+  color: var(--shiki-dark);
+  background-color: var(--shiki-dark-bg);
+}
+
+/* Language label */
+[data-rehype-pretty-code-figure] .code-language-label {
+  @apply px-4 py-2 text-xs font-mono font-medium uppercase tracking-wider text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-800/30;
 }
 
 [data-rehype-pretty-code-figure] pre {
-  @apply rounded-lg py-4 text-sm leading-relaxed pl-0 overflow-x-auto;
+  @apply rounded-none text-sm leading-relaxed overflow-x-auto m-0 bg-[unset] text-[unset] transition-colors duration-200;
 }
 
 [data-rehype-pretty-code-figure] code {
-  @apply font-mono grid;
+  @apply font-mono grid py-1 xl:py-2 transition-colors duration-200;
 }
 
 [data-rehype-pretty-code-figure] [data-line] {
-  @apply pl-1 pr-4 border-l-2 border-transparent;
+  @apply px-1 xl:px-2 transition-colors duration-200;
 }
 
 [data-rehype-pretty-code-figure] [data-highlighted-line] {
-  @apply bg-white/10 border-l-blue-400;
-}
-
-/* Line numbers - shown by default */
-[data-rehype-pretty-code-figure] [data-line-number]::before {
-  content: attr(data-line-number);
-  @apply inline-block w-8 mr-4 text-right text-gray-500 select-none;
+  @apply bg-white/10 border-l-2 border-l-blue-400;
 }
 
 [data-rehype-pretty-code-figure] [data-highlighted-chars] {

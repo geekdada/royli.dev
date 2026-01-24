@@ -51,6 +51,7 @@
     "remark-gfm": "^4.0.1",
     "sharp": "^0.34.5",
     "shiki": "^3.21.0",
+    "unist-util-visit": "^5.1.0",
     "zod": "^4.3.5"
   },
   "devDependencies": {

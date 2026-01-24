@@ -63,11 +63,11 @@ export default async function IndexPage() {
           />
 
           <div className="flex-1">
-            <h1 className="font-title text-4xl font-bold tracking-tight text-gray-900 dark:text-white md:text-5xl">
+            <h1 className="font-mono text-4xl font-bold tracking-tight text-gray-900 dark:text-white md:text-5xl">
               Roy Li
             </h1>
 
-            <p className="mt-4 text-lg leading-relaxed text-gray-600 dark:text-gray-400">
+            <p className="mt-4 text-gray-500 dark:text-gray-300 font-mono tracking-tight">
               Software engineer based in Berlin. Currently at
               <a
                 href="https://getnelly.de"

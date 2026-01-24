@@ -1,17 +1,44 @@
 import createMDX from '@next/mdx'
 import rehypePrettyCode from 'rehype-pretty-code'
+import { visit } from 'unist-util-visit'
 
 /** @type {import('rehype-pretty-code').Options} */
 const prettyCodeOptions = {
-  theme: 'github-dark',
-  keepBackground: true,
-  transformers: [
-    {
-      line(node, line) {
-        node.properties['data-line-number'] = line
-      },
-    },
-  ],
+  theme: {
+    light: 'github-light',
+    dark: 'github-dark',
+  },
+  keepBackground: false,
+}
+
+/** Custom rehype plugin to add language labels to code blocks */
+function rehypeCodeLanguageLabel() {
+  return (tree) => {
+    visit(tree, 'element', (node) => {
+      // Find figure elements created by rehype-pretty-code
+      if (
+        node.tagName === 'figure' &&
+        node.properties?.['data-rehype-pretty-code-figure'] !== undefined
+      ) {
+        // Find the pre > code to get the language
+        const pre = node.children.find(
+          (child) => child.type === 'element' && child.tagName === 'pre'
+        )
+        const lang = pre?.properties?.['data-language'] || 'text'
+
+        // Prepend the language label
+        node.children.unshift({
+          type: 'element',
+          tagName: 'div',
+          properties: {
+            'data-language-label': '',
+            className: ['code-language-label'],
+          },
+          children: [{ type: 'text', value: lang.toUpperCase() }],
+        })
+      }
+    })
+  }
 }
 
 /** @type {import('next').NextConfig} */
@@ -41,7 +68,11 @@ const nextConfig = {
 const withMDX = createMDX({
   options: {
     remarkPlugins: ['remark-gfm'],
-    rehypePlugins: ['rehype-slug', [rehypePrettyCode, prettyCodeOptions]],
+    rehypePlugins: [
+      'rehype-slug',
+      [rehypePrettyCode, prettyCodeOptions],
+      rehypeCodeLanguageLabel,
+    ],
   },
 })
 

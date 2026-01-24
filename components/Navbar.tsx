@@ -59,7 +59,7 @@ const Navbar: React.FC = () => {
       <div className="flex items-center ">
         <nav className="hidden items-center space-x-2 sm:flex">
           {navigations.map((n, i) => (
-            <Link href={n.link} key={n.name} className="nav-links font-title">
+            <Link href={n.link} key={n.name} className="nav-links font-mono">
               {n.name}
             </Link>
           ))}
