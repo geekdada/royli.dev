@@ -10,8 +10,8 @@ import ThemeSwitch from './ThemeSwitch'
 
 const navigations = [
   {
-    name: 'Blog',
-    link: '/blog',
+    name: 'Links',
+    link: 'https://poche.app/geekdada',
   },
   {
     name: 'CV',

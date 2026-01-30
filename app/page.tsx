@@ -67,7 +67,7 @@ export default async function IndexPage() {
               Roy Li
             </h1>
 
-            <p className="mt-4 text-gray-500 dark:text-gray-300 font-mono tracking-tight">
+            <p className="mt-4 text-gray-700 dark:text-gray-500 font-mono text-sm tracking-tight">
               Software engineer based in Berlin. Currently at
               <a
                 href="https://getnelly.de"
@@ -76,7 +76,7 @@ export default async function IndexPage() {
                 className="hover:opacity-70 transition-opacity"
               >
                 <Icon
-                  className="ml-2 mr-1 w-[70px] align-[-5px] overflow-hidden"
+                  className="ml-2 mr-1 w-[50px] align-[-5px] overflow-hidden"
                   icon={<NellyIcon />}
                 />
               </a>

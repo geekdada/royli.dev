@@ -2,11 +2,9 @@
  * Paginated Blog Listing Page
  */
 
-import Link from 'next/link'
 import { redirect, notFound } from 'next/navigation'
 import { getPaginatedPosts, getTotalPostCount } from '@/lib/content/posts'
-import PostItem from '@/components/PostItem'
-import { Pagination } from '@/components/Pagination'
+import { BlogPostList } from '@/components/BlogPostList'
 import type { Metadata } from 'next'
 
 const POSTS_PER_PAGE = 10
@@ -60,22 +58,10 @@ export default async function PaginatedBlogPage({ params }: PageProps) {
   }
 
   return (
-    <div className="mx-auto max-w-3xl container px-6">
-      <h1 className="heading-text mb-8 text-4xl font-bold font-title">Blog</h1>
-
-      <div className="flex flex-col gap-2">
-        {posts.map((post) => (
-          <Link key={post.slug} href={`/blog/${post.publishYear}/${post.slug}`}>
-            <PostItem post={post} isGalleryView={post.isGalleryView} />
-          </Link>
-        ))}
-      </div>
-
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        basePath="/blog"
-      />
-    </div>
+    <BlogPostList
+      posts={posts}
+      currentPage={currentPage}
+      totalPages={totalPages}
+    />
   )
 }
