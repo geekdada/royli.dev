@@ -6,8 +6,8 @@ export const runtime = 'nodejs'
 export const revalidate = 604800 // Cache for 7 days
 export const alt = 'Blog post cover image'
 export const size = {
-  width: 1600,
-  height: 840,
+  width: 1200,
+  height: 630,
 }
 export const contentType = 'image/png'
 
@@ -33,7 +33,7 @@ export default async function Image({ params }: Props) {
           background: 'linear-gradient(135deg, #fafafa, #f0f0f0)',
         }}
       >
-        <span style={{ fontSize: 64, fontWeight: 'bold', color: '#0751cf' }}>
+        <span style={{ fontSize: 48, fontWeight: 'bold', color: '#0751cf' }}>
           royli.dev
         </span>
       </div>,
@@ -42,6 +42,9 @@ export default async function Image({ params }: Props) {
         fonts: [
           { name: 'NotoSansSC', data: font, style: 'normal', weight: 700 },
         ],
+        headers: {
+          'Cache-Control': 'public, max-age=604800, immutable',
+        },
       }
     )
   }
@@ -50,7 +53,7 @@ export default async function Image({ params }: Props) {
   const formattedDate = publishDate.toISOString().slice(0, 10)
 
   const titleLength = post.title.length
-  const titleFontSize = titleLength > 30 ? 64 : 74
+  const titleFontSize = titleLength > 30 ? 48 : 56
 
   return new ImageResponse(
     <div
@@ -59,8 +62,8 @@ export default async function Image({ params }: Props) {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        padding: 80,
-        paddingTop: 100,
+        padding: 60,
+        paddingTop: 80,
         background: '#f8f8f0',
         position: 'relative',
       }}
@@ -93,7 +96,7 @@ export default async function Image({ params }: Props) {
       />
       <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         {post.coverIcon && (
-          <span style={{ fontSize: 96, marginBottom: 42 }}>
+          <span style={{ fontSize: 72, marginBottom: 32 }}>
             {post.coverIcon}
           </span>
         )}
@@ -122,7 +125,7 @@ export default async function Image({ params }: Props) {
       >
         <span
           style={{
-            fontSize: 37,
+            fontSize: 28,
             fontWeight: 700,
             color: '#0751cf',
             textShadow: '0.5px 0 0 #0751cf, -0.5px 0 0 #0751cf',
@@ -130,7 +133,7 @@ export default async function Image({ params }: Props) {
         >
           royli.dev
         </span>
-        <span style={{ fontSize: 32, fontWeight: 700, color: '#0751cf' }}>
+        <span style={{ fontSize: 26, fontWeight: 700, color: '#0751cf' }}>
           {formattedDate}
         </span>
       </div>
@@ -138,6 +141,9 @@ export default async function Image({ params }: Props) {
     {
       ...size,
       fonts: [{ name: 'NotoSansSC', data: font, style: 'normal', weight: 700 }],
+      headers: {
+        'Cache-Control': 'public, max-age=604800, immutable',
+      },
     }
   )
 }
