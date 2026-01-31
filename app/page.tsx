@@ -126,6 +126,9 @@ export default async function IndexPage() {
                 className="group flex items-start justify-between py-4"
               >
                 <div className="flex-1">
+                  {post.coverIcon && (
+                    <span className="mr-1.5">{post.coverIcon}</span>
+                  )}
                   <span className="font-medium text-gray-900 group-hover:underline dark:text-gray-100">
                     {post.title}
                   </span>

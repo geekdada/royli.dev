@@ -1,0 +1,99 @@
+export const metadata = {
+  title: '我正在使用的 Claude Code Skills 和 Plugins',
+  excerpt:
+    '记录我正在使用的 Claude Code Skills 和 Plugins，方便在不同的设备上配置它们。',
+  publishDate: '2026-01-31T12:00:00.000Z',
+  isFeatured: false,
+  isGalleryView: false,
+  coverIcon: '🤖',
+  coverImage:
+    'https://unsplash.com/photos/V9ounv39B7k/download?force=true&w=1920',
+}
+
+## Plugins
+
+### claude-plugins-official
+
+Anthropic 官方维护的插件目录，包含 TypeScript LSP 等多个插件。
+
+<LinkPreview url="https://github.com/anthropics/claude-plugins-official" />
+
+```bash
+# 安装方法
+/plugin install {plugin-name}@claude-plugin-directory
+
+# 或者通过 Discover 浏览
+/plugin > Discover
+```
+
+### ast-grep
+
+基于 AST（抽象语法树）的代码搜索工具，比传统的 grep 更强大，能够理解代码结构。
+
+<LinkPreview url="https://github.com/ast-grep/claude-skill" />
+
+```bash
+# 前置条件：安装 ast-grep CLI
+brew install ast-grep  # macOS
+npm install -g @ast-grep/cli  # npm
+cargo install ast-grep  # cargo
+
+# 添加 marketplace
+/plugin marketplace add ast-grep/claude-skill
+
+# 安装插件
+/plugin install ast-grep
+```
+
+### claude-code-warp
+
+Warp 终端的官方集成插件，提供原生通知功能。当 Claude Code 完成任务或需要用户输入时，会通过 Warp 的通知中心发送系统通知。
+
+<LinkPreview url="https://github.com/warpdotdev/claude-code-warp" />
+
+```bash
+# 前置条件：安装 jq
+brew install jq  # macOS
+
+# 添加 marketplace
+/plugin marketplace add warpdotdev/claude-code-warp
+
+# 安装插件
+/plugin install warp@claude-code-warp
+
+# 重启 Claude Code 以激活通知
+```
+
+## Skills
+
+这些 Skills 可以通过 `npx skills` 命令安装。
+
+### vercel-react-best-practices
+
+Vercel 维护的 React 和 Next.js 性能优化指南，包含 40+ 条规则，分为 8 个优先级类别。
+
+<LinkPreview url="https://github.com/vercel-labs/agent-skills" />
+
+```bash
+npx skills add vercel-labs/agent-skills --skill react-best-practices
+```
+
+### web-design-guidelines
+
+Vercel 的 Web 界面设计指南，涵盖键盘可访问性、表单行为、导航、用户体验等方面。
+
+<LinkPreview url="https://github.com/vercel-labs/agent-skills" />
+
+```bash
+npx skills add vercel-labs/agent-skills --skill web-design-guidelines
+```
+
+### supabase-postgres-best-practices
+
+Supabase 维护的 PostgreSQL 最佳实践指南，涵盖查询性能、连接管理、安全性、Schema 设计等。
+
+<LinkPreview url="https://github.com/supabase/agent-skills" />
+
+```bash
+npx skills add supabase/agent-skills --skill supabase-postgres-best-practices
+```

@@ -4,8 +4,15 @@
  * MDX Components for rendering custom elements
  */
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import type { LinkMetadata } from '@/app/api/link-metadata/route'
+
+function decodeHtmlEntities(text: string): string {
+  if (typeof document === 'undefined') return text
+  const textarea = document.createElement('textarea')
+  textarea.innerHTML = text
+  return textarea.value
+}
 
 export function Callout({
   icon = '💡',
@@ -193,6 +200,16 @@ export function LinkPreview({ url }: { url: string }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
+  const title = useMemo(
+    () => (metadata?.title ? decodeHtmlEntities(metadata.title) : ''),
+    [metadata?.title]
+  )
+  const description = useMemo(
+    () =>
+      metadata?.description ? decodeHtmlEntities(metadata.description) : '',
+    [metadata?.description]
+  )
+
   useEffect(() => {
     const fetchMetadata = async () => {
       try {
@@ -252,17 +269,17 @@ export function LinkPreview({ url }: { url: string }) {
         }}
       />
       <div
-        className={`p-4 min-w-0 flex flex-col justify-between ${metadata.image ? 'col-span-6' : 'col-span-10'}`}
+        className={`p-4 min-w-0 flex flex-col justify-between ${metadata.image ? 'col-span-5' : 'col-span-10'}`}
       >
         <div>
-          {metadata.title && (
+          {title && (
             <h4 className="font-semibold text-gray-900 dark:text-gray-100 line-clamp-2 mb-1 text-sm lg:text-base leading-snug">
-              {metadata.title}
+              {title}
             </h4>
           )}
-          {metadata.description && (
-            <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
-              {metadata.description}
+          {description && (
+            <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3">
+              {description}
             </p>
           )}
         </div>
@@ -283,7 +300,7 @@ export function LinkPreview({ url }: { url: string }) {
 
       {/* Image */}
       {metadata.image && (
-        <div className="col-span-4 bg-gray-100 dark:bg-gray-800">
+        <div className="col-span-5 bg-gray-100 dark:bg-gray-800">
           <img
             src={metadata.image}
             alt=""

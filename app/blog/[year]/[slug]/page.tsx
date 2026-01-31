@@ -74,18 +74,20 @@ export default async function BlogPostPage({ params }: PageProps) {
                 hasCoverImage ? 'pt-5 lg:pt-6' : 'pt-3 lg:pt-4'
               )}
             >
-              <h1
-                className="relative mb-2 flex justify space-x-2 text-3xl font-bold font-title"
-                data-id="blog-title"
-              >
-                <span id="blog-title" className="scroll-mt-20" />
-                <Balancer>
-                  {post.coverIcon ? (
-                    <span className="mr-2">{post.coverIcon}</span>
-                  ) : null}
-                  {post.title}
-                </Balancer>
-              </h1>
+              <div className="relative mb-2 flex items-stretch gap-4">
+                <span id="blog-title" className="scroll-mt-20 absolute" />
+                {post.coverIcon && (
+                  <div className="shrink-0 aspect-square h-auto self-stretch flex items-center justify-center text-5xl">
+                    <span>{post.coverIcon}</span>
+                  </div>
+                )}
+                <h1
+                  className="flex-1 text-3xl font-bold font-title flex items-center"
+                  data-id="blog-title"
+                >
+                  <Balancer>{post.title}</Balancer>
+                </h1>
+              </div>
 
               <ArticleContent>
                 <Content />
