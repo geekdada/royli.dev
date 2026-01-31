@@ -168,15 +168,25 @@ export async function generateMetadata({
   }
 
   const canonical = new URL(`/blog/${year}/${slug}`, siteURL)
+  const ogImageUrl = new URL(`/blog/${year}/${slug}/opengraph-image`, siteURL)
 
   return {
     title: `${post.title} - Roy Li's Blog`,
     description: post.excerpt,
-    openGraph: post.coverImage
-      ? {
-          images: [post.coverImage],
-        }
-      : undefined,
+    openGraph: {
+      type: 'article',
+      title: post.title,
+      description: post.excerpt,
+      publishedTime: post.publishDate,
+      modifiedTime: post.lastEditDate,
+      images: [
+        {
+          url: ogImageUrl.toString(),
+          width: 1600,
+          height: 840,
+        },
+      ],
+    },
     alternates: {
       canonical: canonical.toString(),
     },
