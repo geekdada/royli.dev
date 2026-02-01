@@ -6,7 +6,7 @@ import { isProd, siteURL } from '@/lib/config'
 export const runtime = 'edge'
 
 const redis = Redis.fromEnv()
-const CACHE_TTL = 86400 // 24 hours in seconds
+const CACHE_TTL = 604800 // 7 days in seconds
 
 function getCacheKey(url: string): string {
   return `link-metadata:${url}`
@@ -85,9 +85,9 @@ function extractTitle(html: string): string | undefined {
 function extractFavicon(html: string, baseUrl: string): string | undefined {
   // Try to find favicon link
   const iconPatterns = [
-    /<link[^>]+rel=["'](?:shortcut )?icon["'][^>]+href=["']([^"']+)["']/i,
-    /<link[^>]+href=["']([^"']+)["'][^>]+rel=["'](?:shortcut )?icon["']/i,
-    /<link[^>]+rel=["']apple-touch-icon["'][^>]+href=["']([^"']+)["']/i,
+    /<link[^>]+rel=["'](?:shortcut )?icon["'][^>]+\shref=["']([^"']+)["']/i,
+    /<link[^>]+\shref=["']([^"']+)["'][^>]+rel=["'](?:shortcut )?icon["']/i,
+    /<link[^>]+rel=["']apple-touch-icon["'][^>]+\shref=["']([^"']+)["']/i,
   ]
 
   for (const pattern of iconPatterns) {
@@ -202,15 +202,17 @@ export async function GET(request: Request) {
 
   // Try to get cached metadata
   try {
-    const cached = await redis.get<LinkMetadata>(cacheKey)
-    if (cached) {
-      return NextResponse.json(cached, {
-        headers: {
-          'Cache-Control':
-            'public, max-age=86400, stale-while-revalidate=604800',
-          'X-Cache': 'HIT',
-        },
-      })
+    if (isProd) {
+      const cached = await redis.get<LinkMetadata>(cacheKey)
+      if (cached) {
+        return NextResponse.json(cached, {
+          headers: {
+            'Cache-Control':
+              'public, max-age=86400, stale-while-revalidate=604800',
+            'X-Cache': 'HIT',
+          },
+        })
+      }
     }
   } catch (err) {
     console.error('Redis get error:', err)
