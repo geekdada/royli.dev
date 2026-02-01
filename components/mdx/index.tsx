@@ -4,7 +4,7 @@
  * MDX Components for rendering custom elements
  */
 
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import type { LinkMetadata } from '@/app/api/link-metadata/route'
 
 function decodeHtmlEntities(text: string): string {
@@ -86,114 +86,7 @@ export function Video({ src }: { src: string }) {
   return <video src={src} controls className="w-full rounded-lg my-4" />
 }
 
-function extractTweetId(url: string): string | null {
-  // Match twitter.com/user/status/123 or x.com/user/status/123
-  const regex = /(?:twitter\.com|x\.com)\/\w+\/status\/(\d+)/
-  const match = url.match(regex)
-  return match ? match[1] : null
-}
-
-function TwitterEmbed({
-  tweetId,
-  caption,
-}: {
-  tweetId: string
-  caption?: string
-}) {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    // Load Twitter widget script if not already loaded
-    const loadTwitterScript = () => {
-      return new Promise<void>((resolve) => {
-        if ((window as unknown as { twttr?: TwitterWidgets }).twttr) {
-          resolve()
-          return
-        }
-
-        const script = document.createElement('script')
-        script.src = 'https://platform.twitter.com/widgets.js'
-        script.async = true
-        script.onload = () => resolve()
-        document.body.appendChild(script)
-      })
-    }
-
-    const renderTweet = async () => {
-      await loadTwitterScript()
-
-      const twttr = (window as unknown as { twttr?: TwitterWidgets }).twttr
-      if (twttr && containerRef.current) {
-        // Clear container before rendering
-        containerRef.current.innerHTML = ''
-
-        await twttr.widgets.createTweet(tweetId, containerRef.current, {
-          theme: document.documentElement.classList.contains('dark')
-            ? 'dark'
-            : 'light',
-          dnt: true,
-        })
-        setIsLoading(false)
-      }
-    }
-
-    renderTweet()
-  }, [tweetId])
-
-  return (
-    <figure className="my-4">
-      {isLoading && (
-        <div className="flex items-center justify-center p-8 border border-gray-200 dark:border-gray-700 rounded-lg">
-          <span className="text-gray-500 dark:text-gray-400">
-            Loading tweet...
-          </span>
-        </div>
-      )}
-      <div ref={containerRef} className="flex justify-center" />
-      {caption && (
-        <figcaption className="text-center text-sm text-gray-500 mt-2">
-          {caption}
-        </figcaption>
-      )}
-    </figure>
-  )
-}
-
-interface TwitterWidgets {
-  widgets: {
-    createTweet: (
-      tweetId: string,
-      container: HTMLElement,
-      options?: { theme?: 'light' | 'dark'; dnt?: boolean }
-    ) => Promise<HTMLElement>
-  }
-}
-
-export function Embed({ url, caption }: { url: string; caption?: string }) {
-  // Handle Twitter/X embeds
-  if (url.includes('twitter.com') || url.includes('x.com')) {
-    const tweetId = extractTweetId(url)
-    if (tweetId) {
-      return <TwitterEmbed tweetId={tweetId} caption={caption} />
-    }
-  }
-
-  return (
-    <figure className="my-4">
-      <iframe
-        src={url}
-        className="w-full aspect-video rounded-lg border border-gray-200 dark:border-gray-700"
-        allowFullScreen
-      />
-      {caption && (
-        <figcaption className="text-center text-sm text-gray-500 mt-2">
-          {caption}
-        </figcaption>
-      )}
-    </figure>
-  )
-}
+export { Embed } from './Embed'
 
 export function LinkPreview({ url }: { url: string }) {
   const [metadata, setMetadata] = useState<LinkMetadata | null>(null)

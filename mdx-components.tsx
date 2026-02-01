@@ -11,6 +11,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     LinkPreview,
     TableOfContents,
     MDXImage,
+    img: (props) => <MDXImage src={props.src ?? ''} alt={props.alt} />,
     ...components,
   }
 }

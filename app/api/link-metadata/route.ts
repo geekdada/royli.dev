@@ -144,7 +144,7 @@ async function fetchLinkMetadata(url: string): Promise<LinkMetadata> {
       signal: controller.signal,
       headers: {
         'User-Agent':
-          'Mozilla/5.0 (compatible; LinkPreview/1.0; +https://royli.dev)',
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36',
         Accept: 'text/html,application/xhtml+xml',
       },
     })
@@ -221,9 +221,11 @@ export async function GET(request: Request) {
     const metadata = await fetchLinkMetadata(url)
 
     // Store in cache (fire-and-forget, don't block response)
-    redis.set(cacheKey, metadata, { ex: CACHE_TTL }).catch((err) => {
-      console.error('Redis set error:', err)
-    })
+    if (isProd) {
+      redis.set(cacheKey, metadata, { ex: CACHE_TTL }).catch((err) => {
+        console.error('Redis set error:', err)
+      })
+    }
 
     return NextResponse.json(metadata, {
       headers: {

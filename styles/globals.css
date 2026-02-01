@@ -199,3 +199,7 @@ html.dark code[data-theme] span {
 .prose :not(pre) > code {
   @apply px-1.5 py-0.5 rounded bg-gray-200 dark:bg-dark-300 text-sm font-mono;
 }
+
+.react-tweet-theme {
+  --tweet-container-margin: 0 !important;
+}
