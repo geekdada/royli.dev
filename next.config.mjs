@@ -1,5 +1,6 @@
 import createMDX from '@next/mdx'
 import rehypePrettyCode from 'rehype-pretty-code'
+import rehypeUnwrapImages from 'rehype-unwrap-images'
 import { visit } from 'unist-util-visit'
 
 /** @type {import('rehype-pretty-code').Options} */
@@ -70,6 +71,7 @@ const withMDX = createMDX({
     remarkPlugins: ['remark-gfm'],
     rehypePlugins: [
       'rehype-slug',
+      rehypeUnwrapImages,
       [rehypePrettyCode, prettyCodeOptions],
       rehypeCodeLanguageLabel,
     ],

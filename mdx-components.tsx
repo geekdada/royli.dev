@@ -1,5 +1,12 @@
 import type { MDXComponents } from 'mdx/types'
-import { Callout, Details, Video, Embed, LinkPreview, TableOfContents } from '@/components/mdx'
+import {
+  Callout,
+  Details,
+  Video,
+  Embed,
+  LinkPreview,
+  TableOfContents,
+} from '@/components/mdx'
 import { MDXImage } from '@/components/mdx/MDXImage'
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
