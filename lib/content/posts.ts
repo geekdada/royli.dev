@@ -23,6 +23,19 @@ function resolveCoverImage(coverImage: string | undefined, year: string, slug: s
   return coverImage
 }
 
+function resolvePostCoverImage(post: PostFrontmatter, year: string, slug: string): string | undefined {
+  const resolvedCover = resolveCoverImage(post.coverImage, year, slug)
+  if (resolvedCover) {
+    return resolvedCover
+  }
+
+  if (post.isGalleryView && post.galleryImages.length > 0) {
+    return resolveCoverImage(post.galleryImages[0], year, slug)
+  }
+
+  return undefined
+}
+
 export async function getAllPosts(): Promise<Post[]> {
   const blogDir = join(CONTENT_DIR, 'blog')
   const years = await readdir(blogDir)
@@ -48,7 +61,7 @@ export async function getAllPosts(): Promise<Post[]> {
             ...validated,
             slug,
             publishYear: derivedYear,
-            coverImage: resolveCoverImage(validated.coverImage, year, slug),
+            coverImage: resolvePostCoverImage(validated, year, slug),
           })
         } catch {
           continue
@@ -77,7 +90,7 @@ export async function getPostBySlug(slug: string, year: string): Promise<PostWit
       ...validated,
       slug,
       publishYear: derivedYear,
-      coverImage: resolveCoverImage(validated.coverImage, year, slug),
+      coverImage: resolvePostCoverImage(validated, year, slug),
       Content: mdxModule.default,
     }
   } catch {

@@ -2,8 +2,9 @@
  * Gallery Utilities - Extract images from MDX content
  */
 
-import { readFile } from 'fs/promises'
 import { join } from 'path'
+import { readFile } from 'fs/promises'
+import { PostFrontmatterSchema } from '@/lib/mdx/frontmatter'
 
 const CONTENT_DIR = join(process.cwd(), 'content')
 
@@ -30,8 +31,15 @@ export async function getGalleryImages(year: string, slug: string): Promise<stri
   const mdxPath = join(CONTENT_DIR, 'blog', year, slug, 'page.mdx')
 
   try {
+    const mdxModule = await import(`@/content/blog/${year}/${slug}/page.mdx`)
+    const validated = PostFrontmatterSchema.parse(mdxModule.metadata)
+
+    if (validated.galleryImages.length > 0) {
+      return validated.galleryImages.map((src) => resolveGalleryImagePath(src, year, slug))
+    }
+
     const content = await readFile(mdxPath, 'utf-8')
-    return extractGalleryImages(content)
+    return extractGalleryImages(content).map((src) => resolveGalleryImagePath(src, year, slug))
   } catch {
     return []
   }
