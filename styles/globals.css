@@ -4,6 +4,14 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: 'GeistPixel';
+  src: url('../assets/fonts/GeistPixel-Line.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --color-light-50: #fdfdfd;
   --color-light-100: #fcfcfc;
@@ -37,6 +45,7 @@
   --font-title:
     Inter, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
     'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-pixel: 'GeistPixel', monospace;
 }
 
 /*
@@ -202,4 +211,17 @@ html.dark code[data-theme] span {
 
 .react-tweet-theme {
   --tweet-container-margin: 0 !important;
+}
+
+/* Home page post row */
+.home-post-row {
+  @apply -mx-3 flex items-start gap-4 rounded-xl px-3 py-3.5 transition-all duration-200;
+}
+
+.home-post-row:hover {
+  @apply bg-gray-50;
+}
+
+.dark .home-post-row:hover {
+  background-color: rgba(255, 255, 255, 0.025);
 }

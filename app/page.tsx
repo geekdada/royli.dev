@@ -5,27 +5,25 @@ import {
   FiTwitter,
   FiCamera,
   FiLinkedin,
-  FiArrowUpRight,
+  FiArrowRight,
 } from 'react-icons/fi'
 import { FaMastodon } from 'react-icons/fa'
 
 import { getAllPosts } from '@/lib/content/posts'
 import NellyIcon from '@/components/NellyIcon'
 import Icon from '@/components/Icon'
+import {
+  AnimatedSection,
+  AnimatedItem,
+  ScaleIn,
+} from '@/components/home/HeroSection'
+import BerlinClock from '@/components/home/BerlinClock'
 
 export const revalidate = 604800 // 7 days
 
 const socialLinks = [
-  {
-    name: 'GitHub',
-    href: 'https://github.com/geekdada',
-    icon: FiGithub,
-  },
-  {
-    name: 'Twitter',
-    href: 'https://twitter.com/geekdada',
-    icon: FiTwitter,
-  },
+  { name: 'GitHub', href: 'https://github.com/geekdada', icon: FiGithub },
+  { name: 'Twitter', href: 'https://twitter.com/geekdada', icon: FiTwitter },
   {
     name: 'Mastodon',
     href: 'https://tooted.space/@geekdada',
@@ -44,30 +42,40 @@ const socialLinks = [
   },
 ]
 
+function formatDate(dateStr: string) {
+  const d = new Date(dateStr)
+  return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+}
+
 export default async function IndexPage() {
   const posts = await getAllPosts()
-  const recentPosts = posts.slice(0, 3)
+  const recentPosts = posts.slice(0, 6)
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="mx-auto w-full max-w-3xl px-6 py-12 md:py-20">
-        {/* Hero section */}
-        <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-10">
-          <Image
-            className="h-20 w-20 rounded-full md:h-24 md:w-24"
-            src="/images/avatar.svg"
-            alt="Roy Li"
-            width={96}
-            height={96}
-            priority
-          />
-
-          <div className="flex-1">
-            <h1 className="font-title text-4xl font-bold tracking-tight text-gray-900 dark:text-white md:text-5xl">
+      <div className="mx-auto w-full max-w-2xl px-6">
+        {/* ───────────── Hero ───────────── */}
+        <AnimatedSection className="pb-16 pt-10 md:pb-20 md:pt-16">
+          {/* Name row */}
+          <AnimatedItem className="flex items-end gap-5 mb-6">
+            <h1 className="font-pixel text-5xl leading-[0.9] text-gray-900 dark:text-white md:text-7xl">
               Roy Li
             </h1>
+            <ScaleIn>
+              <Image
+                className="h-11 w-11 rounded-full ring-2 ring-gray-900/10 dark:ring-white/10 md:h-14 md:w-14 mb-1"
+                src="/images/avatar.svg"
+                alt="Roy Li"
+                width={56}
+                height={56}
+                priority
+              />
+            </ScaleIn>
+          </AnimatedItem>
 
-            <p className="mt-4 text-gray-700 dark:text-gray-500 font-medium tracking-tight">
+          {/* Bio */}
+          <AnimatedItem>
+            <p className="max-w-md text-[17px] leading-relaxed text-gray-500 dark:text-gray-400">
               Software engineer in Berlin. Building things at
               <a
                 href="https://getnelly.de"
@@ -85,73 +93,82 @@ export default async function IndexPage() {
                 href="https://klarna.com"
                 target="_blank"
                 rel="noreferrer"
-                className="underline decoration-gray-300 underline-offset-2 transition-colors hover:decoration-gray-500 dark:decoration-gray-600 dark:hover:decoration-gray-400"
+                className="font-bold text-gray-700 dark:text-gray-300 underline decoration-gray-300/40 underline-offset-[3px] transition-all hover:decoration-gray-500 dark:decoration-gray-700 dark:hover:decoration-gray-400"
               >
                 Klarna
               </a>{' '}
-              and Alibaba.
+              and{' '}
+              <span className="font-bold text-gray-700 dark:text-gray-300">
+                Alibaba
+              </span>
+              .
             </p>
+          </AnimatedItem>
 
-            {/* Social links */}
-            <div className="mt-6 flex items-center gap-4">
-              {socialLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  target="_blank"
-                  rel={link.rel || 'noopener noreferrer'}
-                  className="text-gray-400 transition-colors hover:text-gray-900 dark:text-gray-500 dark:hover:text-white"
-                  aria-label={link.name}
-                >
-                  <link.icon className="h-5 w-5" />
-                </a>
-              ))}
-            </div>
-          </div>
+          {/* Status pill */}
+          <AnimatedItem className="mt-8">
+            <BerlinClock />
+          </AnimatedItem>
+
+          {/* Socials row */}
+          <AnimatedItem className="mt-5 flex items-center -ml-2.5">
+            {socialLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                target="_blank"
+                rel={link.rel || 'noopener noreferrer'}
+                className="rounded-lg p-2.5 text-gray-300 transition-all duration-150 hover:bg-gray-100 hover:text-gray-600 dark:text-gray-600 dark:hover:bg-white/5 dark:hover:text-gray-300"
+                aria-label={link.name}
+              >
+                <link.icon className="h-4.5 w-4.5" />
+              </a>
+            ))}
+          </AnimatedItem>
+        </AnimatedSection>
+
+        {/* ───────────── Divider ───────────── */}
+        <div className="relative h-px">
+          <div className="absolute inset-0 bg-linear-to-r from-transparent via-gray-300 to-transparent dark:via-gray-700/50" />
         </div>
 
-        {/* Recent posts */}
-        <div className="mt-16">
-          <div className="border-b border-gray-200 pb-2 dark:border-gray-800">
-            <h2 className="text-xs font-medium uppercase tracking-widest text-gray-500 dark:text-gray-500">
-              Recent Posts
+        {/* ───────────── Writing ───────────── */}
+        <AnimatedSection className="py-16 md:py-20" viewport>
+          <AnimatedItem className="flex items-baseline justify-between mb-10">
+            <h2 className="font-pixel text-[11px] tracking-[0.35em] uppercase text-gray-400 dark:text-gray-600">
+              Writing
             </h2>
-          </div>
+            <Link
+              href="/blog"
+              className="group inline-flex items-center gap-1.5 text-xs font-medium text-gray-400 transition-colors hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-300"
+            >
+              All posts
+              <FiArrowRight className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
+            </Link>
+          </AnimatedItem>
 
-          <div className="divide-y divide-gray-100 dark:divide-gray-800">
+          <div className="grid gap-px">
             {recentPosts.map((post) => (
-              <Link
-                key={post.slug}
-                href={`/blog/${post.publishYear}/${post.slug}`}
-                className="group flex items-start justify-between py-4"
-              >
-                <div className="flex-1">
-                  {post.coverIcon && (
-                    <span className="mr-1.5">{post.coverIcon}</span>
-                  )}
-                  <span className="font-medium text-gray-900 group-hover:underline dark:text-gray-100">
+              <AnimatedItem key={post.slug}>
+                <Link
+                  href={`/blog/${post.publishYear}/${post.slug}`}
+                  className="home-post-row group"
+                >
+                  <span className="shrink-0 font-mono text-[11px] tabular-nums text-gray-300 dark:text-gray-700 w-16 pt-[3px]">
+                    {formatDate(post.publishDate)}
+                  </span>
+                  <span className="flex-1 text-[15px] leading-snug text-gray-600 transition-colors duration-150 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white">
+                    {post.coverIcon && (
+                      <span className="mr-1.5">{post.coverIcon}</span>
+                    )}
                     {post.title}
                   </span>
-                  <FiArrowUpRight className="ml-1 inline-block h-3.5 w-3.5 text-gray-400 opacity-0 transition-opacity group-hover:opacity-100" />
-                </div>
-                <span className="ml-4 shrink-0 text-sm text-gray-400 dark:text-gray-600">
-                  {post.publishYear}
-                </span>
-              </Link>
+                  <FiArrowRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gray-200 opacity-0 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0.5 dark:text-gray-700" />
+                </Link>
+              </AnimatedItem>
             ))}
           </div>
-        </div>
-
-        {/* Browse all link */}
-        <div className="mt-8">
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-1 border-b border-gray-900 pb-0.5 text-sm font-medium text-gray-900 transition-colors hover:border-gray-500 hover:text-gray-600 dark:border-white dark:text-white dark:hover:border-gray-400 dark:hover:text-gray-300"
-          >
-            Browse all posts
-            <FiArrowUpRight className="h-3.5 w-3.5" />
-          </Link>
-        </div>
+        </AnimatedSection>
       </div>
     </div>
   )
