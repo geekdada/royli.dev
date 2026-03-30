@@ -9,3 +9,5 @@ export const defaultPageCover = getSiteConfig('defaultPageCover')
 export const giteaAPIKey = getEnv('GITEA_API_KEY', '')
 
 export const karakeepAPIKey = getEnv('KARAKEEP_API_KEY', '')
+
+export const zenmuxManagementAPIKey = getEnv('ZENMUX_MANAGEMENT_API_KEY', '')
