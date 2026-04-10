@@ -1,0 +1,29 @@
+export const metadata = {
+  title: 'Stop Tahoe BS ffs',
+  excerpt:
+    '几个实用的 macOS defaults 命令，关闭 Tahoe 中一些恼人的默认行为。',
+  publishDate: '2026-04-10T12:00:00.000Z',
+  isFeatured: false,
+  isGalleryView: false,
+  coverIcon: '🏔️',
+}
+
+## 关闭上下文菜单中不明所以的图标
+
+Tahoe 的右键菜单里多了一些莫名其妙的图标，看着碍眼。一行命令关掉：
+
+```bash
+defaults write -g NSMenuEnableActionImages -bool NO
+```
+
+来源：<LinkPreview url="https://x.com/xiaokedada/status/2041508570018275766" />
+
+## 增大窗口边缘可拖拽区域
+
+macOS 窗口边缘的拖拽区域一直很窄，经常对不准。可以通过这个命令增大外侧的可点击区域：
+
+```bash
+defaults write -g AppleEdgeResizeExteriorSize 8
+```
+
+来源：<LinkPreview url="https://mas.to/@Cykelero/116119429099622872" />
