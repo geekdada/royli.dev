@@ -108,8 +108,8 @@ importers:
         specifier: ^5.5.0
         version: 5.5.0(react@19.2.3)
       react-tweet:
-        specifier: ^3.3.0
-        version: 3.3.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: ^3.3.1
+        version: 3.3.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       react-tweet-embed:
         specifier: ^2.0.0
         version: 2.0.0(react@19.2.3)
@@ -2946,8 +2946,8 @@ packages:
     peerDependencies:
       react: '>=17'
 
-  react-tweet@3.3.0:
-    resolution: {integrity: sha512-gSIG2169ZK7UH6rBzuU+j1xnQbH3IlOTLEkuGrRiJJTMgETik+h+26yHyyVKrLkzwrOaYPk4K3OtEKycqKgNLw==}
+  react-tweet@3.3.1:
+    resolution: {integrity: sha512-0Gj1YgBTe1K85NBMoWBlUc17Rdc67gIJLlacrVgj+3jWIoXpFfxPdZ1U5OnWkkF9zxhphqs2pY1i//JBfP3Qog==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -6758,7 +6758,7 @@ snapshots:
     dependencies:
       react: 19.2.3
 
-  react-tweet@3.3.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
+  react-tweet@3.3.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:
       '@swc/helpers': 0.5.15
       clsx: 2.1.1
