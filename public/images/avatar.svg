@@ -1,9 +1,10 @@
 <svg width="196" height="196" viewBox="0 0 196 196" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <mask id="mask0_763_4286" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
-    width="196" height="196">
-    <rect width="196" height="196" fill="#D9D9D9" />
-  </mask>
-  <g mask="url(#mask0_763_4286)">
+  <defs>
+    <clipPath id="avatar-clip">
+      <circle cx="98" cy="98" r="98" />
+    </clipPath>
+  </defs>
+  <g clip-path="url(#avatar-clip)">
     <rect width="196" height="196" fill="#616161" />
     <path
       d="M194.41 232.001H153.72C160.44 214.071 164.21 204.631 164.22 192.581C164.23 186.521 163.71 181.131 164.43 176.311C173.06 184.521 186.99 200.021 190.22 213.261C193.2 225.411 194.41 232.001 194.41 232.001Z"

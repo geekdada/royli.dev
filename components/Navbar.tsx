@@ -35,22 +35,20 @@ const MenuItemLink = (props: { href: string; children: React.ReactNode }) => {
 const Navbar: React.FC = () => {
   return (
     <header className="primary-text z-10 flex items-center px-4 py-3 justify-between sticky top-0 bg-[#fafafa] dark:bg-[#0a0a0b]">
-      <div
-        style={{
-          width: '42px',
-          height: '42px',
-        }}
+      <Link
+        href="/"
+        aria-label="Home"
+        className="brand-home-link block h-[42px] w-[42px] shrink-0 rounded-full"
       >
-        <Link href="/">
-          <Image
-            className="transition-all duration-150 cursor-pointer dark:invert hover:opacity-80"
-            src="/images/logo.png"
-            alt="home"
-            width={42}
-            height={42}
-          />
-        </Link>
-      </div>
+        <Image
+          className="brand-avatar h-[42px] w-[42px] rounded-full ring-2 ring-gray-900/10 dark:ring-white/10"
+          src="/images/avatar.svg"
+          alt=""
+          width={42}
+          height={42}
+          priority
+        />
+      </Link>
 
       <div className="flex items-center ">
         <nav className="hidden items-center space-x-2 sm:flex">

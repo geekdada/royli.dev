@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import {
   FiGithub,
@@ -12,11 +11,7 @@ import { FaMastodon } from 'react-icons/fa'
 import { getAllPosts } from '@/lib/content/posts'
 import NellyIcon from '@/components/NellyIcon'
 import Icon from '@/components/Icon'
-import {
-  AnimatedSection,
-  AnimatedItem,
-  ScaleIn,
-} from '@/components/home/HeroSection'
+import { AnimatedSection, AnimatedItem } from '@/components/home/HeroSection'
 import BerlinClock from '@/components/home/BerlinClock'
 
 export const revalidate = 604800 // 7 days
@@ -57,20 +52,10 @@ export default async function IndexPage() {
         {/* ───────────── Hero ───────────── */}
         <AnimatedSection className="pb-16 pt-10 md:pb-20 md:pt-16">
           {/* Name row */}
-          <AnimatedItem className="flex items-end gap-5 mb-6">
+          <AnimatedItem className="mb-6">
             <h1 className="font-pixel text-5xl leading-[0.9] text-gray-900 dark:text-white md:text-7xl">
               Roy Li
             </h1>
-            <ScaleIn>
-              <Image
-                className="h-11 w-11 rounded-full ring-2 ring-gray-900/10 dark:ring-white/10 md:h-14 md:w-14 mb-1"
-                src="/images/avatar.svg"
-                alt="Roy Li"
-                width={56}
-                height={56}
-                priority
-              />
-            </ScaleIn>
           </AnimatedItem>
 
           {/* Bio */}

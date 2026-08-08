@@ -79,6 +79,23 @@
   @apply cursor-pointer rounded-lg border-none px-3 py-2 text-sm transition-all duration-200 font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .brand-avatar {
+    transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .brand-home-link:hover .brand-avatar {
+    transform: rotate(-8deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-avatar {
+    transform: none !important;
+    transition: none;
+  }
+}
+
 .heading-text {
   @apply text-dark-900 dark:text-light-900;
 }
