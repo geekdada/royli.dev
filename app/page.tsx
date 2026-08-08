@@ -134,17 +134,10 @@ export default async function IndexPage() {
 
         {/* ───────────── Writing ───────────── */}
         <AnimatedSection className="py-16 md:py-20" viewport>
-          <AnimatedItem className="flex items-baseline justify-between mb-10">
+          <AnimatedItem className="mb-10">
             <h2 className="font-pixel text-[11px] tracking-[0.35em] uppercase text-gray-400 dark:text-gray-600">
               Writing
             </h2>
-            <Link
-              href="/blog"
-              className="group inline-flex items-center gap-1.5 text-xs font-medium text-gray-400 transition-colors hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-300"
-            >
-              All posts
-              <FiArrowRight className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
-            </Link>
           </AnimatedItem>
 
           <div className="grid gap-px">
@@ -168,6 +161,16 @@ export default async function IndexPage() {
               </AnimatedItem>
             ))}
           </div>
+
+          <AnimatedItem className="mt-8">
+            <Link
+              href="/blog"
+              className="group inline-flex items-center gap-2 py-3 text-sm font-medium text-gray-400 transition-colors hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-300"
+            >
+              All posts
+              <FiArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+            </Link>
+          </AnimatedItem>
         </AnimatedSection>
       </div>
     </div>

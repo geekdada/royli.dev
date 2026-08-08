@@ -21,10 +21,6 @@ const navigations = [
     name: 'AMA',
     link: 'https://amazt.netlify.app/people/geekdada/',
   },
-  {
-    name: 'GitHub',
-    link: 'https://github.com/geekdada',
-  },
 ]
 
 const MenuItemLink = (props: { href: string; children: React.ReactNode }) => {

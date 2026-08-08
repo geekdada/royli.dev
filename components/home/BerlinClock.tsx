@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { FiMapPin } from 'react-icons/fi'
 
 export default function BerlinClock() {
   const [time, setTime] = useState('')
@@ -23,7 +24,10 @@ export default function BerlinClock() {
 
   return (
     <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-500 dark:border-white/10 dark:bg-white/5 dark:text-gray-400">
-      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+      <FiMapPin
+        aria-hidden="true"
+        className="h-3.5 w-3.5 shrink-0 text-emerald-500"
+      />
       Berlin &middot; {time || '--:--'}
     </span>
   )
