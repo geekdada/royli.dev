@@ -93,14 +93,15 @@ export function LinkPreview({ url }: { url: string }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
+  const rawTitle = metadata?.title
+  const rawDescription = metadata?.description
   const title = useMemo(
-    () => (metadata?.title ? decodeHtmlEntities(metadata.title) : ''),
-    [metadata?.title]
+    () => (rawTitle ? decodeHtmlEntities(rawTitle) : ''),
+    [rawTitle]
   )
   const description = useMemo(
-    () =>
-      metadata?.description ? decodeHtmlEntities(metadata.description) : '',
-    [metadata?.description]
+    () => (rawDescription ? decodeHtmlEntities(rawDescription) : ''),
+    [rawDescription]
   )
 
   useEffect(() => {
